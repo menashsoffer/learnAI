@@ -11,6 +11,12 @@ const slug = z
   .min(1)
   .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, 'slug must be kebab-case ascii');
 
+const sceneStudentSchema = z.object({
+  title: z.string().optional(),
+  blocks: z.array(z.unknown()).optional(),
+  activity: z.boolean().optional(),
+});
+
 export const sceneRecordSchema = z.object({
   id: z.string().min(1),
   slug,
@@ -19,7 +25,9 @@ export const sceneRecordSchema = z.object({
   title: z.string().min(1),
   subtitle: z.string().optional(),
   notes: z.string().optional(),
+  presenterScript: z.string().optional(),
   selfReading: z.string().optional(),
+  student: sceneStudentSchema.optional(),
   version: z.number().int().positive().optional(),
   data: z.unknown(),
 });
@@ -33,6 +41,7 @@ export const deckMetaSchema = z.object({
   description: z.string().optional(),
   redirects: z.record(slug, slug).optional(),
   credits: z.string().optional(),
+  presenterCode: z.string().min(1).optional(),
 });
 
 export const deckSchema = z

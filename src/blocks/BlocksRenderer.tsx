@@ -1,22 +1,48 @@
-import type { CSSProperties } from 'react';
+import { createContext, useContext, useState, type CSSProperties } from 'react';
 import type { Block, CalloutTone } from './types';
 import './blocks.css';
 
+const CopyableCtx = createContext(false);
+
 /**
  * Renders a declarative Block[] — the only sanctioned way to show rich per-scene content.
- * (Kinds are inlined here for now; split into ./kinds/* if this grows.)
+ * `copyable` (study mode) adds a copy button to example-prompt blocks.
  */
-export function BlocksRenderer({ blocks }: { blocks: Block[] }) {
+export function BlocksRenderer({ blocks, copyable = false }: { blocks: Block[]; copyable?: boolean }) {
   return (
-    <div className="blocks">
-      {blocks.map((b, i) => (
-        <BlockView key={i} block={b} />
-      ))}
-    </div>
+    <CopyableCtx.Provider value={copyable}>
+      <div className="blocks">
+        {blocks.map((b, i) => (
+          <BlockView key={i} block={b} />
+        ))}
+      </div>
+    </CopyableCtx.Provider>
+  );
+}
+
+function CopyButton({ text }: { text: string }) {
+  const [done, setDone] = useState(false);
+  return (
+    <button
+      type="button"
+      className={`blk-copy${done ? ' is-done' : ''}`}
+      onClick={() => {
+        navigator.clipboard?.writeText(text).then(
+          () => {
+            setDone(true);
+            setTimeout(() => setDone(false), 1600);
+          },
+          () => {},
+        );
+      }}
+    >
+      {done ? '✓ הועתק' : '⧉ העתק'}
+    </button>
   );
 }
 
 function BlockView({ block }: { block: Block }) {
+  const copyable = useContext(CopyableCtx);
   switch (block.kind) {
     case 'heading': {
       const H = (`h${block.level ?? 3}`) as 'h2' | 'h3' | 'h4';
@@ -59,7 +85,10 @@ function BlockView({ block }: { block: Block }) {
     case 'example-prompt':
       return (
         <figure className={`blk-prompt tone-${block.tone ?? 'accent'}`}>
-          {block.label && <figcaption className="blk-prompt__label">{block.label}</figcaption>}
+          <div className="blk-prompt__head">
+            {block.label && <figcaption className="blk-prompt__label">{block.label}</figcaption>}
+            {copyable && <CopyButton text={block.prompt} />}
+          </div>
           <p className="blk-prompt__body" dir="rtl">
             {block.prompt}
           </p>

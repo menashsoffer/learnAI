@@ -11,10 +11,25 @@
   padding-inline: var(--s-5);
   z-index: 50;
 }
+.topbar__brand {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  min-width: 0;
+}
 .topbar__badge {
   font-weight: 700;
   font-size: var(--fs-200);
   color: var(--primary);
+}
+.topbar__mode {
+  flex: none;
+  font-size: var(--fs-100);
+  font-weight: 700;
+  color: var(--primary-ink);
+  background: var(--primary);
+  border-radius: var(--r-pill);
+  padding: 0.15rem 0.7rem;
 }
 .topbar__nav {
   display: flex;
@@ -90,6 +105,11 @@
 .bottomnav__btn:disabled {
   color: var(--text-dim);
   cursor: default;
+}
+
+/* Lift the nav clear of the present-mode guidance drawer. */
+body:has(.guide) .bottomnav {
+  inset-block-end: 60px;
 }
 
 /* Grid overlay */

@@ -8,7 +8,13 @@ import type { SceneMeta, TimerModel } from '@/engine';
  * React render layer and the registry do.
  */
 
-export type SceneMode = 'present' | 'self-reading' | 'print' | 'thumbnail' | 'editor-preview';
+export type SceneMode =
+  | 'present'
+  | 'study'
+  | 'self-reading'
+  | 'print'
+  | 'thumbnail'
+  | 'editor-preview';
 
 export interface SceneApi {
   next(): void;

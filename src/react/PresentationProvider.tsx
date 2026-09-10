@@ -17,10 +17,13 @@ import {
   type SlugIndex,
 } from '@/engine';
 
+export type PlayerMode = 'plain' | 'present' | 'study';
+
 interface PresentationContextValue {
   store: EngineStore;
   deck: LoadedDeck;
   slugIndex: SlugIndex;
+  mode: PlayerMode;
 }
 
 const Ctx = createContext<PresentationContextValue | null>(null);
@@ -29,11 +32,13 @@ export function PresentationProvider({
   deck,
   startIndex = 0,
   persist = true,
+  mode = 'plain',
   children,
 }: {
   deck: LoadedDeck;
   startIndex?: number;
   persist?: boolean;
+  mode?: PlayerMode;
   children: ReactNode;
 }) {
   // One store per deck instance. deck.meta.id is the stable identity.
@@ -57,8 +62,9 @@ export function PresentationProvider({
       store,
       deck,
       slugIndex: buildSlugIndex(deck.scenes, deck.meta.redirects),
+      mode,
     }),
-    [store, deck],
+    [store, deck, mode],
   );
 
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
@@ -83,4 +89,8 @@ export function useEngineDispatch() {
 
 export function useDeck(): LoadedDeck {
   return usePresentationContext().deck;
+}
+
+export function usePlayerMode(): PlayerMode {
+  return usePresentationContext().mode;
 }

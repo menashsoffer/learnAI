@@ -66,10 +66,35 @@
 }
 .blk-prompt.tone-warning { border-inline-start-color: var(--warning); }
 .blk-prompt.tone-success { border-inline-start-color: var(--success); }
+.blk-prompt__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-3);
+  margin-bottom: var(--s-2);
+}
 .blk-prompt__label {
   font-weight: 700;
   color: var(--primary);
-  margin-bottom: var(--s-2);
+}
+.blk-copy {
+  flex: none;
+  font: inherit;
+  font-size: var(--fs-100);
+  font-weight: 700;
+  color: var(--primary);
+  background: var(--bg-panel);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--r-pill);
+  padding: 0.3rem 0.9rem;
+  cursor: pointer;
+}
+.blk-copy:hover {
+  border-color: var(--primary);
+}
+.blk-copy.is-done {
+  color: var(--success);
+  border-color: var(--success);
 }
 .blk-prompt__body {
   font-size: var(--fs-300);
