@@ -1,0 +1,202 @@
+.topbar {
+  position: fixed;
+  inset-block-start: 0;
+  inset-inline: 0;
+  height: var(--header-h);
+  background: var(--bg-panel);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-inline: var(--s-5);
+  z-index: 50;
+}
+.topbar__badge {
+  font-weight: 700;
+  font-size: var(--fs-200);
+  color: var(--primary);
+}
+.topbar__nav {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+}
+.topbar__counter {
+  font-size: var(--fs-200);
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+.topbar__act {
+  color: var(--accent);
+  font-weight: 600;
+  margin-inline-end: var(--s-2);
+}
+.topbar__progress {
+  position: absolute;
+  inset-block-end: 0;
+  inset-inline: 0;
+  height: 3px;
+  background: var(--surface-2);
+}
+.topbar__progress-fill {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+  transition: width var(--dur-mid) var(--ease-out);
+}
+
+.icon-btn {
+  width: 34px;
+  height: 34px;
+  display: inline-grid;
+  place-items: center;
+  border-radius: var(--r-sm);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 1;
+}
+.icon-btn:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.bottomnav {
+  position: fixed;
+  inset-block-end: var(--s-4);
+  inset-inline-start: 50%;
+  transform: translateX(50%);
+  display: flex;
+  gap: var(--s-4);
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: var(--r-pill);
+  padding: var(--s-1) var(--s-4);
+  box-shadow: var(--shadow-1);
+  z-index: 50;
+}
+.bottomnav__btn {
+  border: none;
+  background: none;
+  font-size: 1.6rem;
+  line-height: 1;
+  color: var(--primary);
+  cursor: pointer;
+  padding: var(--s-1) var(--s-2);
+  border-radius: 50%;
+}
+.bottomnav__btn:disabled {
+  color: var(--text-dim);
+  cursor: default;
+}
+
+/* Grid overlay */
+.grid-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  padding: var(--s-6);
+  overflow: hidden;
+}
+.grid-overlay__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: var(--s-4);
+  border-bottom: 1px solid var(--border);
+  margin-bottom: var(--s-4);
+}
+.grid-overlay__head h2 {
+  font-size: var(--fs-500);
+  color: var(--primary);
+}
+.grid-overlay__cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: var(--s-4);
+  overflow-y: auto;
+  padding: var(--s-1);
+}
+.grid-thumb {
+  text-align: start;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  padding: var(--s-4);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+  font: inherit;
+}
+.grid-thumb:hover,
+.grid-thumb.is-current {
+  border-color: var(--primary);
+  background: var(--primary-soft);
+}
+.grid-thumb__meta {
+  font-size: var(--fs-100);
+  font-weight: 700;
+  color: var(--accent);
+}
+.grid-thumb__title {
+  font-size: var(--fs-200);
+  font-weight: 700;
+  color: var(--primary);
+}
+
+/* Notes drawer */
+.notes-drawer {
+  position: fixed;
+  inset-block-end: var(--s-4);
+  inset-inline-start: var(--s-5);
+  width: min(380px, calc(100vw - 2 * var(--s-5)));
+  background: var(--bg-panel);
+  border: 1px solid var(--primary);
+  border-radius: var(--r-md);
+  padding: var(--s-4);
+  box-shadow: var(--shadow-2);
+  transform: translateY(140%);
+  transition: transform var(--dur-mid) var(--ease-out);
+  z-index: 90;
+}
+.notes-drawer.is-open {
+  transform: translateY(0);
+}
+.notes-drawer__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--s-2);
+  color: var(--primary);
+}
+.notes-drawer__body {
+  font-size: var(--fs-200);
+  color: var(--text);
+}
+
+@media (max-width: 480px) {
+  .topbar {
+    padding-inline: var(--s-3);
+  }
+  .topbar__badge {
+    max-width: 40vw;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+@media print {
+  .topbar,
+  .bottomnav,
+  .notes-drawer,
+  .grid-overlay {
+    display: none !important;
+  }
+}

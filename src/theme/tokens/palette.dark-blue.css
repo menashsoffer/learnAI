@@ -1,0 +1,40 @@
+/* Approved interim brand kit (from the signed-off PPTX): dark-blue #26495C, grey #6B7280,
+   white. Light, restrained, no neon / no gradients. Swap this file for the Ministry kit when
+   the official assets arrive. */
+:root {
+  --bg: #f6f7f8;
+  --bg-panel: #ffffff;
+  --surface: #ffffff;
+  --surface-2: #eef1f3;
+  --surface-inset: #f0f3f5;
+
+  --text: #1c2b33;
+  --text-muted: #6b7280;
+  --text-dim: #8a929c;
+
+  --primary: #26495c;
+  --primary-hover: #1d3a49;
+  --primary-soft: #e4ebef;
+  --primary-ink: #ffffff;
+
+  --accent: #3a6b84; /* lightened primary — used sparingly for lines / highlights */
+  --accent-soft: #e8eff3;
+
+  --border: #d8dee2;
+  --border-strong: #b9c2c8;
+  --focus-ring: #26495c;
+
+  --info: #2563a8;
+  --info-soft: #e5eef8;
+  --success: #1f7a4d;
+  --success-soft: #e3f3ea;
+  --warning: #9a6b12;
+  --warning-soft: #fbf0da;
+  --danger: #b3261e;
+  --danger-soft: #fbe6e5;
+
+  --shadow-1: 0 1px 2px rgba(28, 43, 51, 0.06), 0 4px 14px rgba(28, 43, 51, 0.06);
+  --shadow-2: 0 8px 30px rgba(28, 43, 51, 0.12);
+
+  color-scheme: light;
+}
