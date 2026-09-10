@@ -10,9 +10,6 @@ export interface SceneStudent {
   title?: string;
   /** Declarative blocks: operating instructions, copyable prompts, links. */
   blocks?: unknown[];
-  /** When true, students see a full activity panel; when false/absent, a minimal
-   *  "the presenter is explaining" view + the expanded self-reading text. */
-  activity?: boolean;
   /** false = reference only, no copy buttons. Default true. */
   copyable?: boolean;
 }
@@ -31,17 +28,13 @@ export interface SceneMeta {
   notes?: string;
   /** Longer presenter script ("what to say"). Present mode only. */
   presenterScript?: string;
-  /** id of a built-in illustration (see src/illustrations). */
+  /** id of a built-in illustration (see src/assets/illustrations). */
   image?: string;
-  /** Must make the scene understandable with no presenter (self-study link). */
-  selfReading?: string;
   /** Participant-facing companion content (study mode). */
   student?: SceneStudent;
 }
 
 export interface SceneRecord extends SceneMeta {
-  /** Scene-type schema version, for migrate.ts. Defaults to 1. */
-  version?: number;
   /** Validated against the scene-type's Zod schema outside the engine. */
   data: unknown;
 }

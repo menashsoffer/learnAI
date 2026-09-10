@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { defineScene, type SceneProps } from '../contract';
-import { SelfReadingBox, LineMotif } from '../_shared/SceneShell';
-import { SceneIllustration } from '@/illustrations';
+import { LineMotif } from '../_shared/SceneShell';
+import { SceneIllustration } from '@/assets/illustrations';
 
 const schema = z.object({
   badge: z.string().optional(),
@@ -29,16 +29,13 @@ function Hero({ data, scene }: SceneProps<Data>) {
           ))}
         </div>
       )}
-      <SelfReadingBox text={scene.selfReading} />
     </div>
   );
 }
 
 export default defineScene<Data>({
   type: 'hero',
-  version: 1,
   schema,
   Component: Hero,
   defaultData: () => ({}),
-  presenterHints: (_d, m) => ({ cue: m.notes, estSeconds: 30 }),
 });

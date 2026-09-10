@@ -1,5 +1,5 @@
 /**
- * Pure countdown model for the workshop-timer scene (and any future timed activity).
+ * Pure countdown model for the timed build steps (and any future timed activity).
  * Ticks are driven from outside (a setInterval in React, or `fixedClock` in tests).
  */
 
@@ -37,7 +37,12 @@ export const resetTimer = (t: TimerModel): TimerModel => ({
 export const adjustTimer = (t: TimerModel, deltaSeconds: number): TimerModel => {
   const target = Math.max(0, t.target + deltaSeconds);
   const seconds = Math.max(0, t.seconds + deltaSeconds);
-  return { ...t, target, seconds, status: seconds === 0 && t.status === 'running' ? 'done' : t.status };
+  return {
+    ...t,
+    target,
+    seconds,
+    status: seconds === 0 && t.status === 'running' ? 'done' : t.status,
+  };
 };
 
 /**

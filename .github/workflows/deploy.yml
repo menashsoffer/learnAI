@@ -1,0 +1,63 @@
+name: Deploy to GitHub Pages
+
+# The site was previously served straight from the repository root, which published the
+# UNBUILT index.html — a 621-byte shell whose only script tag pointed at /src/main.tsx.
+# Browsers cannot execute TSX, so the live page rendered blank and every crawler saw an
+# empty document. This workflow publishes the actual build output instead.
+#
+# REQUIRES a one-time repo setting: Settings -> Pages -> Build and deployment ->
+# Source = "GitHub Actions". Without it this workflow runs but nothing is served from it.
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Never run two publishes at once; let an in-flight one finish rather than cancelling it.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      # Publishing a broken deck is worse than not publishing: gate on the same checks as CI.
+      - run: npm run verify
+      - run: npm run build
+      # Fail loudly if the machine-readable files did not make it into the artifact.
+      - name: Assert public files are present
+        run: |
+          set -e
+          for f in robots.txt sitemap.xml llms.txt 404.html og-image.png \
+                   about/index.html contact/index.html privacy/index.html; do
+            test -s "dist/hosted/$f" || { echo "missing or empty: dist/hosted/$f"; exit 1; }
+          done
+          grep -q 'application/ld+json' dist/hosted/index.html || { echo "JSON-LD missing"; exit 1; }
+          grep -q 'rel="canonical"' dist/hosted/index.html || { echo "canonical missing"; exit 1; }
+          echo "public files present"
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist/hosted
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

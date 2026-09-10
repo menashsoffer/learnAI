@@ -1,0 +1,61 @@
+/**
+ * Shared visual primitives — the small set of classes used across MORE THAN ONE feature.
+ * They live here, not in a feature's stylesheet, because a feature must never own a class
+ * its siblings depend on (that coupling only "works" by CSS load order, and breaks silently
+ * when a file stops being imported).
+ *
+ * Rule of thumb: used by one folder -> keep it there. Used by two -> it belongs here.
+ */
+
+/* Action button: scenes, block CTAs, the landing doors, the presenter drawer. */
+.btn-action {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  background: var(--primary);
+  color: var(--primary-ink);
+  border: 1px solid var(--primary);
+  border-radius: var(--r-sm);
+  padding: 0.7rem 1.4rem;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background var(--dur-fast) var(--ease-out);
+}
+.btn-action:hover {
+  background: var(--primary-hover);
+}
+.btn-action:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+.btn-action--ghost {
+  background: var(--surface);
+  color: var(--primary);
+  border-color: var(--border-strong);
+}
+.btn-action--ghost:hover {
+  background: var(--surface-2);
+}
+
+/* Small caps label above a heading. */
+.pill {
+  align-self: flex-start;
+  background: var(--primary-soft);
+  color: var(--primary);
+  border-radius: var(--r-pill);
+  padding: 0.25rem 0.85rem;
+  font-size: var(--fs-100);
+  font-weight: 700;
+}
+
+/* The short accent rule that opens a scene, the landing page and the participant panel. */
+.line-motif {
+  display: block;
+  width: 68px;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--accent);
+  margin-bottom: var(--s-1);
+}

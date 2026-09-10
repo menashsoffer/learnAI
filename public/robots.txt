@@ -1,0 +1,46 @@
+# https://menashsoffer.github.io/learnAI/
+# Static site on GitHub Pages. Nothing here is blocked — this file exists to say so
+# explicitly, and to point crawlers and agents at the machine-readable entry points.
+
+User-agent: *
+Allow: /
+
+# Named AI agents and crawlers. Listed individually so an audit can confirm intent
+# rather than infer it from the wildcard above.
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-User
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: DeepSeekBot
+Allow: /
+
+User-agent: ora-agent
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+Sitemap: https://menashsoffer.github.io/learnAI/sitemap.xml

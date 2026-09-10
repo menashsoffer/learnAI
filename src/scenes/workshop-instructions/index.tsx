@@ -43,7 +43,11 @@ function WorkshopInstructions({ data, scene, api }: SceneProps<Data>) {
             onClick={toggle}
             disabled={model.status === 'done'}
           >
-            {model.status === 'running' ? '⏸ השהה' : model.status === 'done' ? '✔ הסתיים' : '▶ התחל'}
+            {model.status === 'running'
+              ? '⏸ השהה'
+              : model.status === 'done'
+                ? '✔ הסתיים'
+                : '▶ התחל'}
           </button>
           <button type="button" className="btn-action btn-action--ghost" onClick={reset}>
             איפוס
@@ -56,10 +60,7 @@ function WorkshopInstructions({ data, scene, api }: SceneProps<Data>) {
 
 export default defineScene<Data>({
   type: 'workshop-instructions',
-  version: 1,
   schema,
   Component: WorkshopInstructions,
   defaultData: () => ({ blocks: [] }),
-  capabilities: { external: true, timer: true },
-  presenterHints: (d, m) => ({ cue: m.notes, estSeconds: d.timerSeconds ?? 120, advanceOn: 'click' }),
 });

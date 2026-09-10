@@ -40,12 +40,6 @@ const examplePromptBlock = z.object({
   prompt: z.string().min(1),
 });
 
-const quoteBlock = z.object({
-  kind: z.literal('quote'),
-  text: z.string().min(1),
-  attribution: z.string().optional(),
-});
-
 const ctaBlock = z.object({
   kind: z.literal('cta'),
   label: z.string().min(1),
@@ -54,35 +48,13 @@ const ctaBlock = z.object({
   note: z.string().optional(),
 });
 
-const kbdBlock = z.object({
-  kind: z.literal('kbd'),
-  keys: z.array(z.string().min(1)).min(1),
-  description: z.string().min(1),
-});
-
-const imageBlock = z.object({
-  kind: z.literal('image'),
-  assetId: z.string().min(1),
-  alt: z.string().min(1),
-  caption: z.string().optional(),
-});
-
-const spacerBlock = z.object({
-  kind: z.literal('spacer'),
-  size: z.enum(['sm', 'md', 'lg']).optional(),
-});
-
 const leafBlocks = [
   headingBlock,
   paragraphBlock,
   listBlock,
   calloutBlock,
   examplePromptBlock,
-  quoteBlock,
   ctaBlock,
-  kbdBlock,
-  imageBlock,
-  spacerBlock,
 ] as const;
 
 const leafBlockSchema = z.discriminatedUnion('kind', [...leafBlocks]);
@@ -100,7 +72,5 @@ const columnsBlock = z.object({
     .min(1),
 });
 
-export const blockSchema = z.discriminatedUnion('kind', [...leafBlocks, columnsBlock]);
+const blockSchema = z.discriminatedUnion('kind', [...leafBlocks, columnsBlock]);
 export const blocksSchema = z.array(blockSchema);
-
-export type BlockInput = z.input<typeof blockSchema>;

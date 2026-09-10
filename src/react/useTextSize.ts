@@ -7,7 +7,11 @@ const KEY = globalKey('textSize');
 const SIZES: TextSize[] = ['s', 'm', 'l'];
 
 /** Per-device text scale (TV vs phone differ). Applied as data-text-size on <html>. */
-export function useTextSize(): { size: TextSize; setSize: (s: TextSize) => void; cycle: () => void } {
+export function useTextSize(): {
+  size: TextSize;
+  setSize: (s: TextSize) => void;
+  cycle: () => void;
+} {
   const [size, setSizeState] = useState<TextSize>(() => {
     const s = storage.getString(KEY);
     return s === 's' || s === 'l' ? s : 'm';

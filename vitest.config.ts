@@ -1,18 +1,19 @@
-import { defineConfig } from 'vitest/config';
-import { fileURLToPath, URL } from 'node:url';
+import { defineConfig, mergeConfig } from 'vitest/config';
+import base from './vite.config';
 
-export default defineConfig({
-  resolve: {
-    alias: [
-      { find: '@', replacement: fileURLToPath(new URL('./src', import.meta.url)) },
-      { find: '@content', replacement: fileURLToPath(new URL('./content', import.meta.url)) },
-    ],
-  },
-  test: {
-    environment: 'node',
-    include: ['src/**/*.test.ts', 'src/**/*.test.tsx', 'tests/**/*.test.ts'],
-    // CSS imports become no-ops (we don't test styles here). Component tests opt into jsdom
-    // per-file via `// @vitest-environment jsdom`.
-    css: false,
-  },
-});
+/**
+ * Inherits `resolve.alias` from the app config — declaring the aliases a second time here
+ * is how they drift, and a drifted test alias fails in ways that look like product bugs.
+ */
+export default mergeConfig(
+  base,
+  defineConfig({
+    test: {
+      environment: 'node',
+      include: ['src/**/*.test.{ts,tsx}'],
+      // CSS imports become no-ops (we don't assert on styles). A component test opts into
+      // jsdom per-file with `// @vitest-environment jsdom`.
+      css: false,
+    },
+  }),
+);

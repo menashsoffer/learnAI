@@ -1,0 +1,31 @@
+.illus {
+  color: var(--primary);
+  width: clamp(150px, 24vw, 300px);
+  flex: none;
+  align-self: center;
+}
+.illus svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.ill-accent {
+  color: var(--accent);
+  stroke: var(--accent);
+}
+.ill-accent-fill {
+  fill: var(--accent-soft);
+  stroke: var(--accent);
+}
+
+@media (max-width: 860px) {
+  .illus {
+    width: clamp(96px, 30vw, 150px);
+  }
+}
+
+/* hero variant */
+.hero .illus {
+  width: clamp(120px, 20vw, 190px);
+  margin-bottom: var(--s-2);
+}

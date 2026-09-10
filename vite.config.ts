@@ -4,6 +4,9 @@ import { fileURLToPath, URL } from 'node:url';
 
 // Hosted target (PWA app). The single-file offline target lives in vite.config.singlefile.ts.
 export default defineConfig({
+  // GitHub Pages serves this as a PROJECT site at /learnAI/, so assets must be requested
+  // from that prefix. With the default '/' every asset 404s and the page renders blank.
+  base: '/learnAI/',
   plugins: [react()],
   resolve: {
     alias: [

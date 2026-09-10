@@ -33,7 +33,6 @@ function safeStringify(v: unknown): string {
 
 export const fallbackModule = defineScene<unknown>({
   type: '__fallback__',
-  version: 1,
   schema: z.unknown(),
   Component: FallbackScene,
   defaultData: () => ({}),

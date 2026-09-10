@@ -4,7 +4,7 @@ import { SceneShell } from '../_shared/SceneShell';
 import { BlocksRenderer } from '@/blocks/BlocksRenderer';
 import { blocksSchema } from '@/blocks/schema';
 import type { Block } from '@/blocks/types';
-import { SceneIllustration } from '@/illustrations';
+import { SceneIllustration } from '@/assets/illustrations';
 
 const schema = z.object({
   badge: z.string().optional(),
@@ -13,27 +13,21 @@ const schema = z.object({
 type Data = z.infer<typeof schema>;
 
 function ContentSkill({ data, scene }: SceneProps<Data>) {
-  const blocks = <BlocksRenderer blocks={data.blocks as Block[]} />;
   return (
-    <SceneShell scene={scene} className={`content-skill${scene.image ? ' has-illus' : ''}`}>
+    <SceneShell
+      scene={scene}
+      className="content-skill"
+      media={scene.image ? <SceneIllustration id={scene.image} /> : undefined}
+    >
       {data.badge && <span className="pill">{data.badge}</span>}
-      {scene.image ? (
-        <div className="scene-illus-row">
-          <SceneIllustration id={scene.image} />
-          {blocks}
-        </div>
-      ) : (
-        blocks
-      )}
+      <BlocksRenderer blocks={data.blocks as Block[]} />
     </SceneShell>
   );
 }
 
 export default defineScene<Data>({
   type: 'content-skill',
-  version: 1,
   schema,
   Component: ContentSkill,
   defaultData: () => ({ blocks: [] }),
-  presenterHints: (_d, m) => ({ cue: m.notes, estSeconds: 180 }),
 });

@@ -15,7 +15,12 @@ interface ThemeProviderProps {
  * Owns the document-level concerns: lang/dir, brand-kit data attribute, and the `.fx-low`
  * weak-GPU / reduced-transparency fallback class.
  */
-export function ThemeProvider({ locale, dir, brandKit = 'dark-blue', children }: ThemeProviderProps) {
+export function ThemeProvider({
+  locale,
+  dir,
+  brandKit = 'dark-blue',
+  children,
+}: ThemeProviderProps) {
   useEffect(() => {
     const root = document.documentElement;
     root.lang = locale;

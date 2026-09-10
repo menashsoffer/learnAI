@@ -8,7 +8,13 @@ const CopyableCtx = createContext(false);
  * Renders a declarative Block[] — the only sanctioned way to show rich per-scene content.
  * `copyable` (study mode) adds a copy button to example-prompt blocks.
  */
-export function BlocksRenderer({ blocks, copyable = false }: { blocks: Block[]; copyable?: boolean }) {
+export function BlocksRenderer({
+  blocks,
+  copyable = false,
+}: {
+  blocks: Block[];
+  copyable?: boolean;
+}) {
   return (
     <CopyableCtx.Provider value={copyable}>
       <div className="blocks">
@@ -45,7 +51,7 @@ function BlockView({ block }: { block: Block }) {
   const copyable = useContext(CopyableCtx);
   switch (block.kind) {
     case 'heading': {
-      const H = (`h${block.level ?? 3}`) as 'h2' | 'h3' | 'h4';
+      const H = `h${block.level ?? 3}` as 'h2' | 'h3' | 'h4';
       return <H className="blk-heading">{block.text}</H>;
     }
 
@@ -95,14 +101,6 @@ function BlockView({ block }: { block: Block }) {
         </figure>
       );
 
-    case 'quote':
-      return (
-        <blockquote className="blk-quote">
-          <p>{block.text}</p>
-          {block.attribution && <cite>— {block.attribution}</cite>}
-        </blockquote>
-      );
-
     case 'columns':
       return (
         <div className="blk-columns" style={{ '--cols': block.columns.length } as CSSProperties}>
@@ -128,33 +126,6 @@ function BlockView({ block }: { block: Block }) {
           {block.note && <div className="blk-cta__note">{block.note}</div>}
         </div>
       );
-
-    case 'kbd':
-      return (
-        <div className="blk-kbd">
-          <span className="blk-kbd__keys">
-            {block.keys.map((k, i) => (
-              <kbd key={i}>{k}</kbd>
-            ))}
-          </span>
-          <span className="blk-kbd__desc">{block.description}</span>
-        </div>
-      );
-
-    case 'image':
-      // Assets are resolved by the app (inlined data URIs in the offline build); until the
-      // asset pipeline lands (M2/M7) this renders the alt text.
-      return (
-        <figure className="blk-image">
-          <div className="blk-image__placeholder" role="img" aria-label={block.alt}>
-            {block.alt}
-          </div>
-          {block.caption && <figcaption>{block.caption}</figcaption>}
-        </figure>
-      );
-
-    case 'spacer':
-      return <div className={`blk-spacer blk-spacer--${block.size ?? 'md'}`} aria-hidden="true" />;
 
     default: {
       const _never: never = block;

@@ -6,37 +6,56 @@ export function LineMotif() {
   return <span className="line-motif" aria-hidden="true" />;
 }
 
-export function SelfReadingBox({ text }: { text?: string }) {
-  if (!text) return null;
-  return (
-    <aside className="self-reading">
-      <span className="self-reading__label">📖 קריאה עצמית</span>
-      <p>{text}</p>
-    </aside>
-  );
-}
-
 interface SceneShellProps {
   scene: SceneMeta;
   children?: ReactNode;
-  /** Hide the default heading block (hero / section-cover render their own). */
+  /** Hide the default heading block (hero renders its own). */
   bare?: boolean;
   align?: 'start' | 'center';
   className?: string;
+  /**
+   * An illustration for this scene. Passing it switches the shell to a two-column
+   * composition — art on one side, heading AND body together on the other — instead of
+   * a full-width heading with a narrow strip underneath. A scene that says one thing
+   * needs the canvas split, not stacked.
+   */
+  media?: ReactNode;
 }
 
-export function SceneShell({ scene, children, bare, align = 'start', className }: SceneShellProps) {
+export function SceneShell({
+  scene,
+  children,
+  bare,
+  align = 'start',
+  className,
+  media,
+}: SceneShellProps) {
+  const head = bare ? null : (
+    <header className="scene-shell__head">
+      <LineMotif />
+      <h2 className="scene-shell__title">{scene.title}</h2>
+      {scene.subtitle && <p className="scene-shell__subtitle">{scene.subtitle}</p>}
+    </header>
+  );
+
+  if (media) {
+    return (
+      <div className={`scene-shell scene-shell--split${className ? ` ${className}` : ''}`}>
+        {/* Text first in DOM AND in grid order: the reader must meet the headline before
+            the artwork. In RTL that puts text right, art left; LTR mirrors it for free. */}
+        <div className="scene-shell__main">
+          {head}
+          <div className="scene-shell__body">{children}</div>
+        </div>
+        <div className="scene-shell__art">{media}</div>
+      </div>
+    );
+  }
+
   return (
     <div className={`scene-shell align-${align}${className ? ` ${className}` : ''}`}>
-      {!bare && (
-        <header className="scene-shell__head">
-          <LineMotif />
-          <h2 className="scene-shell__title">{scene.title}</h2>
-          {scene.subtitle && <p className="scene-shell__subtitle">{scene.subtitle}</p>}
-        </header>
-      )}
+      {head}
       <div className="scene-shell__body">{children}</div>
-      <SelfReadingBox text={scene.selfReading} />
     </div>
   );
 }

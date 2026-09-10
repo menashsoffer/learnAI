@@ -5,7 +5,6 @@ import { KEYS } from '../../persistence/keys';
 
 export interface PersistedLastScene {
   slug?: string;
-  phase?: number;
   timerTarget?: number;
 }
 
@@ -14,18 +13,21 @@ export function readLastScene(deckId: string): PersistedLastScene {
 }
 
 /**
- * Subscribe the store to localStorage: debounced writes of `{ slug, phase, timerTarget }`.
+ * Subscribe the store to localStorage: debounced writes of `{ slug, timerTarget }`.
  * Returns an unsubscribe fn. Hydration is done by the caller (needs the slug index) via
  * `readLastScene` before the store is created.
  */
-export function attachPersistence(store: EngineStore, deckId: string, debounceMs = 250): () => void {
+export function attachPersistence(
+  store: EngineStore,
+  deckId: string,
+  debounceMs = 250,
+): () => void {
   let handle: ReturnType<typeof setTimeout> | undefined;
 
   const flush = () => {
     const s = store.getState();
     const payload: PersistedLastScene = {
       slug: s.slug,
-      phase: s.phase,
       timerTarget: s.timer.target,
     };
     storage.setJSON(deckKey(deckId, KEYS.lastScene), payload);

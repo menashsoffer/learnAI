@@ -1,10 +1,5 @@
 import { createStore, type StoreApi } from 'zustand/vanilla';
-import {
-  navReducer,
-  initialNavState,
-  type NavAction,
-  type NavState,
-} from '../navigation/machine';
+import { navReducer, initialNavState, type NavAction, type NavState } from '../navigation/machine';
 
 /**
  * Framework-light store: a `zustand/vanilla` wrapper around the pure nav reducer.

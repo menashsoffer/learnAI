@@ -4,14 +4,162 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="color-scheme" content="light" />
+    <title>בונים עם AI — סדנה מעשית לצוערים לשלטון המקומי</title>
     <meta
       name="description"
-      content="בינה מלאכותית ככלי עבודה יומיומי — הרצאה אינטראקטיבית לצוערים לשלטון המקומי"
+      content="אתר-מצגת אינטראקטיבי לסדנת בינה מלאכותית בת 90 דקות לצוערים לשלטון המקומי: תבנית פרומפט אחת, בניית תוכנית עבודה, תמצות מסמכים ואימותם, ויצירת תוצר ויזואלי."
     />
-    <title>צוערים לשלטון המקומי · הרצאת AI</title>
+    <link rel="canonical" href="https://menashsoffer.github.io/learnAI/" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="בונים עם AI — צוערים לשלטון המקומי" />
+    <meta property="og:title" content="בונים עם AI — סדנה מעשית לצוערים לשלטון המקומי" />
+    <meta
+      property="og:description"
+      content="סדנת AI בת 90 דקות לצוערים לשלטון המקומי: תבנית פרומפט אחת שמתגלגלת לשלושה תוצרים — תוכנית עבודה, תמצות מסמך ואימותו, ותוצר ויזואלי."
+    />
+    <meta property="og:url" content="https://menashsoffer.github.io/learnAI/" />
+    <meta property="og:image" content="https://menashsoffer.github.io/learnAI/og-image.png" />
+    <meta property="og:locale" content="he_IL" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "@id": "https://menashsoffer.github.io/learnAI/#website",
+            "url": "https://menashsoffer.github.io/learnAI/",
+            "name": "בונים עם AI — צוערים לשלטון המקומי",
+            "description": "אתר-מצגת אינטראקטיבי לסדנת בינה מלאכותית מעשית לצוערים לשלטון המקומי.",
+            "inLanguage": "he-IL"
+          },
+          {
+            "@type": "Person",
+            "@id": "https://menashsoffer.github.io/learnAI/#instructor",
+            "name": "מנשה סופר",
+            "alternateName": "Menashe Soffer",
+            "jobTitle": "מנחה סדנאות AI למגזר הציבורי",
+            "email": "mailto:menashesoffer8916@gmail.com",
+            "url": "https://menashsoffer.github.io/learnAI/",
+            "sameAs": ["https://www.linkedin.com/in/menashe-soffer-40b119228"],
+            "contactPoint": {
+              "@type": "ContactPoint",
+              "contactType": "workshop enquiries",
+              "email": "menashesoffer8916@gmail.com",
+              "availableLanguage": ["he", "en"]
+            }
+          },
+          {
+            "@type": "Course",
+            "@id": "https://menashsoffer.github.io/learnAI/#course",
+            "name": "בונים עם AI — סדנה מעשית לצוערים לשלטון המקומי",
+            "description": "סדנה בת 90 דקות שבה משתתפים בונים שלושה תוצרים אמיתיים על פרויקט מוניציפלי אחד, באמצעות תבנית פרומפט אחת: תפקיד, משימה, הקשר ופורמט.",
+            "url": "https://menashsoffer.github.io/learnAI/",
+            "inLanguage": "he-IL",
+            "isAccessibleForFree": true,
+            "teaches": [
+              "ניסוח פרומפט ממוקד למשימה מוניציפלית",
+              "פירוק פרויקט לתוכנית עבודה ולזיהוי סיכונים",
+              "תמצות מסמך ארוך ואימות התוצאה מול המקור",
+              "הפיכת תוצרי טקסט למצגת או לעמוד אינטראקטיבי"
+            ],
+            "provider": { "@id": "https://menashsoffer.github.io/learnAI/#instructor" },
+            "audience": {
+              "@type": "EducationalAudience",
+              "educationalRole": "student",
+              "audienceType": "צוערים בתוכנית ההכשרה למנהל מקומי"
+            },
+            "hasCourseInstance": {
+              "@type": "CourseInstance",
+              "courseMode": "onsite",
+              "courseWorkload": "PT90M",
+              "inLanguage": "he-IL"
+            }
+          }
+        ]
+      }
+    </script>
   </head>
   <body>
-    <div id="root"></div>
+    <!--
+      The markup inside #root is the pre-JavaScript view: crawlers, agents and no-JS browsers
+      read it as-is, and React replaces it on mount (createRoot clears the container).
+      Keep it in sync with the deck's premise — it is the only description of this site that
+      exists without running JavaScript.
+    -->
+    <div id="root">
+      <main
+        style="
+          max-width: 46rem;
+          margin: 0 auto;
+          padding: 2.5rem 1.25rem;
+          font-family:
+            system-ui,
+            -apple-system,
+            'Segoe UI',
+            Roboto,
+            sans-serif;
+          line-height: 1.7;
+          color: #1f2933;
+        "
+      >
+        <h1 style="font-size: 1.9rem; line-height: 1.25; color: #26495c">
+          בונים עם AI — סדנה מעשית לצוערים לשלטון המקומי
+        </h1>
+        <p>
+          זהו אתר-מצגת אינטראקטיבי המלווה סדנת בינה מלאכותית בת 90 דקות עבור צוערים בתוכנית ההכשרה
+          למנהל מקומי. הסדנה אינה הרצאה על בינה מלאכותית אלא סדנת בנייה: המשתתפים יוצאים ממנה עם
+          שלושה תוצרים אמיתיים על פרויקט מוניציפלי אחד, וכל תוצר נבנה מקודמו.
+        </p>
+
+        <h2 style="font-size: 1.3rem; margin-top: 2rem; color: #26495c">מה לומדים בסדנה</h2>
+        <p>
+          עמוד השדרה של הסדנה הוא תבנית פרומפט אחת בת ארבעה רכיבים — תפקיד, משימה, הקשר ופורמט —
+          המבוססת על המדריך הרשמי של גוגל לעבודה עם Gemini, שפותח עבור עובדי משרד שאינם אנשי
+          טכנולוגיה. אותה תבנית מיושמת שלוש פעמים, ומשנים בה רק את המשימה ואת הפורמט.
+        </p>
+        <ul>
+          <li>
+            <strong>בניית תוכנית עבודה:</strong> פירוק פרויקט מוניציפלי מורכב לשלבים, לגורמים
+            אחראים, ללוחות זמנים ולזיהוי סיכונים מראש.
+          </li>
+          <li>
+            <strong>תמצות מסמכים כבדים ואימותם:</strong> סיכום חוזר מנכ״ל, פרוטוקול ועדה או דוח
+            מבקר, ולאחריו בדיקה שיטתית שהתקציר לא המציא נתונים — הזיות הן החשש הנפוץ ביותר בקרב
+            המשתתפים.
+          </li>
+          <li>
+            <strong>יצירת תוצר ויזואלי:</strong> הפיכת החומר הכתוב למצגת להנהלת הרשות או לעמוד
+            אינטראקטיבי המיועד לתושבים.
+          </li>
+          <li>
+            <strong>אבטחת מידע ועבודה אחראית:</strong> כלל אצבע אחד לגבי מה מותר ומה אסור להזין לכלי
+            בינה מלאכותית ציבוריים בסביבה של רשות מקומית.
+          </li>
+        </ul>
+
+        <h2 style="font-size: 1.3rem; margin-top: 2rem; color: #26495c">איך האתר בנוי</h2>
+        <p>
+          לאתר שלוש כניסות מאותו תוכן: תצוגת מנחה הכוללת הנחיה וטיימר לפעילויות, תצוגת משתתפים
+          הכוללת הוראות תרגול ופרומפטים מוכנים להעתקה, ותצוגה רגילה לצפייה חוזרת לאחר הסדנה. האתר
+          פועל במלואו ללא חיבור לאינטרנט, אינו אוסף נתונים ואינו משתמש בכלי מדידה חיצוניים.
+        </p>
+
+        <h2 style="font-size: 1.3rem; margin-top: 2rem; color: #26495c">מידע נוסף</h2>
+        <ul>
+          <li><a href="about/">אודות הסדנה</a></li>
+          <li><a href="contact/">יצירת קשר</a></li>
+          <li><a href="privacy/">מדיניות פרטיות</a></li>
+          <li><a href="llms.txt">llms.txt — הנחיות לסוכני AI</a></li>
+        </ul>
+        <p style="margin-top: 2rem; font-size: 0.9rem; color: #6b7280">
+          המצגת האינטראקטיבית עצמה נטענת באמצעות JavaScript. אם היא אינה נטענת, התוכן שלמעלה מתאר את
+          הסדנה במלואה.
+        </p>
+      </main>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
