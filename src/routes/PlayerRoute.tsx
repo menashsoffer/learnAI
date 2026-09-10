@@ -1,6 +1,6 @@
 import { useMemo, useRef } from 'react';
 import { Navigate, useParams } from 'react-router-dom';
-import { loadDeck, buildSlugIndex, resolveSlug } from '@/engine';
+import { loadDeck, buildSlugIndex, resolveSlug, type LoadedDeck } from '@/engine';
 import { getDeckRaw, DEFAULT_DECK_ID } from '@content/decks';
 import { PresentationProvider, type PlayerMode } from '@/react/PresentationProvider';
 import { useKeyboardNav } from '@/react/useKeyboardNav';
@@ -22,7 +22,11 @@ export function PlayerRoute({ mode = 'plain' }: { mode?: PlayerMode }) {
   const { deckId = DEFAULT_DECK_ID, slug } = useParams();
   const raw = getDeckRaw(deckId);
 
-  const deck = useMemo(() => (raw ? loadDeck(raw) : null), [raw]);
+  const deck = useMemo(() => {
+    if (!raw) return null;
+    const full = loadDeck(raw);
+    return mode === 'study' ? studyView(full) : full;
+  }, [raw, mode]);
 
   const startIndexRef = useRef<number | null>(null);
   if (deck && startIndexRef.current === null) {
@@ -63,4 +67,15 @@ function NavBridge({ slug, basePath }: { slug: string | undefined; basePath: str
   useHashSync(slug, undefined, basePath);
   useTimerTick();
   return null;
+}
+
+/**
+ * The participant deck is a filtered subset: only scenes carrying a `student` entry. The
+ * presenter walks all 23; participants get the ~8 activity / bookend scenes. The engine then
+ * operates transparently on the smaller deck (counter, grid, deep links all follow).
+ */
+function studyView(deck: LoadedDeck): LoadedDeck {
+  const scenes = deck.scenes.filter((s) => s.student != null);
+  const { slugToIndex, order } = buildSlugIndex(scenes, deck.meta.redirects);
+  return { meta: deck.meta, scenes, slugToIndex, order };
 }

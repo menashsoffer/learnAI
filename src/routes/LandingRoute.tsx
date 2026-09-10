@@ -21,6 +21,7 @@ export function LandingRoute() {
 
   if (!deck) return <Navigate to="/" replace />;
   const first = deck.order[0];
+  const firstStudy = deck.scenes.find((s) => s.student != null)?.slug ?? first;
 
   const enterPresenter = () => {
     const required = deck.meta.presenterCode;
@@ -60,7 +61,7 @@ export function LandingRoute() {
               <button
                 type="button"
                 className="door door--study"
-                onClick={() => navigate(`/d/${deck.meta.id}/study/${first}`)}
+                onClick={() => navigate(`/d/${deck.meta.id}/study/${firstStudy}`)}
               >
                 <span className="door__icon" aria-hidden="true">📝</span>
                 <span className="door__label">כניסת משתתפים</span>

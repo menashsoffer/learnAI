@@ -4,18 +4,12 @@ import { BlocksRenderer } from '@/blocks/BlocksRenderer';
 import { SceneView } from '@/player/SceneView';
 import './study.css';
 
-/** Scene types participants operate directly (play / type / watch the timer). */
-const INTERACTIVE = new Set([
-  'mini-game',
-  'warmup-input',
-  'workshop-timer',
-  'workshop-instructions',
-]);
-
 /**
- * The participant view. It never shows the presenter's notes / script / background —
- * only activity material: operating instructions, copyable prompts, links, and a short
- * takeaway for the scenes the presenter simply talks through.
+ * The participant view of one scene. The participant deck is already filtered to the scenes
+ * flagged for study (see studyView in PlayerRoute), so every scene reaching here is intentional:
+ *   - `student.blocks` present  -> a lean activity panel (instructions, copyable prompts, links)
+ *   - otherwise                 -> the scene's real component (hero, game, content, timer …)
+ * Presenter notes / script / "what to say" are never shown here.
  */
 export function StudentScene({ scene }: { scene: SceneRecord }) {
   const student = scene.student;
@@ -36,17 +30,5 @@ export function StudentScene({ scene }: { scene: SceneRecord }) {
     );
   }
 
-  if (INTERACTIVE.has(scene.type)) {
-    return <SceneView scene={scene} />;
-  }
-
-  // Background / explanation scene — the presenter is talking; keep it calm and short.
-  return (
-    <div className="scene-shell align-center student student--wait">
-      <span className="line-motif" aria-hidden="true" />
-      <h2 className="scene-shell__title">{scene.title}</h2>
-      <p className="student__wait-hint">המנחה מסביר — נתקדם יחד 🙂</p>
-      {scene.selfReading && <p className="student__takeaway">{scene.selfReading}</p>}
-    </div>
-  );
+  return <SceneView scene={scene} />;
 }
