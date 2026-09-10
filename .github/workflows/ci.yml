@@ -23,6 +23,17 @@ jobs:
       - run: npm run validate:decks
       # Both targets must build — the offline artifact is what runs in the lecture hall.
       - run: npm run build
+      # docs/ is committed AND served directly when Pages deploys from the branch, so a
+      # stale copy would silently publish yesterday's site. The build is deterministic,
+      # so any diff here means someone pushed without rebuilding.
+      - name: Assert committed docs/ matches a fresh build
+        run: |
+          if ! git diff --quiet -- docs; then
+            echo "docs/ is stale — run 'npm run build' and commit the result:"
+            git diff --stat -- docs
+            exit 1
+          fi
+          echo "docs/ is current"
       - run: npm run build:offline
       # The offline artifact is opened from file:// off a USB stick — a host path prefix
       # baked into it would produce dead links in the lecture hall.

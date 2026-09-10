@@ -87,22 +87,29 @@ src/
   theme/             טוקנים, בסיס, פרימיטיבים משותפים
   assets/            מותג ואיורים
   i18n/ persistence/ analytics/
-docs/ARCHITECTURE.md  השכבות, הכללים הנאכפים, ואיך מוסיפים דברים
-docs/RUN-SHEET.md     דף ריצה ל-90 דקות: תזמון, הכנות, ונימוקי התכנון
+documentation/ARCHITECTURE.md  השכבות, הכללים הנאכפים, ואיך מוסיפים דברים
+documentation/RUN-SHEET.md     דף ריצה ל-90 דקות: תזמון, הכנות, ונימוקי התכנון
 ```
 
-הסבר מלא על השכבות והכללים: [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
-דף הריצה של ההרצאה — תזמון, הכנות ונימוקי התכנון: [`docs/RUN-SHEET.md`](docs/RUN-SHEET.md).
+הסבר מלא על השכבות והכללים: [`documentation/ARCHITECTURE.md`](documentation/ARCHITECTURE.md).
+דף הריצה של ההרצאה — תזמון, הכנות ונימוקי התכנון: [`documentation/RUN-SHEET.md`](documentation/RUN-SHEET.md).
 
 ## פרסום
 
 האתר מתפרסם ל-GitHub Pages בכתובת <https://menashsoffer.github.io/learnAI/> על ידי
 `.github/workflows/deploy.yml`, שרץ על כל דחיפה ל-`master`.
 
-⚠️ **דרוש שינוי הגדרה חד-פעמי בגיטהאב:** Settings → Pages → Build and deployment →
-Source = **GitHub Actions**. עד שזה ייעשה, גיטהאב ממשיך להגיש את שורש הריפו כמו שהוא —
-כלומר את `index.html` הלא-בנוי, שה-script שלו מצביע על `/src/main.tsx`. דפדפן לא יודע
-להריץ TSX, ולכן הדף החי יוצא ריק לגמרי.
+⚠️ **חובה לשנות הגדרה אחת בגיטהאב** — Settings → Pages → Build and deployment. אחרת
+גיטהאב מגיש את שורש הריפו כמו שהוא, כלומר את `index.html` הלא-בנוי שה-script שלו מצביע
+על `/src/main.tsx`. דפדפן לא מריץ TSX, ולכן הדף החי יוצא ריק. **שתי האפשרויות עובדות:**
+
+| Source                                            | מה זה עושה                                        |
+| :------------------------------------------------ | :------------------------------------------------ |
+| **GitHub Actions**                                | ה-workflow בונה ומפרסם על כל דחיפה ל-master       |
+| **Deploy from a branch** → `master` / **`/docs`** | גיטהאב מגיש את `docs/` המבוצע ישירות, בלי Actions |
+
+`docs/` מבוצע בגיט כדי ששתי האפשרויות יעבדו. הבנייה דטרמיניסטית, ו-CI נכשל אם `docs/`
+מיושן ביחס למקור.
 
 מכיוון שזהו אתר פרויקט (ולא אתר משתמש), `base` מוגדר ל-`/learnAI/` ב-`vite.config.ts`.
 הבנייה האופליין דורסת אותו ל-`./` כי היא נפתחת מ-`file://`.

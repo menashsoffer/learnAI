@@ -42,15 +42,15 @@ jobs:
           set -e
           for f in robots.txt sitemap.xml llms.txt 404.html og-image.png \
                    about/index.html contact/index.html privacy/index.html; do
-            test -s "dist/hosted/$f" || { echo "missing or empty: dist/hosted/$f"; exit 1; }
+            test -s "docs/$f" || { echo "missing or empty: docs/$f"; exit 1; }
           done
-          grep -q 'application/ld+json' dist/hosted/index.html || { echo "JSON-LD missing"; exit 1; }
-          grep -q 'rel="canonical"' dist/hosted/index.html || { echo "canonical missing"; exit 1; }
+          grep -q 'application/ld+json' docs/index.html || { echo "JSON-LD missing"; exit 1; }
+          grep -q 'rel="canonical"' docs/index.html || { echo "canonical missing"; exit 1; }
           echo "public files present"
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: dist/hosted
+          path: docs
 
   deploy:
     needs: build

@@ -19,6 +19,10 @@ export default defineConfig({
   },
   build: {
     target: 'es2020',
-    outDir: 'dist/hosted',
+    // Committed to git and served two ways: GitHub Pages "deploy from branch -> /docs"
+    // reads it directly, and the Actions workflow uploads this same directory. One build
+    // output means the two paths can never drift apart.
+    outDir: 'docs',
+    emptyOutDir: true,
   },
 });
