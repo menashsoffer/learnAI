@@ -4,6 +4,19 @@
  * scenes layer (src/scenes/validateDeck.ts) and in scripts/validate-decks.ts, never here.
  */
 
+/** Participant-facing companion payload for a scene (shown in `study` mode only). */
+export interface SceneStudent {
+  /** Optional heading for the student panel (defaults to a generic "פעילות"). */
+  title?: string;
+  /** Declarative blocks: operating instructions, copyable prompts, links. */
+  blocks?: unknown[];
+  /** When true, students see a full activity panel; when false/absent, a minimal
+   *  "the presenter is explaining" view + the expanded self-reading text. */
+  activity?: boolean;
+  /** false = reference only, no copy buttons. Default true. */
+  copyable?: boolean;
+}
+
 export interface SceneMeta {
   id: string;
   /** Stable, authored, URL key. Treated as API — see slug-stability guard. */
@@ -14,10 +27,16 @@ export interface SceneMeta {
   act: string;
   title: string;
   subtitle?: string;
-  /** Presenter cue (shown with the `N` drawer). */
+  /** Presenter cue — shown in `present` mode only, never to participants. */
   notes?: string;
+  /** Longer presenter script ("what to say"). Present mode only. */
+  presenterScript?: string;
+  /** id of a built-in illustration (see src/illustrations). */
+  image?: string;
   /** Must make the scene understandable with no presenter (self-study link). */
   selfReading?: string;
+  /** Participant-facing companion content (study mode). */
+  student?: SceneStudent;
 }
 
 export interface SceneRecord extends SceneMeta {
@@ -39,6 +58,9 @@ export interface DeckMeta {
   /** oldSlug -> newSlug, resolved by slugIndex so shared links survive renames. */
   redirects?: Record<string, string>;
   credits?: string;
+  /** Soft gate for the presenter entry — NOT security, just stops participants
+   *  wandering into the "what to say" notes. Absent = presenter entry is open. */
+  presenterCode?: string;
 }
 
 export interface Deck {

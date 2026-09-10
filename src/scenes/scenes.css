@@ -74,6 +74,21 @@
   border-radius: var(--r-md);
   padding: 0.75rem 1.5rem;
 }
+.hero__highlights {
+  display: flex;
+  gap: var(--s-2);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.hero__chip {
+  font-size: var(--fs-200);
+  font-weight: 600;
+  color: var(--primary);
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--r-pill);
+  padding: 0.3rem 0.9rem;
+}
 
 /* ---- section-cover ---- */
 .section-cover {
@@ -275,6 +290,32 @@
   gap: var(--s-3);
   flex-wrap: wrap;
   justify-content: center;
+}
+
+/* ---- inline work timer (build steps) ---- */
+.inline-timer {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  align-self: flex-start;
+  background: var(--surface);
+  border: 2px solid var(--primary);
+  border-radius: var(--r-md);
+  padding: var(--s-3) var(--s-4);
+  box-shadow: var(--shadow-1);
+}
+.inline-timer.status-done {
+  border-color: var(--success);
+}
+.inline-timer__clock {
+  font-size: clamp(1.8rem, 5vw, 2.6rem);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  color: var(--primary);
+  letter-spacing: 0.03em;
+}
+.inline-timer.status-done .inline-timer__clock {
+  color: var(--success);
 }
 
 /* ---- warmup ---- */

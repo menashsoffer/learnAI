@@ -9,9 +9,9 @@ registerBuiltInScenes();
 describe('ai-cadets-2026 deck', () => {
   const deck = loadDeck(raw);
 
-  it('loads 23 scenes with unique slugs', () => {
-    expect(deck.scenes).toHaveLength(23);
-    expect(new Set(deck.order).size).toBe(23);
+  it('loads 11 scenes with unique slugs', () => {
+    expect(deck.scenes).toHaveLength(11);
+    expect(new Set(deck.order).size).toBe(11);
   });
 
   it('every scene validates against its scene-type schema', () => {

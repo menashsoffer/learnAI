@@ -2,22 +2,33 @@ import { useMemo, useRef } from 'react';
 import { Navigate, useParams } from 'react-router-dom';
 import { loadDeck, buildSlugIndex, resolveSlug } from '@/engine';
 import { getDeckRaw, DEFAULT_DECK_ID } from '@content/decks';
-import { PresentationProvider } from '@/react/PresentationProvider';
+import { studyView } from '@/study/studyView';
+import { PresentationProvider, type PlayerMode } from '@/react/PresentationProvider';
 import { useKeyboardNav } from '@/react/useKeyboardNav';
 import { useHashSync } from '@/react/useHashSync';
 import { useTimerTick } from '@/react/useTimerTick';
 import { ThemeProvider } from '@/theme/ThemeProvider';
 import { Chrome } from '@/chrome/Chrome';
 import { SceneStage } from '@/player/SceneStage';
+import { GuidanceDrawer } from '@/present/GuidanceDrawer';
 import { validateDeckScenes } from '@/scenes/validateDeck';
 
-export function PlayerRoute() {
+/**
+ * The deck shell, shared by all three entries:
+ *   plain   — /d/:deckId/:slug            (neutral player, e.g. the offline artifact)
+ *   present — /d/:deckId/present/:slug     (+ guidance drawer, "what to say", timer, next)
+ *   study   — /d/:deckId/study/:slug       (participant activity companion)
+ */
+export function PlayerRoute({ mode = 'plain' }: { mode?: PlayerMode }) {
   const { deckId = DEFAULT_DECK_ID, slug } = useParams();
   const raw = getDeckRaw(deckId);
 
-  const deck = useMemo(() => (raw ? loadDeck(raw) : null), [raw]);
+  const deck = useMemo(() => {
+    if (!raw) return null;
+    const full = loadDeck(raw);
+    return mode === 'study' ? studyView(full) : full;
+  }, [raw, mode]);
 
-  // Start where the URL points (deep link / reload). Captured once; useHashSync then rules.
   const startIndexRef = useRef<number | null>(null);
   if (deck && startIndexRef.current === null) {
     startIndexRef.current =
@@ -34,22 +45,27 @@ export function PlayerRoute() {
   if (!deck) return <Navigate to={`/d/${DEFAULT_DECK_ID}`} replace />;
 
   return (
-    <PresentationProvider key={deckId} deck={deck} startIndex={startIndexRef.current ?? 0}>
+    <PresentationProvider
+      key={`${deckId}:${mode}`}
+      deck={deck}
+      startIndex={startIndexRef.current ?? 0}
+      mode={mode}
+    >
       <ThemeProvider locale={deck.meta.locale} dir={deck.meta.dir} brandKit={deck.meta.brandKitRef}>
-        <Chrome />
+        <Chrome mode={mode} />
         <main className="viewport">
-          <SceneStage />
+          <SceneStage mode={mode} />
         </main>
-        <NavBridge slug={slug} />
+        {mode === 'present' && <GuidanceDrawer />}
+        <NavBridge slug={slug} basePath={mode === 'plain' ? '' : mode} />
       </ThemeProvider>
     </PresentationProvider>
   );
 }
 
-/** Lives inside the provider so the nav hooks can reach the store. */
-function NavBridge({ slug }: { slug: string | undefined }) {
+function NavBridge({ slug, basePath }: { slug: string | undefined; basePath: string }) {
   useKeyboardNav();
-  useHashSync(slug);
+  useHashSync(slug, undefined, basePath);
   useTimerTick();
   return null;
 }

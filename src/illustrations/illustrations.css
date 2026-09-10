@@ -1,0 +1,47 @@
+.illus {
+  color: var(--primary);
+  width: clamp(110px, 16vw, 170px);
+  flex: none;
+  align-self: center;
+}
+.illus svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.ill-accent {
+  color: var(--accent);
+  stroke: var(--accent);
+}
+.ill-accent-fill {
+  fill: var(--accent-soft);
+  stroke: var(--accent);
+}
+
+/* content-skill: illustration sits beside the badge/title on wide screens */
+.content-skill.has-illus .scene-shell__body {
+  --illus-gap: var(--s-5);
+}
+.scene-illus-row {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--s-5);
+}
+.scene-illus-row > .blocks {
+  flex: 1;
+  min-width: 0;
+}
+@media (max-width: 720px) {
+  .scene-illus-row {
+    flex-direction: column;
+  }
+  .illus {
+    width: clamp(96px, 34vw, 140px);
+  }
+}
+
+/* hero variant */
+.hero .illus {
+  width: clamp(120px, 20vw, 190px);
+  margin-bottom: var(--s-2);
+}

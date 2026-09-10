@@ -9,7 +9,8 @@ import type { SceneApi } from '@/scenes/contract';
 
 /** Builds the SceneApi handed to every scene Component. Memoised on the slices it reads. */
 export function useSceneApi(slug: string): SceneApi {
-  const { store, deck } = usePresentationContext();
+  const { store, deck, mode } = usePresentationContext();
+  const sceneMode = mode === 'study' ? 'study' : 'present';
   const phase = usePresentation((s) => s.phase);
   const maxPhase = usePresentation((s) => s.maxPhase);
   const timerModel = usePresentation((s) => s.timer);
@@ -30,7 +31,7 @@ export function useSceneApi(slug: string): SceneApi {
       getPersisted: <T,>(key: string, fallback: T) => storage.getJSON<T>(ns(key), fallback),
       track: (event, data) => defaultSink.track(event, data),
       t: (key: string, vars) => t(key as MessageKey, vars),
-      mode: 'present',
+      mode: sceneMode,
       reducedMotion,
       online,
       timer: {
@@ -41,5 +42,5 @@ export function useSceneApi(slug: string): SceneApi {
         adjust: (delta: number) => dispatch({ type: 'timer/adjust', delta }),
       },
     };
-  }, [store, deck.meta.id, slug, phase, maxPhase, timerModel, reducedMotion, online]);
+  }, [store, deck.meta.id, slug, sceneMode, phase, maxPhase, timerModel, reducedMotion, online]);
 }

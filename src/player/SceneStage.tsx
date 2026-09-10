@@ -1,14 +1,17 @@
 import { useMemo, useRef } from 'react';
 import { usePresentation, useDeck } from '@/react/PresentationProvider';
+import type { PlayerMode } from '@/react/PresentationProvider';
 import { useSwipeNav } from '@/react/useSwipeNav';
-import { SceneView, ScenePlaceholder } from './SceneView';
+import { SceneView } from './SceneView';
+import { StudentScene } from '@/study/StudentScene';
 import './stage.css';
 
 /**
  * Renders the deck as absolutely-positioned slides with RTL directional transitions.
- * Only active ± 1 scenes mount their real Component; the rest are light placeholders.
+ * Only active ± 1 scenes mount; the rest render nothing until they enter the window.
+ * `study` mode swaps the full scene Component for the leaner participant view.
  */
-export function SceneStage() {
+export function SceneStage({ mode = 'plain' }: { mode?: PlayerMode }) {
   const deck = useDeck();
   const index = usePresentation((s) => s.index);
   const count = usePresentation((s) => s.count);
@@ -33,7 +36,8 @@ export function SceneStage() {
             aria-label={`סצנה ${i + 1} מתוך ${count}: ${scene.title}`}
             inert={state !== 'active'}
           >
-            {live ? <SceneView scene={scene} /> : <ScenePlaceholder scene={scene} />}
+            {live &&
+              (mode === 'study' ? <StudentScene scene={scene} /> : <SceneView scene={scene} />)}
           </section>
         );
       })}
