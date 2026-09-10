@@ -23,8 +23,10 @@ export function StudentScene({ scene }: { scene: SceneRecord }) {
           {scene.subtitle && <p className="scene-shell__subtitle">{scene.subtitle}</p>}
         </header>
         <div className="student__panel">
-          <span className="student__tag">חומר לפעילות</span>
-          <BlocksRenderer blocks={student.blocks as Block[]} copyable />
+          <span className="student__tag">
+            {student.copyable === false ? 'מידע ייחוס' : 'חומר לפעילות'}
+          </span>
+          <BlocksRenderer blocks={student.blocks as Block[]} copyable={student.copyable !== false} />
         </div>
       </div>
     );

@@ -277,6 +277,32 @@
   justify-content: center;
 }
 
+/* ---- inline work timer (build steps) ---- */
+.inline-timer {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  align-self: flex-start;
+  background: var(--surface);
+  border: 2px solid var(--primary);
+  border-radius: var(--r-md);
+  padding: var(--s-3) var(--s-4);
+  box-shadow: var(--shadow-1);
+}
+.inline-timer.status-done {
+  border-color: var(--success);
+}
+.inline-timer__clock {
+  font-size: clamp(1.8rem, 5vw, 2.6rem);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  color: var(--primary);
+  letter-spacing: 0.03em;
+}
+.inline-timer.status-done .inline-timer__clock {
+  color: var(--success);
+}
+
 /* ---- warmup ---- */
 .warmup__question {
   font-size: var(--fs-400);

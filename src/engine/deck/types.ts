@@ -13,6 +13,8 @@ export interface SceneStudent {
   /** When true, students see a full activity panel; when false/absent, a minimal
    *  "the presenter is explaining" view + the expanded self-reading text. */
   activity?: boolean;
+  /** false = reference only, no copy buttons. Default true. */
+  copyable?: boolean;
 }
 
 export interface SceneMeta {

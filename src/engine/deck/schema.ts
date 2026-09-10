@@ -15,6 +15,8 @@ const sceneStudentSchema = z.object({
   title: z.string().optional(),
   blocks: z.array(z.unknown()).optional(),
   activity: z.boolean().optional(),
+  /** false = reference only (no copy buttons on prompt blocks). Default true. */
+  copyable: z.boolean().optional(),
 });
 
 export const sceneRecordSchema = z.object({

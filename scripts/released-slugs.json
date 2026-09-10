@@ -1,27 +1,15 @@
 {
   "ai-cadets-2026": [
-    "opening-hero",
-    "warmup",
-    "carmel-recap",
-    "unit2-cover",
-    "archivist",
-    "advantage-vs-risk",
-    "unit3-cover",
-    "ai-tools-overview",
-    "beyond-chat",
-    "game-human-or-ai",
-    "unit4-cover",
-    "skill-focused-prompt",
-    "skill-decompose-risks",
-    "skill-summary-verify",
-    "privacy-reminder",
-    "live-practice-brief",
-    "live-practice-work",
-    "live-practice-share",
-    "unit5-cover",
-    "skills-recap",
-    "game-local-gov-challenge",
-    "personal-cta",
-    "closing-thanks"
+    "opening",
+    "what-is-ai",
+    "hallucinations",
+    "data-safety",
+    "ai-tools",
+    "agents-skills",
+    "prompting",
+    "build-policy-doc",
+    "build-deck",
+    "build-site",
+    "closing"
   ]
 }
