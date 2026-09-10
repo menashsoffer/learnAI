@@ -11,9 +11,15 @@
   color: var(--primary);
   line-height: var(--lh-tight);
 }
-.blk-heading:is(h2) { font-size: var(--fs-600); }
-.blk-heading:is(h3) { font-size: var(--fs-500); }
-.blk-heading:is(h4) { font-size: var(--fs-400); }
+.blk-heading:is(h2) {
+  font-size: var(--fs-600);
+}
+.blk-heading:is(h3) {
+  font-size: var(--fs-500);
+}
+.blk-heading:is(h4) {
+  font-size: var(--fs-400);
+}
 
 .blk-p {
   font-size: var(--fs-400);
@@ -33,6 +39,48 @@
   color: var(--text);
 }
 
+/**
+ * When a scene's whole body is ONE block, that block is the slide — so it is typeset as a
+ * statement, not as a paragraph that happens to be alone. Without this, minimal content
+ * reads as a page someone forgot to finish.
+ */
+.blocks > .blk-callout:only-child {
+  padding: var(--s-5) var(--s-6);
+  border-inline-start-width: 6px;
+}
+.blocks > .blk-callout:only-child .blk-callout__title {
+  font-size: var(--fs-500);
+  line-height: var(--lh-tight);
+  /* Even line lengths instead of a lone orphan word — on these slides the last word is
+     often the point (a blank the audience fills in), so it must not strand itself. */
+  text-wrap: balance;
+}
+.blocks > .blk-callout:only-child .blk-list {
+  font-size: var(--fs-400);
+}
+
+/* A solo unordered list becomes a divided mapping — rows, not bullets adrift. */
+.blocks > ul.blk-list:only-child {
+  list-style: none;
+  padding-inline-start: 0;
+  gap: 0;
+  font-size: var(--fs-400);
+  border-block-start: 1px solid var(--border);
+}
+.blocks > ul.blk-list:only-child > li {
+  padding-block: var(--s-3);
+  border-block-end: 1px solid var(--border);
+}
+
+/* A solo ordered list is a set of steps — keep the numbers, give them room. */
+.blocks > ol.blk-list:only-child {
+  font-size: var(--fs-400);
+  gap: var(--s-3);
+}
+.blocks > ol.blk-list:only-child > li {
+  padding-inline-start: var(--s-2);
+}
+
 .blk-callout {
   border-radius: var(--r-md);
   padding: var(--s-4) var(--s-5);
@@ -50,12 +98,29 @@
 .blk-callout__text {
   color: var(--text);
 }
-.blk-callout.tone-info { border-inline-start-color: var(--info); background: var(--info-soft); }
-.blk-callout.tone-success { border-inline-start-color: var(--success); background: var(--success-soft); }
-.blk-callout.tone-warning { border-inline-start-color: var(--warning); background: var(--warning-soft); }
-.blk-callout.tone-danger { border-inline-start-color: var(--danger); background: var(--danger-soft); }
-.blk-callout.tone-danger .blk-callout__title { color: var(--danger); }
-.blk-callout.tone-neutral { border-inline-start-color: var(--border-strong); background: var(--surface-2); }
+.blk-callout.tone-info {
+  border-inline-start-color: var(--info);
+  background: var(--info-soft);
+}
+.blk-callout.tone-success {
+  border-inline-start-color: var(--success);
+  background: var(--success-soft);
+}
+.blk-callout.tone-warning {
+  border-inline-start-color: var(--warning);
+  background: var(--warning-soft);
+}
+.blk-callout.tone-danger {
+  border-inline-start-color: var(--danger);
+  background: var(--danger-soft);
+}
+.blk-callout.tone-danger .blk-callout__title {
+  color: var(--danger);
+}
+.blk-callout.tone-neutral {
+  border-inline-start-color: var(--border-strong);
+  background: var(--surface-2);
+}
 
 .blk-prompt {
   border-radius: var(--r-md);
@@ -64,8 +129,12 @@
   border: 1px solid var(--border);
   border-inline-start: 4px solid var(--accent);
 }
-.blk-prompt.tone-warning { border-inline-start-color: var(--warning); }
-.blk-prompt.tone-success { border-inline-start-color: var(--success); }
+.blk-prompt.tone-warning {
+  border-inline-start-color: var(--warning);
+}
+.blk-prompt.tone-success {
+  border-inline-start-color: var(--success);
+}
 .blk-prompt__head {
   display: flex;
   align-items: center;
@@ -103,21 +172,6 @@
   white-space: pre-wrap;
 }
 
-.blk-quote {
-  border-inline-start: 3px solid var(--accent);
-  padding-inline-start: var(--s-4);
-  color: var(--text-muted);
-  font-style: italic;
-  display: flex;
-  flex-direction: column;
-  gap: var(--s-2);
-}
-.blk-quote cite {
-  font-style: normal;
-  font-size: var(--fs-200);
-  color: var(--text-dim);
-}
-
 .blk-columns {
   display: grid;
   grid-template-columns: repeat(var(--cols, 2), 1fr);
@@ -135,9 +189,15 @@
   margin-bottom: var(--s-3);
   font-size: var(--fs-400);
 }
-.blk-col.tone-success .blk-col__title { color: var(--success); }
-.blk-col.tone-warning .blk-col__title { color: var(--warning); }
-.blk-col.tone-danger .blk-col__title { color: var(--danger); }
+.blk-col.tone-success .blk-col__title {
+  color: var(--success);
+}
+.blk-col.tone-warning .blk-col__title {
+  color: var(--warning);
+}
+.blk-col.tone-danger .blk-col__title {
+  color: var(--danger);
+}
 
 .blk-cta {
   display: flex;
@@ -148,41 +208,8 @@
 }
 .blk-cta__note {
   font-size: var(--fs-200);
-  color: var(--warning);
-}
-
-.blk-kbd {
-  display: flex;
-  align-items: center;
-  gap: var(--s-3);
-  font-size: var(--fs-200);
-}
-.blk-kbd__keys {
-  display: inline-flex;
-  gap: var(--s-1);
-}
-.blk-kbd__desc {
   color: var(--text-muted);
 }
-
-.blk-image__placeholder {
-  border: 1px dashed var(--border-strong);
-  border-radius: var(--r-md);
-  padding: var(--s-6);
-  text-align: center;
-  color: var(--text-dim);
-  background: var(--surface-2);
-}
-.blk-image figcaption {
-  font-size: var(--fs-200);
-  color: var(--text-dim);
-  margin-top: var(--s-2);
-  text-align: center;
-}
-
-.blk-spacer--sm { height: var(--s-2); }
-.blk-spacer--md { height: var(--s-4); }
-.blk-spacer--lg { height: var(--s-6); }
 
 @media (max-width: 640px) {
   .blk-columns {

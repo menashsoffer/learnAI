@@ -2,10 +2,9 @@ import { describe, it, expect } from 'vitest';
 import { buildSlugIndex } from '../deck/slugIndex';
 import { reconcile } from './reconcile';
 
-const index = buildSlugIndex(
-  [{ slug: 'intro' }, { slug: 'middle' }, { slug: 'end' }],
-  { 'legacy-mid': 'middle' },
-);
+const index = buildSlugIndex([{ slug: 'intro' }, { slug: 'middle' }, { slug: 'end' }], {
+  'legacy-mid': 'middle',
+});
 
 describe('reconcile', () => {
   it('fills an empty route with the store slug', () => {

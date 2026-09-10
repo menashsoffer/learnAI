@@ -1,10 +1,11 @@
 import { describe, it, expect } from 'vitest';
 import { buildSlugIndex, resolveSlug } from './slugIndex';
 
-const idx = buildSlugIndex(
-  [{ slug: 'intro' }, { slug: 'how-it-works' }, { slug: 'closing' }],
-  { 'old-intro': 'intro', 'chain-a': 'chain-b', 'chain-b': 'closing' },
-);
+const idx = buildSlugIndex([{ slug: 'intro' }, { slug: 'how-it-works' }, { slug: 'closing' }], {
+  'old-intro': 'intro',
+  'chain-a': 'chain-b',
+  'chain-b': 'closing',
+});
 
 describe('resolveSlug', () => {
   it('resolves a direct slug', () => {

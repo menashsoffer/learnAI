@@ -1,0 +1,46 @@
+.brand-logo {
+  display: block;
+  width: auto;
+  object-fit: contain;
+}
+
+.brand-logo--sm {
+  height: 24px;
+}
+.brand-logo--md {
+  height: 44px;
+}
+.brand-logo--lg {
+  height: 64px;
+}
+
+/* The two marks read as one credit line, so keep them optically balanced: the ministry
+   mark carries a tall state emblem and reads larger than the cadets wordmark at equal height. */
+.brand-lockup {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s-4);
+  flex-wrap: wrap;
+}
+.brand-lockup__rule {
+  width: 1px;
+  align-self: stretch;
+  min-height: 32px;
+  background: var(--border);
+}
+.brand-lockup .brand-logo--lg {
+  height: 58px;
+}
+
+@media (max-width: 560px) {
+  .brand-logo--sm {
+    height: 19px;
+  }
+  .brand-lockup {
+    gap: var(--s-3);
+  }
+  .brand-lockup .brand-logo--lg {
+    height: 40px;
+  }
+}

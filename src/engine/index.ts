@@ -1,12 +1,6 @@
 /** Public surface of the framework-light presentation engine. */
 
-export type {
-  SceneMeta,
-  SceneRecord,
-  DeckMeta,
-  Deck,
-  LoadedDeck,
-} from './deck/types';
+export type { SceneMeta, SceneRecord, DeckMeta, Deck, LoadedDeck } from './deck/types';
 export { loadDeck } from './deck/loadDeck';
 export { buildSlugIndex, resolveSlug } from './deck/slugIndex';
 export type { SlugIndex, SlugResolution } from './deck/slugIndex';
@@ -17,9 +11,7 @@ export {
   type NavState,
   type NavAction,
   type Overlay,
-  type SyncRole,
 } from './navigation/machine';
-export { nav } from './navigation/actions';
 export * as select from './navigation/selectors';
 
 export {

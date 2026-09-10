@@ -4,7 +4,7 @@
  *   2. slug-stability guard — a released slug must not vanish without a `redirects` entry
  *
  * Per-scene `data` validation against scene-type schemas is covered by the Vitest suite
- * (`src/scenes/validateDeck` + `tests/`), which can resolve the React/CSS scene modules.
+ * (`src/scenes/validateDeck.test.ts`), which can resolve the React/CSS scene modules.
  */
 import { readFileSync, readdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';

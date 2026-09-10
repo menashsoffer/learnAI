@@ -14,7 +14,6 @@ const slug = z
 const sceneStudentSchema = z.object({
   title: z.string().optional(),
   blocks: z.array(z.unknown()).optional(),
-  activity: z.boolean().optional(),
   /** false = reference only (no copy buttons on prompt blocks). Default true. */
   copyable: z.boolean().optional(),
 });
@@ -28,11 +27,9 @@ export const sceneRecordSchema = z.object({
   subtitle: z.string().optional(),
   notes: z.string().optional(),
   presenterScript: z.string().optional(),
-  selfReading: z.string().optional(),
-  /** id of a built-in illustration (see src/illustrations). */
+  /** id of a built-in illustration (see src/assets/illustrations). */
   image: z.string().optional(),
   student: sceneStudentSchema.optional(),
-  version: z.number().int().positive().optional(),
   data: z.unknown(),
 });
 
