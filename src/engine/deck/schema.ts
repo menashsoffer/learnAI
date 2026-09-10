@@ -29,6 +29,8 @@ export const sceneRecordSchema = z.object({
   notes: z.string().optional(),
   presenterScript: z.string().optional(),
   selfReading: z.string().optional(),
+  /** id of a built-in illustration (see src/illustrations). */
+  image: z.string().optional(),
   student: sceneStudentSchema.optional(),
   version: z.number().int().positive().optional(),
   data: z.unknown(),

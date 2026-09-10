@@ -31,6 +31,8 @@ export interface SceneMeta {
   notes?: string;
   /** Longer presenter script ("what to say"). Present mode only. */
   presenterScript?: string;
+  /** id of a built-in illustration (see src/illustrations). */
+  image?: string;
   /** Must make the scene understandable with no presenter (self-study link). */
   selfReading?: string;
   /** Participant-facing companion content (study mode). */
