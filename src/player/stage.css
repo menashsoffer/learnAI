@@ -1,0 +1,65 @@
+.stage {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.slide {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--s-6) var(--s-7);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translate3d(0, 0, 0);
+  /* visibility flips to hidden only AFTER the fade-out completes. */
+  transition:
+    opacity var(--dur-slow) var(--ease-out),
+    transform var(--dur-slow) var(--ease-out),
+    visibility 0s linear var(--dur-slow);
+  will-change: opacity, transform;
+  overflow-y: auto;
+}
+
+.slide--active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translate3d(0, 0, 0);
+  z-index: 2;
+  transition:
+    opacity var(--dur-slow) var(--ease-out),
+    transform var(--dur-slow) var(--ease-out),
+    visibility 0s linear 0s;
+}
+
+/* RTL: previous scene exits to the right, next waits on the left. */
+.slide--prev {
+  transform: translate3d(60px, 0, 0);
+  z-index: 1;
+}
+.slide--next {
+  transform: translate3d(-60px, 0, 0);
+  z-index: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .slide {
+    transition: opacity var(--dur-fast) ease;
+    transform: none !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .slide {
+    padding: var(--s-5) var(--s-4);
+  }
+}
+@media (max-width: 480px) {
+  .slide {
+    padding: var(--s-4) var(--s-3);
+  }
+}

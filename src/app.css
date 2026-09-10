@@ -1,0 +1,30 @@
+#root {
+  height: 100%;
+}
+
+.viewport {
+  position: fixed;
+  inset-block-start: var(--header-h);
+  inset-inline: 0;
+  inset-block-end: 0;
+  overflow: hidden;
+}
+
+/* Print: linearise every scene. */
+@media print {
+  .viewport {
+    position: static;
+    overflow: visible;
+  }
+  .stage {
+    position: static;
+  }
+  .slide {
+    position: static !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: none !important;
+    page-break-after: always;
+    min-height: 60vh;
+  }
+}
