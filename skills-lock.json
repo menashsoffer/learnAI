@@ -5,6 +5,32 @@
       "source": "skills-il/localization",
       "sourceType": "github",
       "computedHash": "da7677bda48ea25e2a930dd89601ff5cf083211ca724b4c0d8aea94ecd5a2880"
+    },
+    "hebrew-i18n": {
+      "source": "skills-il/localization",
+      "sourceType": "github",
+      "computedHash": "d9bc3ff8fd2a8a3e7cf02db3ef36e2e32472556d863e40035be4ac5e072ab239"
+    },
+    "hebrew-rtl-best-practices": {
+      "source": "skills-il/localization",
+      "sourceType": "github",
+      "computedHash": "7f513e0a30fe2560816bf71e347f88868812fc14abb5b771366e367691e34477"
+    },
+    "israeli-accessibility-compliance": {
+      "source": "skills-il/localization",
+      "sourceType": "github",
+      "computedHash": "44c72198ca58994ad1792bf26e5bf97f7fa7561a86e3f7bfffd25785479ff758"
+    },
+    "israeli-ui-design-system": {
+      "source": "skills-il/localization",
+      "sourceType": "github",
+      "computedHash": "136e2317ed37eb81599dcb2b96d82f2e22d66cd1d1c56c3493f93bbd070f066b"
+    },
+    "ui-ux-pro-max": {
+      "source": "nextlevelbuilder/ui-ux-pro-max-skill",
+      "sourceType": "github",
+      "skillPath": ".claude/skills/ui-ux-pro-max/SKILL.md",
+      "computedHash": "4080ff883b26b670a5a224fb332e89ecc15319535f4d14279947ad7812fec558"
     }
   }
 }
