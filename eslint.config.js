@@ -7,7 +7,7 @@ import prettier from 'eslint-config-prettier';
 
 export default tseslint.config(
   // `docs` is committed build output, not source.
-  { ignores: ['dist', 'docs', 'node_modules'] },
+  { ignores: ['dist', 'node_modules'] },
   {
     extends: [js.configs.recommended, ...tseslint.configs.recommended],
     files: ['**/*.{ts,tsx}'],
@@ -24,6 +24,15 @@ export default tseslint.config(
       'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
       // Invariant #4: content is 100% declarative — no raw HTML injection anywhere.
       'react/no-danger': 'off',
+      /**
+       * `const { field: _drop, ...rest } = obj` is how the tests build a deliberately
+       * INVALID fixture by omitting one required field. The binding exists to remove the
+       * key, never to be read — which is precisely what `ignoreRestSiblings` is for.
+       */
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        { ignoreRestSiblings: true, argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
+      ],
       'no-restricted-syntax': [
         'error',
         {
@@ -52,7 +61,6 @@ export default tseslint.config(
     },
   },
 
-  // Last: turns off every rule that would fight Prettier over formatting.
   {
     /**
      * These files export a value NEXT TO a component on purpose, which is exactly what
@@ -68,6 +76,9 @@ export default tseslint.config(
       'src/scenes/**/*.tsx',
       'src/assets/illustrations/index.tsx',
       'src/react/PresentationProvider.tsx',
+      // The interactive blocks ship `assemblePrompt` beside them; it is the pure half of
+      // the builder and is unit-tested directly, which is worth more than fast refresh here.
+      'src/blocks/interactive.tsx',
     ],
     rules: { 'react-refresh/only-export-components': 'off' },
   },

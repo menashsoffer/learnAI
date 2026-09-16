@@ -17,12 +17,21 @@ export default defineConfig({
   define: {
     'import.meta.env.VITE_TARGET': JSON.stringify(process.env.VITE_TARGET ?? 'hosted'),
   },
+  // Vite does not read PORT on its own — it just takes its 5173 / 4173 defaults and fails
+  // when something already holds them. Honouring PORT lets the preview harness assign a
+  // free port instead. Nothing here is pinned to a port (no OAuth callback, no webhook),
+  // and `base` is a path, so moving ports changes nothing about how the site behaves.
+  server: {
+    port: process.env.PORT ? Number(process.env.PORT) : undefined,
+  },
+  preview: {
+    port: process.env.PORT ? Number(process.env.PORT) : undefined,
+  },
   build: {
     target: 'es2020',
-    // Committed to git and served two ways: GitHub Pages "deploy from branch -> /docs"
-    // reads it directly, and the Actions workflow uploads this same directory. One build
-    // output means the two paths can never drift apart.
-    outDir: 'docs',
+    // Never committed. The Pages workflow builds this directory and uploads it as the
+    // deployment artifact; nothing reads it from the repository.
+    outDir: 'dist',
     emptyOutDir: true,
   },
 });

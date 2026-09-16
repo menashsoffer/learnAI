@@ -1,0 +1,88 @@
+/**
+ * PRIMITIVE TOKENS — raw scales only. No roles, no meaning, no component ever reads these
+ * directly. `semantic.css` maps them onto roles; components read the roles.
+ *
+ * The split exists because the old single palette file hard-wired colour to meaning, which
+ * is why `brandKitRef` could never actually switch a theme.
+ */
+:root {
+  /* ---- Ink: the approved brand navy, as a real ramp ---- */
+  --c-ink-50: #f2f5f7;
+  --c-ink-100: #e4ebef;
+  --c-ink-200: #cbd8de;
+  --c-ink-300: #a3b8c2;
+  --c-ink-400: #6e8b99;
+  --c-ink-500: #3a6b84;
+  --c-ink-600: #26495c; /* the signed-off brand navy */
+  --c-ink-700: #1d3a49;
+  --c-ink-800: #152b36;
+  --c-ink-900: #0e1c24;
+  --c-ink-950: #08131a;
+
+  /* ---- Neutrals, warmed a half-step so long Hebrew reading is not clinical ---- */
+  --c-n-0: #ffffff;
+  --c-n-25: #fbfbfa;
+  --c-n-50: #f6f7f8;
+  --c-n-100: #eef1f3;
+  --c-n-200: #dde3e7;
+  --c-n-300: #c2cbd1;
+  --c-n-400: #9aa5ad;
+  --c-n-500: #6b7280;
+  --c-n-600: #4d5763;
+  --c-n-700: #39424c;
+  --c-n-800: #262d35;
+  --c-n-900: #171c22;
+
+  /* ---- Action: the ONE warm accent. Spent only on "your turn". See semantic.css. ---- */
+  --c-act-100: #fdeee2;
+  --c-act-200: #f9d5bb;
+  --c-act-400: #e0842f;
+  --c-act-500: #c76a17;
+  --c-act-600: #a3520c;
+  --c-act-700: #7d3e09;
+
+  /* ---- Status ---- */
+  --c-info-100: #e5eef8;
+  --c-info-600: #2563a8;
+  --c-info-300: #9dc0e3;
+  --c-ok-100: #e3f3ea;
+  --c-ok-600: #1f7a4d;
+  --c-ok-300: #8fcaab;
+  --c-warn-100: #fbf0da;
+  --c-warn-600: #9a6b12;
+  --c-warn-300: #e2c078;
+  --c-bad-100: #fbe6e5;
+  --c-bad-600: #b3261e;
+  --c-bad-300: #e79b96;
+
+  /* ---- Type ---- */
+  --font-body: 'Heebo', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-head: var(--font-body);
+
+  /* ---- Space ---- */
+  --s-1: 0.25rem;
+  --s-2: 0.5rem;
+  --s-3: 0.75rem;
+  --s-4: 1rem;
+  --s-5: 1.5rem;
+  --s-6: 2rem;
+  --s-7: 3rem;
+  --s-8: 4rem;
+
+  /* ---- Radius ---- */
+  --r-sm: 8px;
+  --r-md: 14px;
+  --r-lg: 22px;
+  --r-pill: 999px;
+
+  /* ---- Motion. Rule 7: nothing exceeds 150ms. ---- */
+  --dur-fast: 0.1s;
+  --dur-mid: 0.15s;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* ---- Layout ---- */
+  --header-h: 56px;
+  --content-max: 1180px;
+  /* Measure for long-form Hebrew on the participant device. */
+  --measure: 34rem;
+}

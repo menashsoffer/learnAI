@@ -17,9 +17,9 @@
   transform: translate3d(0, 0, 0);
   /* visibility flips to hidden only AFTER the fade-out completes. */
   transition:
-    opacity var(--dur-slow) var(--ease-out),
-    transform var(--dur-slow) var(--ease-out),
-    visibility 0s linear var(--dur-slow);
+    opacity var(--dur-mid) var(--ease-out),
+    transform var(--dur-mid) var(--ease-out),
+    visibility 0s linear var(--dur-mid);
   will-change: opacity, transform;
   overflow-y: auto;
 }
@@ -31,8 +31,8 @@
   transform: translate3d(0, 0, 0);
   z-index: 2;
   transition:
-    opacity var(--dur-slow) var(--ease-out),
-    transform var(--dur-slow) var(--ease-out),
+    opacity var(--dur-mid) var(--ease-out),
+    transform var(--dur-mid) var(--ease-out),
     visibility 0s linear 0s;
 }
 

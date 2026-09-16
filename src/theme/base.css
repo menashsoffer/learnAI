@@ -1,0 +1,95 @@
+/**
+ * BASE — the document-level reset and element defaults. Previously buried at the bottom of
+ * the token file, which meant the tokens could not be swapped without dragging the reset
+ * along. Reads roles only.
+ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: var(--fs-300);
+  line-height: var(--lh-normal);
+  color: var(--text);
+  background: var(--surface-page);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-head);
+  line-height: var(--lh-tight);
+  /* Hebrew headlines set tight need the letterforms to stay open; Heebo tightens badly. */
+  letter-spacing: 0;
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+kbd {
+  font-family: var(--font-body);
+  font-size: 0.85em;
+  background: var(--surface-sunken);
+  border: 1px solid var(--border);
+  border-bottom-width: 2px;
+  border-radius: 6px;
+  padding: 0.1em 0.5em;
+  white-space: nowrap;
+}
+
+/* Latin-only technical strings (MCP, ChatGPT, slugs). Hebrew never renders in mono. */
+code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.9em;
+  background: var(--surface-sunken);
+  border-radius: 4px;
+  padding: 0.1em 0.35em;
+}
+
+/* Weak-GPU / reduced-transparency fallback: kill blur + heavy effects. */
+.fx-low *,
+.fx-low *::before,
+.fx-low *::after {
+  backdrop-filter: none !important;
+  filter: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}

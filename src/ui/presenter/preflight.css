@@ -1,0 +1,207 @@
+/**
+ * PRE-FLIGHT — the minute before the lecture. A full-screen overlay so it cannot be
+ * half-read behind the deck, and `glance` sized: this is a laptop at arm's length.
+ */
+.preflight {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  overflow-y: auto;
+  background: var(--surface-page);
+  padding: var(--s-6) var(--s-5) var(--s-8);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-5);
+}
+
+.preflight__head {
+  max-inline-size: var(--content-max);
+  margin-inline: auto;
+  inline-size: 100%;
+  border-block-end: 2px solid var(--brand-line);
+  padding-block-end: var(--s-4);
+}
+.preflight__title {
+  font-size: var(--fs-600);
+  font-weight: 800;
+  color: var(--brand);
+}
+.preflight__sub {
+  margin-block-start: var(--s-2);
+  color: var(--text-muted);
+  font-size: var(--fs-300);
+}
+.preflight__slack {
+  color: var(--success);
+  font-weight: 700;
+}
+.preflight__slack--over {
+  color: var(--warning);
+}
+
+.preflight__grid {
+  max-inline-size: var(--content-max);
+  margin-inline: auto;
+  inline-size: 100%;
+  display: grid;
+  gap: var(--s-6);
+  align-items: start;
+}
+@media (min-width: 900px) {
+  .preflight__grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+.preflight__col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+}
+.preflight__h2 {
+  font-size: var(--fs-300);
+  font-weight: 800;
+  color: var(--text-muted);
+  letter-spacing: 0.03em;
+}
+
+/* The prep list. The required items are what actually sink a lecture, so they look it. */
+.preflight__prep {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+}
+.preflight__prep-item {
+  display: flex;
+  gap: var(--s-3);
+  align-items: flex-start;
+  padding: var(--s-3);
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  background: var(--surface);
+}
+.preflight__prep-item--req {
+  border-inline-start: 4px solid var(--warning);
+  background: var(--warning-soft);
+}
+.preflight__prep-flag {
+  flex: none;
+  font-size: var(--fs-100);
+  font-weight: 800;
+  color: var(--warning);
+  padding-block-start: 0.15em;
+}
+.preflight__prep-flag--opt {
+  color: var(--text-dim);
+}
+.preflight__prep-label {
+  font-weight: 600;
+  font-size: var(--fs-200);
+  line-height: var(--lh-normal);
+}
+.preflight__prep-note {
+  margin-block-start: var(--s-1);
+  font-size: var(--fs-100);
+  color: var(--text-muted);
+}
+
+.preflight__qr {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-3);
+  align-items: flex-start;
+}
+.qr {
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  background: #fff;
+  padding: var(--s-2);
+}
+.preflight__qr-note {
+  font-size: var(--fs-100);
+  color: var(--text-muted);
+  max-inline-size: 30ch;
+}
+
+/* Two bare numbers per row need labelling, or the reader guesses which is which. */
+.preflight__run-head {
+  display: grid;
+  grid-template-columns: 3.5rem 1fr 2.5rem;
+  gap: var(--s-3);
+  padding-inline: var(--s-4);
+  padding-block-end: var(--s-1);
+  font-size: var(--fs-100);
+  font-weight: 700;
+  color: var(--text-dim);
+}
+.preflight__run-head > :last-child {
+  text-align: end;
+}
+
+/* The run: the whole shape of the session, in one column. */
+.preflight__run {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  overflow: hidden;
+  background: var(--surface);
+}
+.preflight__stage {
+  display: grid;
+  grid-template-columns: 3.5rem 1fr 2.5rem;
+  gap: var(--s-3);
+  align-items: baseline;
+  padding: var(--s-3) var(--s-4);
+  border-block-end: 1px solid var(--border);
+  font-size: var(--fs-200);
+}
+.preflight__stage:last-child {
+  border-block-end: 0;
+}
+.preflight__stage.is-optional {
+  background: var(--surface-sunken);
+}
+.preflight__stage-min {
+  color: var(--text-dim);
+  font-variant-numeric: tabular-nums;
+  font-size: var(--fs-100);
+}
+.preflight__stage-name {
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  flex-wrap: wrap;
+}
+.preflight__stage-tag {
+  font-size: var(--fs-100);
+  font-weight: 700;
+  color: var(--text-muted);
+  background: var(--surface-sunken);
+  border: 1px solid var(--border);
+  border-radius: var(--r-pill);
+  padding-inline: var(--s-2);
+}
+.preflight__stage-budget {
+  text-align: end;
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  color: var(--brand);
+}
+
+.preflight__actions {
+  max-inline-size: var(--content-max);
+  margin-inline: auto;
+  inline-size: 100%;
+  display: flex;
+  gap: var(--s-3);
+  flex-wrap: wrap;
+  padding-block-start: var(--s-4);
+  border-block-start: 1px solid var(--border);
+}
+.preflight__start {
+  font-size: var(--fs-400);
+  padding-inline: var(--s-7);
+}

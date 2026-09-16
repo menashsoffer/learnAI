@@ -1,38 +1,41 @@
 import { useEffect } from 'react';
-import { z } from 'zod';
 import { defineScene, type SceneProps } from '../contract';
 import { SceneShell } from '../_shared/SceneShell';
 import { BlocksRenderer } from '@/blocks/BlocksRenderer';
-import { blocksSchema } from '@/blocks/schema';
 import type { Block } from '@/blocks/types';
 import { formatClock } from '@/engine';
+import { activitySchema, type ActivityData } from './schema';
 
-const schema = z.object({
-  blocks: blocksSchema,
-  /** Optional inline work timer (used by the build steps). */
-  timerSeconds: z.number().int().positive().optional(),
-});
-type Data = z.infer<typeof schema>;
-
-function WorkshopInstructions({ data, scene, api }: SceneProps<Data>) {
+/**
+ * The PROJECTED half of an activity. The participant half lives in
+ * `src/ui/participant/ActivityPanel.tsx` — same authored data, two audiences, and neither
+ * one is a cut-down copy of the other.
+ *
+ * On the projector: the headline, what the room is doing, and a timer big enough to read
+ * from the back. The steps and the prompt are on the participants' own screens, where they
+ * can be copied — putting them here would just make the slide a document.
+ */
+function Activity({ data, scene, api }: SceneProps<ActivityData>) {
   const { model, setTarget, toggle, reset } = api.timer;
 
   useEffect(() => {
-    if (data.timerSeconds) setTarget(data.timerSeconds);
-  }, [data.timerSeconds, setTarget]);
+    if (data.timeboxSeconds) setTarget(data.timeboxSeconds);
+  }, [data.timeboxSeconds, setTarget]);
 
   return (
-    <SceneShell scene={scene} className="workshop-instructions">
+    <SceneShell scene={scene} className="activity">
+      <p className="activity__donow">{data.doNow}</p>
+
+      {data.board && data.board.length > 0 && <BlocksRenderer blocks={data.board as Block[]} />}
+
       {!api.online && (
         <div className="blk-callout tone-warning">
           <div className="blk-callout__title">שלב זה דורש חיבור לאינטרנט</div>
-          <p className="blk-callout__text">
-            הקישור לכלי ה-AI ייפתח בלשונית חדשה. שאר האתר פועל גם ללא רשת.
-          </p>
+          <p className="blk-callout__text">הקישור לכלי ה-AI ייפתח בלשונית חדשה.</p>
         </div>
       )}
-      <BlocksRenderer blocks={data.blocks as Block[]} />
-      {data.timerSeconds && (
+
+      {data.timeboxSeconds && (
         <div className={`inline-timer status-${model.status}`}>
           <span className="inline-timer__clock" aria-live="polite">
             {formatClock(model.seconds)}
@@ -58,9 +61,13 @@ function WorkshopInstructions({ data, scene, api }: SceneProps<Data>) {
   );
 }
 
-export default defineScene<Data>({
-  type: 'workshop-instructions',
-  schema,
-  Component: WorkshopInstructions,
-  defaultData: () => ({ blocks: [] }),
+export default defineScene<ActivityData>({
+  type: 'activity',
+  schema: activitySchema,
+  Component: Activity,
+  defaultData: () => ({
+    doNow: '',
+    steps: [],
+    prompt: { mode: 'copy', label: '', text: '' },
+  }),
 });

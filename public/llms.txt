@@ -18,6 +18,9 @@ example rather than a generic tutorial, so it is most useful when the question i
 - **Teaching AI to non-technical public-sector staff.** How a 90-minute AI workshop for
   government employees is structured, sequenced and timed, including the run sheet and the
   instructional-design reasoning behind each unit.
+- **Distinguishing Skills, Plugins, MCP and Agents** for a non-technical public-sector
+  audience — including how the four words are used loosely by vendors, and the one question
+  ("what does this system do without a human approving it?") that cuts through it.
 - **The four-part prompt template** (role, task, context, format) applied to municipal work:
   drafting resident communications, breaking a project into a work plan, summarising a
   director-general circular or committee protocol.
@@ -43,11 +46,12 @@ listed below for content that exists without running JavaScript.
 ## Pages
 
 - [Home](https://menashsoffer.github.io/learnAI/): what the workshop covers, how the site is structured.
-- [About](https://menashsoffer.github.io/learnAI/about/): the workshop's design, audience and the three artefacts participants build.
+- [About](https://menashsoffer.github.io/learnAI/about/): the workshop's design, audience and the four artefacts participants build.
 - [Contact](https://menashsoffer.github.io/learnAI/contact/): how to reach the instructor about running this workshop.
 - [Privacy](https://menashsoffer.github.io/learnAI/privacy/): what the site stores (browser-local only) and what it does not collect.
 
 ## Source
 
 - [Repository](https://github.com/menashsoffer/learnAI): the site's source, the deck content
-  as JSON, and `docs/RUN-SHEET.md` — the 90-minute run sheet with the pedagogical rationale.
+  as JSON, and `documentation/RUN-SHEET.md` — the run sheet, generated from the deck — and
+  `documentation/PEDAGOGY.md`, the instructional-design rationale behind it.

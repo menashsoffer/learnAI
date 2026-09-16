@@ -4,8 +4,8 @@
   justify-content: center;
 }
 .hero__badge {
-  background: var(--primary-soft);
-  color: var(--primary);
+  background: var(--brand-soft);
+  color: var(--brand);
   border-radius: var(--r-pill);
   padding: 0.4rem 1.1rem;
   font-weight: 600;
@@ -16,7 +16,7 @@
   font-size: var(--fs-800);
   font-weight: 800;
   line-height: var(--lh-tight);
-  color: var(--primary);
+  color: var(--brand);
   max-width: 20ch;
 }
 .hero__subtitle {
@@ -26,8 +26,8 @@
 .hero__motto {
   font-size: var(--fs-400);
   font-weight: 600;
-  color: var(--primary);
-  background: var(--accent-soft);
+  color: var(--brand);
+  background: var(--brand-soft);
   border: 1px solid var(--border);
   border-radius: var(--r-md);
   padding: 0.75rem 1.5rem;
@@ -41,7 +41,7 @@
 .hero__chip {
   font-size: var(--fs-200);
   font-weight: 600;
-  color: var(--primary);
+  color: var(--brand);
   background: var(--surface);
   border: 1px solid var(--border-strong);
   border-radius: var(--r-pill);
@@ -55,7 +55,7 @@
   gap: var(--s-3);
   align-self: flex-start;
   background: var(--surface);
-  border: 2px solid var(--primary);
+  border: 2px solid var(--brand);
   border-radius: var(--r-md);
   padding: var(--s-3) var(--s-4);
   box-shadow: var(--shadow-1);
@@ -67,9 +67,134 @@
   font-size: clamp(1.8rem, 5vw, 2.6rem);
   font-weight: 800;
   font-variant-numeric: tabular-nums;
-  color: var(--primary);
+  color: var(--brand);
   letter-spacing: 0.03em;
 }
 .inline-timer.status-done .inline-timer__clock {
   color: var(--success);
+}
+
+/**
+ * CONCEPT — the "so what" line. Required by the schema, so it is always here and always in
+ * the same place: the audience learns where to look for the consequence.
+ */
+.concept__why {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-1);
+  align-self: flex-start;
+  border-inline-start: 4px solid var(--brand-line);
+  padding-inline-start: var(--s-4);
+  font-size: var(--fs-400);
+  font-weight: 600;
+  line-height: var(--lh-tight);
+  color: var(--text);
+  text-wrap: balance;
+}
+.concept__why-label {
+  font-size: var(--fs-100);
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  color: var(--text-muted);
+}
+
+/**
+ * PROMPT-BOARD — one prompt, held steady while the presenter demonstrates in the real tool.
+ * Nothing else on the slide. The room should be reading the prompt, not the deck.
+ */
+.prompt-board {
+  gap: var(--s-5);
+  max-inline-size: min(60ch, 92%);
+  /* This slide exists to be READ from the back of the room while the presenter drives the
+     real tool. Nothing competes with it, so it gets the room's full attention and a size
+     to match — at --fs-500 it measured 43px on a 1440 projector, which is marginal at 8m. */
+  justify-content: center;
+}
+.prompt-board__label {
+  font-size: var(--fs-200);
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+}
+.prompt-board__text {
+  white-space: pre-wrap;
+  font-size: var(--fs-600);
+  line-height: 1.5;
+  font-weight: 500;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-inline-start: 6px solid var(--brand-line);
+  border-radius: var(--r-md);
+  padding: var(--s-5) var(--s-6);
+  box-shadow: var(--shadow-1);
+  text-align: start;
+}
+.prompt-board__mark {
+  background: var(--action-soft);
+  color: var(--text);
+  border-block-end: 3px solid var(--action);
+  border-radius: 3px;
+  padding-inline: 0.15em;
+  font-weight: 700;
+}
+.prompt-board__caption {
+  font-size: var(--fs-300);
+  color: var(--text-muted);
+  text-wrap: balance;
+}
+
+/* ACTIVITY (projected half) — the imperative, big enough to read from the back. */
+.activity__donow {
+  font-size: var(--fs-500);
+  font-weight: 700;
+  line-height: var(--lh-tight);
+  color: var(--text);
+  border-inline-start: 6px solid var(--action);
+  padding-inline-start: var(--s-4);
+  text-wrap: balance;
+}
+
+/**
+ * PROJECTOR FIT. A projected slide has no scrollbar — content that overflows is simply not
+ * seen, and the presenter has no way to know. Tables and dense blocks therefore tighten at
+ * `project` distance rather than being allowed to run past the bottom edge.
+ */
+:root[data-distance='project'] .blk-table :is(th, td) {
+  padding: var(--s-2) var(--s-3);
+}
+:root[data-distance='project'] .concept__why {
+  font-size: var(--fs-300);
+}
+
+/**
+ * Hero at projector height. The opening carries a mark, a badge, a title, a subtitle, a
+ * motto and four chips — on a 16:9 projector at 810px that is more than fits. The title
+ * stays commanding; the stacking gaps and the supporting furniture give up the room.
+ */
+:root[data-distance='project'] {
+  & .hero {
+    gap: var(--s-4);
+  }
+  & .hero__badge {
+    font-size: var(--fs-100);
+    padding: 0.25rem 0.9rem;
+  }
+  & .hero__subtitle {
+    font-size: var(--fs-400);
+  }
+  & .hero__motto {
+    font-size: var(--fs-300);
+  }
+  & .hero__chip {
+    font-size: var(--fs-100);
+  }
+  & .scene-illustration {
+    max-block-size: 22vh;
+  }
+
+  /* The projected half of an activity: the do-now is the anchor, the board supports it. */
+  & .activity__donow {
+    font-size: var(--fs-400);
+  }
 }

@@ -45,7 +45,7 @@ export function LandingRoute() {
   };
 
   return (
-    <ThemeProvider locale={deck.meta.locale} dir={deck.meta.dir} brandKit={deck.meta.brandKitRef}>
+    <ThemeProvider locale={deck.meta.locale} dir={deck.meta.dir} distance="read">
       <div className="landing">
         <div className="landing__inner">
           <BrandLockup size="lg" />

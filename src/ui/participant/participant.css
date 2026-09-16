@@ -1,7 +1,7 @@
 .student__panel {
   background: var(--surface);
   border: 1px solid var(--border);
-  border-inline-start: 4px solid var(--accent);
+  border-inline-start: 4px solid var(--brand-line);
   border-radius: var(--r-md);
   padding: var(--s-5);
   display: flex;
@@ -13,8 +13,8 @@
   align-self: flex-start;
   font-size: var(--fs-100);
   font-weight: 700;
-  color: var(--accent);
-  background: var(--accent-soft);
+  color: var(--brand-line);
+  background: var(--brand-soft);
   border-radius: var(--r-pill);
   padding: 0.2rem 0.8rem;
 }
@@ -34,4 +34,172 @@
   border: 1px solid var(--border);
   border-radius: var(--r-md);
   padding: var(--s-4);
+}
+
+/* ==========================================================================
+   The participant's own device. Priority #1 of this overhaul: during practice,
+   nobody should have to wonder where the room is or what they are meant to do.
+   ========================================================================== */
+
+/**
+ * STAGE BAR — the answer to "where are we", with no sync required. Sits under the topbar
+ * and stays put while the panel scrolls beneath it.
+ */
+.stagebar {
+  position: fixed;
+  inset-block-start: var(--header-h);
+  inset-inline: 0;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  padding: var(--s-2) var(--s-4);
+  background: var(--surface);
+  border-block-end: 1px solid var(--border);
+  font-size: var(--fs-200);
+  min-block-size: 40px;
+}
+.stagebar__pos {
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+.stagebar__pos b {
+  color: var(--brand);
+  font-variant-numeric: tabular-nums;
+}
+.stagebar__name {
+  font-weight: 700;
+  color: var(--brand);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.stagebar__track {
+  margin-inline-start: auto;
+  inline-size: clamp(60px, 22vw, 160px);
+  block-size: 4px;
+  border-radius: var(--r-pill);
+  background: var(--surface-sunken);
+  flex: none;
+  overflow: hidden;
+}
+.stagebar__fill {
+  display: block;
+  block-size: 100%;
+  background: var(--brand-line);
+  transition: inline-size var(--dur-mid) var(--ease-out);
+}
+
+/* The stage bar and the bottom nav are fixed, so the scroller needs room for both.
+   Scoped to the OUTER shell — an inner .student would double the padding. */
+.scene-shell.student {
+  padding-block-start: calc(40px + var(--s-4));
+  padding-block-end: calc(64px + var(--s-5));
+}
+
+/* Tier 3 — the safety net, right under the floor where a stuck person actually is. */
+.student__tiers {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+  inline-size: 100%;
+}
+
+.student__net {
+  margin-block-start: var(--s-4);
+}
+
+/**
+ * The divider from PEDAGOGY.md. Everything above it is for everyone; everything below is
+ * for whoever got there. Someone struggling never scrolls past this line.
+ */
+.student__divider {
+  margin-block: var(--s-6);
+  border: 0;
+  border-block-start: 1px dashed var(--border-strong);
+}
+.student__ceiling {
+  opacity: 0.92;
+}
+
+/* STUDENT NAV — thumb-reachable. Moving is the easiest thing on the screen. */
+.studentnav {
+  position: fixed;
+  inset-block-end: 0;
+  inset-inline: 0;
+  z-index: 45;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1px;
+  background: var(--border);
+  border-block-start: 1px solid var(--border);
+  padding-block-end: env(safe-area-inset-bottom, 0);
+}
+.studentnav__btn {
+  font: inherit;
+  font-size: var(--fs-200);
+  font-weight: 700;
+  /* 56px: tapped repeatedly, one-handed, while holding a laptop or a coffee. */
+  min-block-size: 56px;
+  border: 0;
+  cursor: pointer;
+  background: var(--surface);
+  color: var(--brand);
+  transition: background var(--dur-fast) var(--ease-out);
+}
+.studentnav__btn:hover:not(:disabled) {
+  background: var(--surface-sunken);
+}
+.studentnav__btn:disabled {
+  color: var(--text-dim);
+  cursor: not-allowed;
+}
+.studentnav__btn--jump {
+  color: var(--action);
+}
+.studentnav__btn--next {
+  background: var(--brand);
+  color: var(--text-on-brand);
+}
+.studentnav__btn--next:hover:not(:disabled) {
+  background: var(--brand-hover);
+}
+.studentnav__btn--next:disabled {
+  background: var(--surface-sunken);
+}
+
+/**
+ * On the participant device the stage bar already names the stage, so the scene title does
+ * not need to be a headline as well — it was pushing the do-now line below the fold on a
+ * phone, which defeats the entire point of having a do-now line.
+ */
+.student .scene-shell__head {
+  gap: var(--s-1);
+}
+.student .scene-shell__title {
+  font-size: var(--fs-400);
+  line-height: var(--lh-tight);
+}
+.student .scene-shell__subtitle {
+  font-size: var(--fs-300);
+}
+
+/* A long stage name wraps to a second line rather than being cut off mid-word. */
+@media (max-width: 520px) {
+  .stagebar {
+    flex-wrap: wrap;
+    row-gap: var(--s-1);
+    padding-block: var(--s-2);
+  }
+  .stagebar__name {
+    white-space: normal;
+    overflow: visible;
+    font-size: var(--fs-200);
+    line-height: 1.3;
+  }
+  .stagebar__track {
+    inline-size: 100%;
+    margin-inline-start: 0;
+    order: 3;
+  }
 }

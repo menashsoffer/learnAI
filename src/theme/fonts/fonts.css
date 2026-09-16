@@ -1,0 +1,28 @@
+/**
+ * Heebo, self-hosted. The previous token file NAMED this family but nothing ever loaded it,
+ * so every screen silently rendered in system-ui. Self-hosted rather than linked from
+ * Google: this runs under a ministry's name, and a participant's browser should not have to
+ * call a third party to read it.
+ *
+ * One variable face, weights 300-800, split into the two subsets this deck actually renders.
+ * `swap` because a projected slide must never wait on a font.
+ */
+
+@font-face {
+  font-family: 'Heebo';
+  font-style: normal;
+  font-weight: 300 800;
+  font-display: swap;
+  src: url('./heebo-hebrew.woff2') format('woff2');
+  unicode-range: U+0307-0308, U+0590-05FF, U+200C-2010, U+20AA, U+25CC, U+FB1D-FB4F;
+}
+@font-face {
+  font-family: 'Heebo';
+  font-style: normal;
+  font-weight: 300 800;
+  font-display: swap;
+  src: url('./heebo-latin.woff2') format('woff2');
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}

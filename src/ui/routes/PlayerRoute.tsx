@@ -1,4 +1,4 @@
-import { useMemo, useRef } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { Navigate, useParams } from 'react-router-dom';
 import { loadDeck, buildSlugIndex, resolveSlug } from '@/engine';
 import { getDeckRaw, DEFAULT_DECK_ID } from '@content/decks';
@@ -7,10 +7,12 @@ import { PresentationProvider, type PlayerMode } from '@/react/PresentationProvi
 import { useKeyboardNav } from '@/react/useKeyboardNav';
 import { useHashSync } from '@/react/useHashSync';
 import { useTimerTick } from '@/react/useTimerTick';
+import { useSessionTick } from '@/react/useSessionTick';
 import { ThemeProvider } from '@/theme/ThemeProvider';
 import { Chrome } from '@/ui/chrome/Chrome';
 import { SceneStage } from '@/ui/player/SceneStage';
 import { GuidanceDrawer } from '@/ui/presenter/GuidanceDrawer';
+import { PreFlight } from '@/ui/presenter/PreFlight';
 import { validateDeckScenes } from '@/scenes/validateDeck';
 
 /**
@@ -35,6 +37,18 @@ export function PlayerRoute({ mode = 'plain' }: { mode?: PlayerMode }) {
       resolveSlug(slug ?? '', buildSlugIndex(deck.scenes, deck.meta.redirects))?.index ?? 0;
   }
 
+  /**
+   * Present mode opens on the pre-flight screen, not on scene 1 — it is the only place the
+   * session clock is started, and the drift reading is worthless if the clock did not start
+   * when the talking did.
+   *
+   * Only at the FIRST scene, though: landing on a later one means a refresh or a shared
+   * deep link mid-lecture, and the last thing that presenter needs is a setup screen.
+   */
+  const [preflightDone, setPreflightDone] = useState(
+    () => mode !== 'present' || (startIndexRef.current ?? 0) > 0,
+  );
+
   useMemo(() => {
     if (deck && import.meta.env.DEV) {
       const report = validateDeckScenes(deck);
@@ -51,7 +65,12 @@ export function PlayerRoute({ mode = 'plain' }: { mode?: PlayerMode }) {
       startIndex={startIndexRef.current ?? 0}
       mode={mode}
     >
-      <ThemeProvider locale={deck.meta.locale} dir={deck.meta.dir} brandKit={deck.meta.brandKitRef}>
+      <ThemeProvider
+        locale={deck.meta.locale}
+        dir={deck.meta.dir}
+        distance={mode === 'study' ? 'read' : 'project'}
+      >
+        {!preflightDone && <PreFlight onStart={() => setPreflightDone(true)} />}
         <Chrome mode={mode} />
         <main className="viewport">
           <SceneStage mode={mode} />
@@ -67,5 +86,6 @@ function NavBridge({ slug, basePath }: { slug: string | undefined; basePath: str
   useKeyboardNav();
   useHashSync(slug, undefined, basePath);
   useTimerTick();
+  useSessionTick();
   return null;
 }

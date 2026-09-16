@@ -7,7 +7,6 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "build:offline": "VITE_TARGET=singlefile vite build --config vite.config.singlefile.ts",
     "preview": "vite preview",
     "typecheck": "tsc",
     "lint": "eslint .",
@@ -16,9 +15,12 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "validate:decks": "tsx scripts/validate-decks.ts",
-    "verify": "npm run typecheck && npm run lint && npm run format:check && npm run test && npm run validate:decks"
+    "run-sheet": "tsx scripts/generate-run-sheet.ts",
+    "run-sheet:check": "tsx scripts/generate-run-sheet.ts --check",
+    "verify": "npm run typecheck && npm run lint && npm run format:check && npm run test && npm run validate:decks && npm run run-sheet:check"
   },
   "dependencies": {
+    "qrcode-generator": "^2.0.4",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-router-dom": "^7.1.1",
@@ -26,6 +28,8 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.17.0",
+    "@testing-library/dom": "^10.4.2",
+    "@testing-library/react": "^16.3.3",
     "@types/node": "^22.20.2",
     "@types/react": "^19.1.0",
     "@types/react-dom": "^19.1.0",
@@ -42,7 +46,6 @@
     "typescript": "^5.7.2",
     "typescript-eslint": "^8.19.1",
     "vite": "^6.0.7",
-    "vite-plugin-singlefile": "^2.1.0",
     "vitest": "^2.1.8",
     "zod": "^3.24.1"
   }

@@ -5,8 +5,8 @@
   z-index: 60;
   display: flex;
   flex-direction: column;
-  background: var(--bg-panel);
-  border-top: 2px solid var(--primary);
+  background: var(--surface);
+  border-top: 2px solid var(--brand);
   box-shadow: 0 -6px 24px rgba(28, 43, 51, 0.12);
 }
 
@@ -20,7 +20,7 @@
   min-height: 40px;
 }
 .guide__chev {
-  color: var(--primary);
+  color: var(--brand);
   font-size: 1rem;
 }
 .guide__strip {
@@ -35,12 +35,12 @@
 }
 .guide__pos {
   font-weight: 800;
-  color: var(--primary);
+  color: var(--brand);
   font-variant-numeric: tabular-nums;
 }
 .guide__timer {
   font-weight: 700;
-  color: var(--primary);
+  color: var(--brand);
   font-variant-numeric: tabular-nums;
 }
 .guide__timer.status-done {
@@ -63,7 +63,7 @@
 .guide__section h3 {
   font-size: var(--fs-200);
   font-weight: 800;
-  color: var(--accent);
+  color: var(--brand-line);
   margin-bottom: var(--s-2);
 }
 .guide__section p {
@@ -91,7 +91,7 @@
   font-weight: 700;
 }
 .guide__peek strong {
-  color: var(--primary);
+  color: var(--brand);
   font-size: var(--fs-300);
 }
 .guide__peek-sub {
@@ -103,4 +103,145 @@
   .guide {
     display: none !important;
   }
+}
+
+/* ==========================================================================
+   Pacing readouts. Priority #2: presenting should not require holding ninety
+   minutes of budget in your head.
+   ========================================================================== */
+
+/**
+ * The session clock in the collapsed strip. Deliberately a DIFFERENT shape from the
+ * activity countdown beside it — one is "how long have I been talking", the other is
+ * "how long do they have left", and confusing them mid-lecture is costly.
+ */
+.guide__session {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--s-2);
+  padding: 0.1rem var(--s-3);
+  border-radius: var(--r-pill);
+  border: 1px solid var(--border-strong);
+  font-variant-numeric: tabular-nums;
+}
+.guide__session-clock {
+  font-weight: 800;
+}
+.guide__drift {
+  font-size: var(--fs-100);
+  font-weight: 700;
+}
+/* Calm, not alarming. There are people watching this screen. */
+.guide__session.state-on-plan {
+  border-color: var(--border-strong);
+  color: var(--text);
+}
+.guide__session.state-on-plan .guide__drift {
+  color: var(--text-muted);
+}
+.guide__session.state-ahead {
+  border-color: var(--success);
+  color: var(--success);
+}
+.guide__session.state-behind {
+  border-color: var(--warning);
+  background: var(--warning-soft);
+  color: var(--warning);
+}
+
+/* Per-stage budget, as a hairline across the handle. */
+.guide__bar {
+  display: block;
+  block-size: 3px;
+  inline-size: 100%;
+  background: var(--surface-sunken);
+}
+.guide__bar-fill {
+  display: block;
+  block-size: 100%;
+  background: var(--brand-line);
+  transition: inline-size 1s linear;
+}
+.guide__bar-fill.is-over {
+  background: var(--warning);
+}
+
+.guide__meters {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: var(--s-3);
+}
+.guide__meter {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  padding: var(--s-3);
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  background: var(--surface);
+}
+.guide__meter.state-behind {
+  border-color: var(--warning);
+  background: var(--warning-soft);
+}
+.guide__meter-label {
+  font-size: var(--fs-100);
+  font-weight: 700;
+  color: var(--text-muted);
+}
+.guide__meter-value {
+  font-size: var(--fs-500);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.1;
+}
+.guide__meter-note {
+  font-size: var(--fs-100);
+  color: var(--text-muted);
+}
+
+/* The run sheet's own instruction, on the stage where it still applies. */
+.guide__control,
+.guide__recover {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-1);
+  padding: var(--s-3) var(--s-4);
+  border-radius: var(--r-sm);
+  font-size: var(--fs-200);
+  line-height: var(--lh-normal);
+}
+.guide__control {
+  background: var(--info-soft);
+  border-inline-start: 4px solid var(--info);
+}
+.guide__recover {
+  background: var(--warning-soft);
+  border-inline-start: 4px solid var(--warning);
+}
+.guide__control-tag,
+.guide__recover-tag {
+  font-size: var(--fs-100);
+  font-weight: 800;
+  letter-spacing: 0.03em;
+}
+.guide__control-tag {
+  color: var(--info);
+}
+.guide__recover-tag {
+  color: var(--warning);
+}
+
+/* "What to say", read while standing: short measure, no mid-sentence scroll. */
+.guide__script {
+  font-size: var(--fs-300);
+  line-height: 1.6;
+  max-inline-size: 62ch;
+  white-space: pre-wrap;
+}
+
+.guide__row-actions {
+  display: flex;
+  gap: var(--s-2);
+  flex-wrap: wrap;
 }

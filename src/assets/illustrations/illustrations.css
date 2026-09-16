@@ -1,5 +1,5 @@
 .illus {
-  color: var(--primary);
+  color: var(--brand);
   width: clamp(150px, 24vw, 300px);
   flex: none;
   align-self: center;
@@ -10,12 +10,12 @@
   display: block;
 }
 .ill-accent {
-  color: var(--accent);
-  stroke: var(--accent);
+  color: var(--brand-line);
+  stroke: var(--brand-line);
 }
 .ill-accent-fill {
-  fill: var(--accent-soft);
-  stroke: var(--accent);
+  fill: var(--brand-soft);
+  stroke: var(--brand-line);
 }
 
 @media (max-width: 860px) {

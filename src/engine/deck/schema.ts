@@ -22,7 +22,7 @@ export const sceneRecordSchema = z.object({
   id: z.string().min(1),
   slug,
   type: z.string().min(1),
-  act: z.string().min(1),
+  stage: z.string().min(1),
   title: z.string().min(1),
   subtitle: z.string().optional(),
   notes: z.string().optional(),
@@ -30,6 +30,9 @@ export const sceneRecordSchema = z.object({
   /** id of a built-in illustration (see src/assets/illustrations). */
   image: z.string().optional(),
   student: sceneStudentSchema.optional(),
+  budgetMin: z.number().positive().max(120).optional(),
+  optional: z.boolean().optional(),
+  controlPoint: z.string().min(1).optional(),
   data: z.unknown(),
 });
 
@@ -38,11 +41,21 @@ export const deckMetaSchema = z.object({
   title: z.string().min(1),
   locale: z.string().min(2),
   dir: z.enum(['rtl', 'ltr']),
-  brandKitRef: z.string().optional(),
   description: z.string().optional(),
   redirects: z.record(slug, slug).optional(),
   credits: z.string().optional(),
   presenterCode: z.string().min(1).optional(),
+  totalMinutes: z.number().positive().max(600).optional(),
+  participantUrl: z.string().url().optional(),
+  prepChecklist: z
+    .array(
+      z.object({
+        label: z.string().min(1),
+        required: z.boolean().optional(),
+        note: z.string().optional(),
+      }),
+    )
+    .optional(),
 });
 
 export const deckSchema = z
