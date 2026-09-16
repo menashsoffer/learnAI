@@ -6,14 +6,16 @@ import { registerScenes } from './registry';
 import './scenes.css';
 
 import hero from './hero';
-import contentSkill from './content-skill';
-import workshopInstructions from './workshop-instructions';
+import concept from './concept';
+import activity from './activity';
+import promptBoard from './prompt-board';
+import compare from './compare';
 
 let registered = false;
 
 export function registerBuiltInScenes(): void {
   if (registered) return;
-  registerScenes([hero, contentSkill, workshopInstructions]);
+  registerScenes([hero, concept, activity, promptBoard, compare]);
   registered = true;
 }
 

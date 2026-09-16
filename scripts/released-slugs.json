@@ -10,6 +10,16 @@
     "build-policy-doc",
     "build-deck",
     "build-site",
-    "closing"
+    "closing",
+    "foundations",
+    "practice-basic",
+    "prompting-advanced",
+    "practice-advanced",
+    "prompting-expert",
+    "recall",
+    "build-work-plan",
+    "build-presentation",
+    "build-website",
+    "concepts"
   ]
 }

@@ -9,3 +9,6 @@ playwright-report/
 test-results/
 coverage/
 *.tsbuildinfo
+
+# Build output. Published by the Pages workflow, never committed.
+docs/

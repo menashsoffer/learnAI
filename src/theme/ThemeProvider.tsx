@@ -3,30 +3,52 @@ import { storage } from '@/persistence/storage';
 import { globalKey } from '@/persistence/namespace';
 import { KEYS } from '@/persistence/keys';
 
+/** Which colour roles apply. `hall` is for a darkened auditorium, opt-in by the presenter. */
+export type Theme = 'light' | 'hall';
+
+/**
+ * How far the reader's eye is from this surface. Sets the type scale ONCE, for everything
+ * below it — a component names a step (`--fs-500`) and inherits the right size for where it
+ * is being read. See tokens/semantic.css.
+ */
+export type ViewingDistance = 'read' | 'glance' | 'project';
+
 interface ThemeProviderProps {
   locale: string;
   dir: 'rtl' | 'ltr';
-  /** Brand kit id — reserved for M2's multi-kit swap. */
-  brandKit?: string;
+  /** Defaults to `project`: the deck's home is a projector. */
+  distance?: ViewingDistance;
+  theme?: Theme;
   children: ReactNode;
 }
 
 /**
- * Owns the document-level concerns: lang/dir, brand-kit data attribute, and the `.fx-low`
- * weak-GPU / reduced-transparency fallback class.
+ * Owns the document-level concerns: lang/dir, colour theme, viewing distance, and the
+ * `.fx-low` weak-GPU / reduced-transparency fallback.
+ *
+ * (This replaces the old `brandKit` prop, which set a `data-brand` attribute that nothing
+ * ever read — one palette was hard-imported, so the theme could never actually change.)
  */
 export function ThemeProvider({
   locale,
   dir,
-  brandKit = 'dark-blue',
+  distance = 'project',
+  theme,
   children,
 }: ThemeProviderProps) {
   useEffect(() => {
     const root = document.documentElement;
     root.lang = locale;
     root.dir = dir;
-    root.dataset.brand = brandKit;
-  }, [locale, dir, brandKit]);
+    root.dataset.distance = distance;
+  }, [locale, dir, distance]);
+
+  useEffect(() => {
+    const root = document.documentElement;
+    const stored = storage.getString(globalKey(KEYS.theme));
+    const chosen = theme ?? (stored === 'hall' ? 'hall' : 'light');
+    root.dataset.theme = chosen;
+  }, [theme]);
 
   useEffect(() => {
     const root = document.documentElement;

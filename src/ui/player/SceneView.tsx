@@ -4,7 +4,6 @@ import { resolveScene } from '@/scenes';
 import { fallbackModule } from '@/scenes/_fallback/FallbackScene';
 import { SceneErrorBoundary } from '@/scenes/_shared/SceneShell';
 import { useSceneApi } from '@/react/useSceneApi';
-import { defaultSink } from '@/analytics';
 
 /** Resolves the scene-type module, validates `data`, renders it (or a degraded shell). */
 export function SceneView({ scene }: { scene: SceneRecord }) {
@@ -26,7 +25,12 @@ export function SceneView({ scene }: { scene: SceneRecord }) {
 
   const Component = mod.Component;
   return (
-    <SceneErrorBoundary scene={scene} onError={(e, d) => defaultSink.track(e, d)}>
+    <SceneErrorBoundary
+      scene={scene}
+      onError={(e, d) => {
+        if (import.meta.env.DEV) console.error(`[scene] ${e}`, d);
+      }}
+    >
       <Component scene={scene} data={parsed.data} api={api} />
     </SceneErrorBoundary>
   );

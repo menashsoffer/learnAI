@@ -1,4 +1,4 @@
-import { useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { usePresentation, useDeck } from '@/react/PresentationProvider';
 import type { PlayerMode } from '@/react/PresentationProvider';
 import { useSwipeNav } from '@/react/useSwipeNav';
@@ -22,6 +22,7 @@ export function SceneStage({ mode = 'plain' }: { mode?: PlayerMode }) {
 
   const ref = useRef<HTMLDivElement>(null);
   useSwipeNav(ref.current);
+  useProjectionFitWarning(index, mode);
 
   return (
     <div className="stage" ref={ref}>
@@ -43,4 +44,30 @@ export function SceneStage({ mode = 'plain' }: { mode?: PlayerMode }) {
       })}
     </div>
   );
+}
+
+/**
+ * A projected slide has no scrollbar: anything past the bottom edge is simply never seen,
+ * and nothing tells the presenter — they find out in front of a room, or never.
+ *
+ * So in dev, say it loudly while the author is still looking at the scene. This cannot be a
+ * unit test: jsdom does no layout, so overflow is only knowable in a real engine.
+ */
+function useProjectionFitWarning(index: number, mode: PlayerMode): void {
+  useEffect(() => {
+    if (!import.meta.env.DEV || mode === 'study') return;
+    const id = setTimeout(() => {
+      const shell = document.querySelector('.slide--active .scene-shell');
+      if (!shell) return;
+      const overflow = shell.scrollHeight - shell.clientHeight;
+      if (overflow > 2) {
+        console.warn(
+          `[projection] scene ${index + 1} overflows its slide by ${overflow}px — that content ` +
+            `will be invisible on a projector. Trim it, or compact the blocks at ` +
+            `\`:root[data-distance='project']\`.`,
+        );
+      }
+    }, 350);
+    return () => clearTimeout(id);
+  }, [index, mode]);
 }

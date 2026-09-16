@@ -14,14 +14,23 @@ export interface SceneStudent {
   copyable?: boolean;
 }
 
+export interface PrepItem {
+  label: string;
+  required?: boolean;
+  note?: string;
+}
+
 export interface SceneMeta {
   id: string;
   /** Stable, authored, URL key. Treated as API — see slug-stability guard. */
   slug: string;
   /** Scene-type registry key. Unknown types render the fallback scene. */
   type: string;
-  /** Act / section label, shown in chrome and the scene map. */
-  act: string;
+  /**
+   * Arc-stage label — "פרומפט · בסיס". Shown in the chrome, the scene map, and (crucially)
+   * on the participant's stage bar, which is how someone who looked away re-anchors.
+   */
+  stage: string;
   title: string;
   subtitle?: string;
   /** Presenter cue — shown in `present` mode only, never to participants. */
@@ -32,6 +41,15 @@ export interface SceneMeta {
   image?: string;
   /** Participant-facing companion content (study mode). */
   student?: SceneStudent;
+
+  /* ---- Pacing. Formerly the minute column of documentation/RUN-SHEET.md. ---- */
+
+  /** Minutes budgeted for this stage. Drives drift, projection and the per-stage bar. */
+  budgetMin?: number;
+  /** May be dropped when running late without breaking the arc. */
+  optional?: boolean;
+  /** Presenter instruction surfaced ON this stage, while it can still be acted on. */
+  controlPoint?: string;
 }
 
 export interface SceneRecord extends SceneMeta {
@@ -45,12 +63,16 @@ export interface DeckMeta {
   /** BCP-47; drives i18n + direction. Default deck is 'he'. */
   locale: string;
   dir: 'rtl' | 'ltr';
-  /** Points at a theme token module, e.g. 'dark-blue'. */
-  brandKitRef?: string;
   description?: string;
   /** oldSlug -> newSlug, resolved by slugIndex so shared links survive renames. */
   redirects?: Record<string, string>;
   credits?: string;
+  /** Authored session length in minutes. The plan's slack is measured against it. */
+  totalMinutes?: number;
+  /** Shown as a projectable QR on the pre-flight screen — how the room gets in. */
+  participantUrl?: string;
+  /** Pre-flight checklist. `required` items are the ones that sink a lecture if missed. */
+  prepChecklist?: PrepItem[];
   /** Soft gate for the presenter entry — NOT security, just stops participants
    *  wandering into the "what to say" notes. Absent = presenter entry is open. */
   presenterCode?: string;

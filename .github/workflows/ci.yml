@@ -21,18 +21,4 @@ jobs:
       - run: npm test
       # Structure + slug-stability gate: a released deep link must never 404.
       - run: npm run validate:decks
-      # Both targets must build — the offline artifact is what runs in the lecture hall.
       - run: npm run build
-      - run: npm run build:offline
-      # The offline artifact is opened from file:// off a USB stick — a host path prefix
-      # baked into it would produce dead links in the lecture hall.
-      - name: Assert the offline artifact carries no host paths
-        run: |
-          if grep -q '"/learnAI/' dist/offline/index.html; then
-            echo 'offline artifact contains absolute /learnAI/ paths'; exit 1
-          fi
-          echo 'offline artifact is path-clean'
-      - uses: actions/upload-artifact@v4
-        with:
-          name: offline-deck
-          path: dist/offline/index.html

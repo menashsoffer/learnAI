@@ -3,7 +3,7 @@
   inset-block-start: 0;
   inset-inline: 0;
   height: var(--header-h);
-  background: var(--bg-panel);
+  background: var(--surface);
   border-bottom: 1px solid var(--border);
   display: flex;
   align-items: center;
@@ -21,8 +21,8 @@
   flex: none;
   font-size: var(--fs-100);
   font-weight: 700;
-  color: var(--primary-ink);
-  background: var(--primary);
+  color: var(--text-on-brand);
+  background: var(--brand);
   border-radius: var(--r-pill);
   padding: 0.15rem 0.7rem;
 }
@@ -36,8 +36,8 @@
   color: var(--text-muted);
   font-variant-numeric: tabular-nums;
 }
-.topbar__act {
-  color: var(--accent);
+.topbar__stage {
+  color: var(--brand-line);
   font-weight: 600;
   margin-inline-end: var(--s-2);
 }
@@ -46,12 +46,12 @@
   inset-block-end: 0;
   inset-inline: 0;
   height: 3px;
-  background: var(--surface-2);
+  background: var(--surface-sunken);
 }
 .topbar__progress-fill {
   display: block;
   height: 100%;
-  background: var(--accent);
+  background: var(--brand-line);
   transition: width var(--dur-mid) var(--ease-out);
 }
 
@@ -69,8 +69,8 @@
   line-height: 1;
 }
 .icon-btn:hover {
-  border-color: var(--primary);
-  color: var(--primary);
+  border-color: var(--brand);
+  color: var(--brand);
 }
 
 .bottomnav {
@@ -80,7 +80,7 @@
   transform: translateX(50%);
   display: flex;
   gap: var(--s-4);
-  background: var(--bg-panel);
+  background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--r-pill);
   padding: var(--s-1) var(--s-4);
@@ -92,7 +92,7 @@
   background: none;
   font-size: 1.6rem;
   line-height: 1;
-  color: var(--primary);
+  color: var(--brand);
   cursor: pointer;
   padding: var(--s-1) var(--s-2);
   border-radius: 50%;
@@ -111,7 +111,7 @@ body:has(.guide) .bottomnav {
 .grid-overlay {
   position: fixed;
   inset: 0;
-  background: var(--bg);
+  background: var(--surface-page);
   z-index: 100;
   display: flex;
   flex-direction: column;
@@ -128,7 +128,7 @@ body:has(.guide) .bottomnav {
 }
 .grid-overlay__head h2 {
   font-size: var(--fs-500);
-  color: var(--primary);
+  color: var(--brand);
 }
 .grid-overlay__cards {
   display: grid;
@@ -151,18 +151,18 @@ body:has(.guide) .bottomnav {
 }
 .grid-thumb:hover,
 .grid-thumb.is-current {
-  border-color: var(--primary);
-  background: var(--primary-soft);
+  border-color: var(--brand);
+  background: var(--brand-soft);
 }
 .grid-thumb__meta {
   font-size: var(--fs-100);
   font-weight: 700;
-  color: var(--accent);
+  color: var(--brand-line);
 }
 .grid-thumb__title {
   font-size: var(--fs-200);
   font-weight: 700;
-  color: var(--primary);
+  color: var(--brand);
 }
 
 /* Notes drawer */
@@ -171,8 +171,8 @@ body:has(.guide) .bottomnav {
   inset-block-end: var(--s-4);
   inset-inline-start: var(--s-5);
   width: min(380px, calc(100vw - 2 * var(--s-5)));
-  background: var(--bg-panel);
-  border: 1px solid var(--primary);
+  background: var(--surface);
+  border: 1px solid var(--brand);
   border-radius: var(--r-md);
   padding: var(--s-4);
   box-shadow: var(--shadow-2);
@@ -188,7 +188,7 @@ body:has(.guide) .bottomnav {
   align-items: center;
   justify-content: space-between;
   margin-bottom: var(--s-2);
-  color: var(--primary);
+  color: var(--brand);
 }
 .notes-drawer__body {
   font-size: var(--fs-200);

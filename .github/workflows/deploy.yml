@@ -1,9 +1,7 @@
 name: Deploy to GitHub Pages
 
-# The site was previously served straight from the repository root, which published the
-# UNBUILT index.html — a 621-byte shell whose only script tag pointed at /src/main.tsx.
-# Browsers cannot execute TSX, so the live page rendered blank and every crawler saw an
-# empty document. This workflow publishes the actual build output instead.
+# Actions is the ONLY publisher. The build output (dist/) is never committed, so there is
+# no second, drifting copy of the site in the repository.
 #
 # REQUIRES a one-time repo setting: Settings -> Pages -> Build and deployment ->
 # Source = "GitHub Actions". Without it this workflow runs but nothing is served from it.
@@ -42,15 +40,15 @@ jobs:
           set -e
           for f in robots.txt sitemap.xml llms.txt 404.html og-image.png \
                    about/index.html contact/index.html privacy/index.html; do
-            test -s "dist/hosted/$f" || { echo "missing or empty: dist/hosted/$f"; exit 1; }
+            test -s "dist/$f" || { echo "missing or empty: dist/$f"; exit 1; }
           done
-          grep -q 'application/ld+json' dist/hosted/index.html || { echo "JSON-LD missing"; exit 1; }
-          grep -q 'rel="canonical"' dist/hosted/index.html || { echo "canonical missing"; exit 1; }
+          grep -q 'application/ld+json' dist/index.html || { echo "JSON-LD missing"; exit 1; }
+          grep -q 'rel="canonical"' dist/index.html || { echo "canonical missing"; exit 1; }
           echo "public files present"
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: dist/hosted
+          path: dist
 
   deploy:
     needs: build

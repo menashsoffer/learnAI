@@ -3,7 +3,7 @@
   display: grid;
   place-items: center;
   padding: var(--s-6);
-  background: var(--bg);
+  background: var(--surface-page);
 }
 .landing__inner {
   width: min(720px, 100%);
@@ -17,7 +17,7 @@
   font-family: var(--font-head);
   font-size: var(--fs-800);
   font-weight: 800;
-  color: var(--primary);
+  color: var(--brand);
   line-height: var(--lh-tight);
 }
 .landing__desc {
@@ -50,14 +50,14 @@
     transform var(--dur-fast);
 }
 .door:hover {
-  border-color: var(--primary);
+  border-color: var(--brand);
   transform: translateY(-3px);
 }
 .door--present {
-  border-top: 4px solid var(--primary);
+  border-top: 4px solid var(--brand);
 }
 .door--study {
-  border-top: 4px solid var(--accent);
+  border-top: 4px solid var(--brand-line);
 }
 .door__icon {
   font-size: 2.4rem;
@@ -65,7 +65,7 @@
 .door__label {
   font-size: var(--fs-500);
   font-weight: 800;
-  color: var(--primary);
+  color: var(--brand);
 }
 .door__sub {
   font-size: var(--fs-200);
@@ -85,7 +85,7 @@
 }
 .landing__code label {
   font-weight: 700;
-  color: var(--primary);
+  color: var(--brand);
 }
 .landing__code input {
   font: inherit;
@@ -96,11 +96,11 @@
   padding: var(--s-3);
   border: 1px solid var(--border-strong);
   border-radius: var(--r-md);
-  background: var(--bg-panel);
+  background: var(--surface);
   color: var(--text);
 }
 .landing__code input:focus-visible {
-  border-color: var(--primary);
+  border-color: var(--brand);
 }
 .landing__code-err {
   color: var(--danger);
@@ -117,7 +117,7 @@
   text-decoration: none;
 }
 .landing__plain:hover {
-  color: var(--primary);
+  color: var(--brand);
 }
 
 .landing__credits {

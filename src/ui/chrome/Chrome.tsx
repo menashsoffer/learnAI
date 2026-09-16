@@ -7,6 +7,8 @@ import { t } from '@/i18n';
 import { BrandLogo } from '@/assets/brand/BrandLogo';
 import { GridOverview } from './GridOverview';
 import { PresenterNotesDrawer } from './PresenterNotesDrawer';
+import { StageBar } from '@/ui/participant/StageBar';
+import { StudentNav } from '@/ui/participant/StudentNav';
 import './chrome.css';
 
 const MODE_LABEL: Record<PlayerMode, string> = {
@@ -21,7 +23,7 @@ export function Chrome({ mode = 'plain' }: { mode?: PlayerMode }) {
   const current = usePresentation((s) => s.index + 1);
   const total = usePresentation((s) => s.count);
   const progress = usePresentation(select.progress);
-  const act = usePresentation((s) => deck.scenes[s.index]?.act ?? '');
+  const stage = usePresentation((s) => deck.scenes[s.index]?.stage ?? '');
   const canPrev = usePresentation(select.canPrev);
   const canNext = usePresentation(select.canNext);
   const { size, cycle } = useTextSize();
@@ -34,12 +36,14 @@ export function Chrome({ mode = 'plain' }: { mode?: PlayerMode }) {
           {MODE_LABEL[mode] && <span className="topbar__mode">{MODE_LABEL[mode]}</span>}
         </div>
         <div className="topbar__nav">
-          <span className="topbar__counter" dir="ltr">
-            <span className="topbar__act" dir="rtl">
-              {act}
+          {mode !== 'study' && (
+            <span className="topbar__counter" dir="ltr">
+              <span className="topbar__stage" dir="rtl">
+                {stage}
+              </span>
+              {current} / {total}
             </span>
-            {current} / {total}
-          </span>
+          )}
           <button
             type="button"
             className="icon-btn"
@@ -94,26 +98,32 @@ export function Chrome({ mode = 'plain' }: { mode?: PlayerMode }) {
         </div>
       </header>
 
-      <nav className="bottomnav" aria-label={t('chrome.next')}>
-        <button
-          type="button"
-          className="bottomnav__btn"
-          onClick={() => dispatch({ type: 'prev' })}
-          disabled={!canPrev}
-          aria-label={t('chrome.prev')}
-        >
-          ›
-        </button>
-        <button
-          type="button"
-          className="bottomnav__btn"
-          onClick={() => dispatch({ type: 'next' })}
-          disabled={!canNext}
-          aria-label={t('chrome.next')}
-        >
-          ‹
-        </button>
-      </nav>
+      {mode === 'study' && <StageBar />}
+
+      {mode === 'study' ? (
+        <StudentNav />
+      ) : (
+        <nav className="bottomnav" aria-label={t('chrome.next')}>
+          <button
+            type="button"
+            className="bottomnav__btn"
+            onClick={() => dispatch({ type: 'prev' })}
+            disabled={!canPrev}
+            aria-label={t('chrome.prev')}
+          >
+            ›
+          </button>
+          <button
+            type="button"
+            className="bottomnav__btn"
+            onClick={() => dispatch({ type: 'next' })}
+            disabled={!canNext}
+            aria-label={t('chrome.next')}
+          >
+            ‹
+          </button>
+        </nav>
+      )}
 
       <GridOverview />
       {mode !== 'study' && <PresenterNotesDrawer />}

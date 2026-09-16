@@ -47,7 +47,7 @@ export function GridOverview() {
             }}
           >
             <span className="grid-thumb__meta">
-              {i + 1} · {scene.act}
+              {i + 1} · {scene.stage}
             </span>
             <span className="grid-thumb__title">{scene.title}</span>
           </button>
