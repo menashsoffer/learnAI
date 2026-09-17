@@ -8,7 +8,6 @@ const EDITABLE = new Set(['INPUT', 'TEXTAREA', 'SELECT']);
  *   ArrowLeft / Space / PageDown -> next     (visually forward in RTL)
  *   ArrowRight / PageUp          -> prev
  *   Esc -> toggle grid overlay (closes any open overlay first)
- *   N   -> toggle presenter notes
  *   F   -> toggle fullscreen
  */
 export function useKeyboardNav(enabled = true): void {
@@ -38,12 +37,6 @@ export function useKeyboardNav(enabled = true): void {
           e.preventDefault();
           if (overlay !== 'none') dispatch({ type: 'setOverlay', overlay: 'none' });
           else dispatch({ type: 'toggleOverlay', overlay: 'grid' });
-          break;
-        case 'n':
-        case 'N':
-        case 'מ': // same physical key on a Hebrew layout
-          e.preventDefault();
-          dispatch({ type: 'toggleOverlay', overlay: 'notes' });
           break;
         case 'f':
         case 'F':

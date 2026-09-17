@@ -55,6 +55,12 @@ const ctaBlock = z.object({
   note: z.string().optional(),
 });
 
+const qrBlock = z.object({
+  kind: z.literal('qr'),
+  href: z.string().url(),
+  caption: z.string().optional(),
+});
+
 const doNowBlock = z.object({
   kind: z.literal('do-now'),
   text: z.string().min(1).max(140, 'a do-now line must fit on a phone at a glance'),
@@ -149,6 +155,7 @@ const leafBlocks = [
   calloutBlock,
   examplePromptBlock,
   ctaBlock,
+  qrBlock,
   doNowBlock,
   conceptCardBlock,
   stepsBlock,

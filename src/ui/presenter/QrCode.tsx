@@ -9,7 +9,15 @@ import qrcode from 'qrcode-generator';
  * Rendered as inline SVG paths rather than a canvas or an image, so it stays crisp on a
  * projector at any size and needs no raster asset.
  */
-export function QrCode({ value, size = 220 }: { value: string; size?: number }) {
+export function QrCode({
+  value,
+  size = 220,
+  label = 'קוד סריקה לכניסת משתתפים',
+}: {
+  value: string;
+  size?: number;
+  label?: string;
+}) {
   const path = useMemo(() => {
     const qr = qrcode(0, 'M');
     qr.addData(value);
@@ -31,7 +39,7 @@ export function QrCode({ value, size = 220 }: { value: string; size?: number }) 
       height={size}
       viewBox={`-2 -2 ${path.count + 4} ${path.count + 4}`}
       role="img"
-      aria-label="קוד סריקה לכניסת משתתפים"
+      aria-label={label}
     >
       <rect x={-2} y={-2} width={path.count + 4} height={path.count + 4} fill="#fff" />
       <path d={path.d} fill="#000" shapeRendering="crispEdges" />

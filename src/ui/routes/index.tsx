@@ -8,7 +8,7 @@ import { NotFoundRoute } from './NotFoundRoute';
  * route IS the fragment. No clean-URL / SEO need (it's a PWA + an offline artifact).
  *
  *   /d/:deckId                    landing — two doors
- *   /d/:deckId/present/:slug      presenter view (guidance drawer, script, timer)
+ *   /d/:deckId/present/:slug      presenter view (guidance drawer, timer)
  *   /d/:deckId/study/:slug        participant activity companion
  *   /d/:deckId/:slug              neutral player (offline artifact / shared deep links)
  */

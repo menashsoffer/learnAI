@@ -4,6 +4,7 @@ import { SceneShell } from '../_shared/SceneShell';
 import { BlocksRenderer } from '@/blocks/BlocksRenderer';
 import type { Block } from '@/blocks/types';
 import { formatClock } from '@/engine';
+import { Icon } from '@/assets/icons/Icon';
 import { activitySchema, type ActivityData } from './schema';
 
 /**
@@ -15,12 +16,15 @@ import { activitySchema, type ActivityData } from './schema';
  * from the back. The steps and the prompt are on the participants' own screens, where they
  * can be copied — putting them here would just make the slide a document.
  */
-function Activity({ data, scene, api }: SceneProps<ActivityData>) {
+function Activity({ data, scene, api, active = true }: SceneProps<ActivityData>) {
   const { model, setTarget, toggle, reset } = api.timer;
 
+  // Arm the timer only when this scene becomes the active one — neighbours are pre-mounted and
+  // must not steal it. Deliberately NOT keyed on `model.target`: a presenter's ±adjust changes
+  // the target, and re-arming then would wipe a running countdown. `setTarget` is idempotent.
   useEffect(() => {
-    if (data.timeboxSeconds) setTarget(data.timeboxSeconds);
-  }, [data.timeboxSeconds, setTarget]);
+    if (active && data.timeboxSeconds) setTarget(data.timeboxSeconds);
+  }, [active, data.timeboxSeconds, setTarget]);
 
   return (
     <SceneShell scene={scene} className="activity">
@@ -37,24 +41,29 @@ function Activity({ data, scene, api }: SceneProps<ActivityData>) {
 
       {data.timeboxSeconds && (
         <div className={`inline-timer status-${model.status}`}>
-          <span className="inline-timer__clock" aria-live="polite">
+          <span className="inline-timer__clock mono" dir="ltr" aria-live="polite">
             {formatClock(model.seconds)}
           </span>
-          <button
-            type="button"
-            className="btn-action"
-            onClick={toggle}
-            disabled={model.status === 'done'}
-          >
-            {model.status === 'running'
-              ? '⏸ השהה'
-              : model.status === 'done'
-                ? '✔ הסתיים'
-                : '▶ התחל'}
-          </button>
-          <button type="button" className="btn-action btn-action--ghost" onClick={reset}>
-            איפוס
-          </button>
+          <div className="inline-timer__actions">
+            <button
+              type="button"
+              className="btn-action"
+              onClick={toggle}
+              disabled={model.status === 'done'}
+            >
+              <Icon
+                name={
+                  model.status === 'running' ? 'pause' : model.status === 'done' ? 'check' : 'play'
+                }
+                size={18}
+              />
+              {model.status === 'running' ? 'השהה' : model.status === 'done' ? 'הסתיים' : 'התחל'}
+            </button>
+            <button type="button" className="btn-action btn-action--ghost" onClick={reset}>
+              <Icon name="reset" size={18} />
+              איפוס
+            </button>
+          </div>
         </div>
       )}
     </SceneShell>

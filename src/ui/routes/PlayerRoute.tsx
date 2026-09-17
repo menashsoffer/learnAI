@@ -2,7 +2,6 @@ import { useMemo, useRef, useState } from 'react';
 import { Navigate, useParams } from 'react-router-dom';
 import { loadDeck, buildSlugIndex, resolveSlug } from '@/engine';
 import { getDeckRaw, DEFAULT_DECK_ID } from '@content/decks';
-import { participantDeck } from '@/ui/participant/participantDeck';
 import { PresentationProvider, type PlayerMode } from '@/react/PresentationProvider';
 import { useKeyboardNav } from '@/react/useKeyboardNav';
 import { useHashSync } from '@/react/useHashSync';
@@ -14,6 +13,8 @@ import { SceneStage } from '@/ui/player/SceneStage';
 import { GuidanceDrawer } from '@/ui/presenter/GuidanceDrawer';
 import { PreFlight } from '@/ui/presenter/PreFlight';
 import { validateDeckScenes } from '@/scenes/validateDeck';
+import { storage } from '@/persistence/storage';
+import { deckKey } from '@/persistence/namespace';
 
 /**
  * The deck shell, shared by all three entries:
@@ -25,11 +26,12 @@ export function PlayerRoute({ mode = 'plain' }: { mode?: PlayerMode }) {
   const { deckId = DEFAULT_DECK_ID, slug } = useParams();
   const raw = getDeckRaw(deckId);
 
-  const deck = useMemo(() => {
-    if (!raw) return null;
-    const full = loadDeck(raw);
-    return mode === 'study' ? participantDeck(full) : full;
-  }, [raw, mode]);
+  /**
+   * One deck for every entry. The participant view used to be a filtered subset, which made
+   * the phone's "08/12" disagree with the projector's "09/13" from the first skipped stage on.
+   * Every stage now carries participant content (guarded by participantParity.test.ts).
+   */
+  const deck = useMemo(() => (raw ? loadDeck(raw) : null), [raw]);
 
   const startIndexRef = useRef<number | null>(null);
   if (deck && startIndexRef.current === null) {
@@ -56,7 +58,15 @@ export function PlayerRoute({ mode = 'plain' }: { mode?: PlayerMode }) {
     }
   }, [deck]);
 
-  if (!deck) return <Navigate to={`/d/${DEFAULT_DECK_ID}`} replace />;
+  // Protect present mode if a presenter code is required
+  const isPresenterAuthorized = useMemo(() => {
+    if (!deck || mode !== 'present' || !deck.meta.presenterCode) return true;
+    return storage.getString(deckKey(deck.meta.id, 'presenterOk')) === '1';
+  }, [deck, mode]);
+
+  if (!deck || !isPresenterAuthorized) {
+    return <Navigate to={`/d/${deck?.meta.id ?? DEFAULT_DECK_ID}`} replace />;
+  }
 
   return (
     <PresentationProvider

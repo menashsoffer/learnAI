@@ -4,62 +4,118 @@
   overflow: hidden;
 }
 
+/**
+ * THE CLIMATE. Each slide's ground is its part's tint — barely coloured, like light through
+ * frosted glass. The card sits on it with an even margin.
+ */
 .slide {
   position: absolute;
   inset: 0;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: var(--s-6) var(--s-7);
+  background: var(--sec-tint);
+  padding: clamp(10px, 1.6vw, 24px);
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  transform: translate3d(0, 0, 0);
-  /* visibility flips to hidden only AFTER the fade-out completes. */
   transition:
     opacity var(--dur-mid) var(--ease-out),
-    transform var(--dur-mid) var(--ease-out),
     visibility 0s linear var(--dur-mid);
-  will-change: opacity, transform;
-  overflow-y: auto;
 }
-
 .slide--active {
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
-  transform: translate3d(0, 0, 0);
   z-index: 2;
   transition:
     opacity var(--dur-mid) var(--ease-out),
-    transform var(--dur-mid) var(--ease-out),
     visibility 0s linear 0s;
 }
-
-/* RTL: previous scene exits to the right, next waits on the left. */
-.slide--prev {
-  transform: translate3d(60px, 0, 0);
+.slide--prev,
+.slide--next {
   z-index: 1;
 }
-.slide--next {
-  transform: translate3d(-60px, 0, 0);
-  z-index: 1;
+
+/** THE CARD. White, generously rounded, lifted a fraction off its ground. */
+.leaf {
+  position: relative;
+  flex: 1;
+  min-inline-size: 0;
+  background: var(--leaf-base);
+  border-radius: var(--r-xl);
+  box-shadow: var(--shadow-leaf);
+  overflow: hidden;
+  transition: transform var(--dur-mid) var(--ease-out);
+}
+/* A scene drifts in from the side it came from — RTL: next arrives from the left. */
+.slide--prev .leaf {
+  transform: translate3d(24px, 0, 0);
+}
+.slide--next .leaf {
+  transform: translate3d(-24px, 0, 0);
+}
+:root[dir='ltr'] .slide--prev .leaf {
+  transform: translate3d(-24px, 0, 0);
+}
+:root[dir='ltr'] .slide--next .leaf {
+  transform: translate3d(24px, 0, 0);
+}
+
+.leaf__scroll {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: var(--s-5) clamp(24px, 4vw, 64px);
+}
+
+/* ---- Participant phone: no card on a card. The page is the surface. ---- */
+.slide--study {
+  padding: 0;
+  background: var(--surface-page);
+}
+.slide--study .leaf {
+  border-radius: 0;
+  box-shadow: none;
+  background: var(--surface-page);
+}
+.slide--study .leaf__scroll {
+  padding: var(--s-4) var(--s-4) 0;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .slide {
-    transition: opacity var(--dur-fast) ease;
+  .slide,
+  .leaf {
+    transition: opacity var(--dur-fast) linear;
+  }
+  .slide--prev .leaf,
+  .slide--next .leaf {
     transform: none !important;
   }
 }
 
 @media (max-width: 768px) {
-  .slide {
+  .slide:not(.slide--study) {
+    padding: 8px;
+  }
+  .leaf {
+    border-radius: var(--r-lg);
+  }
+  .leaf__scroll {
     padding: var(--s-5) var(--s-4);
   }
 }
-@media (max-width: 480px) {
+
+@media print {
   .slide {
-    padding: var(--s-4) var(--s-3);
+    background: none;
+    padding: 0;
+  }
+  .leaf,
+  .leaf__scroll {
+    position: static;
+    box-shadow: none;
+    transform: none !important;
   }
 }

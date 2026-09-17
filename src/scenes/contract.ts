@@ -24,6 +24,8 @@ export interface SceneProps<TData = unknown> {
   data: TData;
   scene: SceneMeta;
   api: SceneApi;
+  /** Whether this scene is the currently active slide in the presentation viewport. */
+  active?: boolean;
 }
 
 export interface SceneModule<TData = unknown> {

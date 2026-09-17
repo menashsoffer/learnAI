@@ -23,10 +23,10 @@ export const sceneRecordSchema = z.object({
   slug,
   type: z.string().min(1),
   stage: z.string().min(1),
+  /** The session part this stage belongs to — one divider tab, one hue. */
+  part: z.string().min(1).optional(),
   title: z.string().min(1),
   subtitle: z.string().optional(),
-  notes: z.string().optional(),
-  presenterScript: z.string().optional(),
   /** id of a built-in illustration (see src/assets/illustrations). */
   image: z.string().optional(),
   student: sceneStudentSchema.optional(),

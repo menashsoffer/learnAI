@@ -1,6 +1,6 @@
 /**
- * PRE-FLIGHT — the minute before the lecture. A full-screen overlay so it cannot be
- * half-read behind the deck, and `glance` sized: this is a laptop at arm's length.
+ * PRE-FLIGHT — the minute before the lecture, as grouped rounded lists. A
+ * full-screen overlay so it cannot be half-read behind the deck, `glance` sized.
  */
 .preflight {
   position: fixed;
@@ -8,35 +8,27 @@
   z-index: 100;
   overflow-y: auto;
   background: var(--surface-page);
-  padding: var(--s-6) var(--s-5) var(--s-8);
+  padding: var(--s-6) var(--s-6) 0;
   display: flex;
   flex-direction: column;
-  gap: var(--s-5);
+  gap: var(--s-6);
 }
 
 .preflight__head {
   max-inline-size: var(--content-max);
   margin-inline: auto;
   inline-size: 100%;
-  border-block-end: 2px solid var(--brand-line);
-  padding-block-end: var(--s-4);
 }
 .preflight__title {
-  font-size: var(--fs-600);
-  font-weight: 800;
-  color: var(--brand);
+  font-size: var(--fs-800);
+  font-weight: 700;
+  line-height: 1.05;
+  color: var(--text);
 }
 .preflight__sub {
   margin-block-start: var(--s-2);
   color: var(--text-muted);
-  font-size: var(--fs-300);
-}
-.preflight__slack {
-  color: var(--success);
-  font-weight: 700;
-}
-.preflight__slack--over {
-  color: var(--warning);
+  font-size: var(--fs-400);
 }
 
 .preflight__grid {
@@ -44,12 +36,17 @@
   margin-inline: auto;
   inline-size: 100%;
   display: grid;
-  gap: var(--s-6);
+  gap: var(--s-7);
   align-items: start;
 }
 @media (min-width: 900px) {
   .preflight__grid {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1fr);
+  }
+  /* The join card stays in view while the run sheet scrolls past it. */
+  .preflight__col:first-child {
+    position: sticky;
+    inset-block-start: 0;
   }
 }
 .preflight__col {
@@ -58,69 +55,89 @@
   gap: var(--s-4);
 }
 .preflight__h2 {
-  font-size: var(--fs-300);
-  font-weight: 800;
-  color: var(--text-muted);
-  letter-spacing: 0.03em;
+  font-size: var(--fs-400);
+  font-weight: 600;
+  color: var(--text);
 }
 
-/* The prep list. The required items are what actually sink a lecture, so they look it. */
-.preflight__prep {
-  list-style: none;
+/* How the room gets in: the code big enough to scan from a seat, the link under it. */
+.preflight__join-card {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  gap: var(--s-4);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: var(--s-5);
+  text-align: center;
+}
+.preflight__join-qr {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   gap: var(--s-2);
 }
-.preflight__prep-item {
-  display: flex;
-  gap: var(--s-3);
-  align-items: flex-start;
-  padding: var(--s-3);
-  border: 1px solid var(--border);
-  border-radius: var(--r-sm);
-  background: var(--surface);
-}
-.preflight__prep-item--req {
-  border-inline-start: 4px solid var(--warning);
-  background: var(--warning-soft);
-}
-.preflight__prep-flag {
-  flex: none;
-  font-size: var(--fs-100);
-  font-weight: 800;
-  color: var(--warning);
-  padding-block-start: 0.15em;
-}
-.preflight__prep-flag--opt {
-  color: var(--text-dim);
-}
-.preflight__prep-label {
-  font-weight: 600;
+.preflight__qr-caption {
   font-size: var(--fs-200);
-  line-height: var(--lh-normal);
-}
-.preflight__prep-note {
-  margin-block-start: var(--s-1);
-  font-size: var(--fs-100);
   color: var(--text-muted);
 }
-
-.preflight__qr {
+.preflight__join-body {
   display: flex;
   flex-direction: column;
-  gap: var(--s-3);
-  align-items: flex-start;
+  align-items: center;
+  gap: var(--s-2);
+  inline-size: 100%;
+  padding-block-start: var(--s-4);
+  border-block-start: 1px solid var(--border);
 }
+.preflight__join-label {
+  font-size: var(--fs-200);
+  font-weight: 600;
+  color: var(--text-muted);
+}
+.preflight__join-url {
+  font-size: var(--fs-100);
+  background: var(--surface-sunken);
+  border: 1px solid var(--border-strong);
+  padding: 0.35rem 0.65rem;
+  border-radius: var(--r-md);
+  color: var(--text);
+  word-break: break-all;
+  user-select: all;
+  max-inline-size: 100%;
+}
+.preflight__join-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--s-2);
+  margin-block-start: var(--s-1);
+}
+
 .qr {
-  border: 1px solid var(--border);
-  border-radius: var(--r-sm);
+  border-radius: var(--r-md);
   background: #fff;
   padding: var(--s-2);
+  box-shadow: var(--shadow-1);
 }
-.preflight__qr-note {
-  font-size: var(--fs-100);
-  color: var(--text-muted);
-  max-inline-size: 30ch;
+
+/* The whole session to scale, as a row of divider tabs. */
+.preflight__bar {
+  display: flex;
+  gap: 4px;
+  block-size: 14px;
+  align-items: center;
+}
+.preflight__bar-tab {
+  flex-basis: 0;
+  min-inline-size: 6px;
+  block-size: 100%;
+  background: var(--sec-accent);
+  border-radius: var(--r-pill);
+}
+.preflight__bar-tab.is-optional {
+  opacity: 0.45;
 }
 
 /* Two bare numbers per row need labelling, or the reader guesses which is which. */
@@ -128,48 +145,55 @@
   display: grid;
   grid-template-columns: 3.5rem 1fr 2.5rem;
   gap: var(--s-3);
-  padding-inline: var(--s-4);
+  padding-inline: var(--s-3);
   padding-block-end: var(--s-1);
   font-size: var(--fs-100);
-  font-weight: 700;
-  color: var(--text-dim);
+  font-weight: 500;
+  color: var(--text-muted);
 }
 .preflight__run-head > :last-child {
   text-align: end;
 }
 
-/* The run: the whole shape of the session, in one column. */
 .preflight__run {
   list-style: none;
   display: flex;
   flex-direction: column;
-  border: 1px solid var(--border);
-  border-radius: var(--r-md);
-  overflow: hidden;
   background: var(--surface);
+  border-radius: var(--r-lg);
+  overflow: hidden;
 }
 .preflight__stage {
+  position: relative;
   display: grid;
   grid-template-columns: 3.5rem 1fr 2.5rem;
   gap: var(--s-3);
   align-items: baseline;
-  padding: var(--s-3) var(--s-4);
+  padding: var(--s-2) var(--s-3);
   border-block-end: 1px solid var(--border);
-  font-size: var(--fs-200);
+  font-size: var(--fs-300);
+}
+/* Each row carries its part's colour as a small dot beside the name. */
+.preflight__stage-name::before {
+  content: '';
+  flex: none;
+  inline-size: 8px;
+  block-size: 8px;
+  border-radius: 50%;
+  background: var(--sec-accent);
 }
 .preflight__stage:last-child {
   border-block-end: 0;
 }
-.preflight__stage.is-optional {
-  background: var(--surface-sunken);
+.preflight__stage.is-optional .preflight__stage-name {
+  color: var(--text-muted);
 }
 .preflight__stage-min {
   color: var(--text-dim);
-  font-variant-numeric: tabular-nums;
-  font-size: var(--fs-100);
+  font-size: var(--fs-200);
 }
 .preflight__stage-name {
-  font-weight: 600;
+  font-weight: 500;
   display: flex;
   align-items: center;
   gap: var(--s-2);
@@ -177,31 +201,53 @@
 }
 .preflight__stage-tag {
   font-size: var(--fs-100);
-  font-weight: 700;
+  font-weight: 500;
   color: var(--text-muted);
   background: var(--surface-sunken);
-  border: 1px solid var(--border);
   border-radius: var(--r-pill);
   padding-inline: var(--s-2);
 }
 .preflight__stage-budget {
   text-align: end;
-  font-variant-numeric: tabular-nums;
   font-weight: 700;
-  color: var(--brand);
+  color: var(--text);
 }
 
 .preflight__actions {
-  max-inline-size: var(--content-max);
+  position: sticky;
+  inset-block-end: 0;
   margin-inline: auto;
-  inline-size: 100%;
+  inline-size: calc(100% + 2 * var(--s-6));
+  margin-inline: calc(-1 * var(--s-6));
   display: flex;
+  justify-content: center;
   gap: var(--s-3);
   flex-wrap: wrap;
-  padding-block-start: var(--s-4);
+  align-items: center;
+  padding: var(--s-4) var(--s-6) calc(var(--s-4) + env(safe-area-inset-bottom, 0px));
+  background: var(--surface-glass);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
   border-block-start: 1px solid var(--border);
+  z-index: 10;
+  margin-block-start: auto;
 }
 .preflight__start {
   font-size: var(--fs-400);
+  min-block-size: 56px;
   padding-inline: var(--s-7);
+}
+
+@media (max-width: 640px) {
+  .preflight {
+    padding: var(--s-5) var(--s-4) 0;
+  }
+  .preflight__actions {
+    inline-size: calc(100% + 2 * var(--s-4));
+    margin-inline: calc(-1 * var(--s-4));
+    padding-inline: var(--s-4);
+  }
+  .preflight__title {
+    font-size: var(--fs-700);
+  }
 }

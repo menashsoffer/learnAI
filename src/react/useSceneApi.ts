@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { usePresentationContext, usePresentation } from './PresentationProvider';
 import { useOnline } from './env';
 import type { SceneApi } from '@/scenes/contract';
@@ -9,16 +9,22 @@ export function useSceneApi(): SceneApi {
   const timerModel = usePresentation((s) => s.timer);
   const online = useOnline();
 
+  const setTarget = useCallback(
+    (seconds: number) => store.getState().dispatch({ type: 'timer/setTarget', target: seconds }),
+    [store],
+  );
+  const toggle = useCallback(() => store.getState().dispatch({ type: 'timer/toggle' }), [store]);
+  const reset = useCallback(() => store.getState().dispatch({ type: 'timer/reset' }), [store]);
+
   return useMemo<SceneApi>(() => {
-    const { dispatch } = store.getState();
     return {
       online,
       timer: {
         model: timerModel,
-        setTarget: (seconds: number) => dispatch({ type: 'timer/setTarget', target: seconds }),
-        toggle: () => dispatch({ type: 'timer/toggle' }),
-        reset: () => dispatch({ type: 'timer/reset' }),
+        setTarget,
+        toggle,
+        reset,
       },
     };
-  }, [store, timerModel, online]);
+  }, [online, timerModel, setTarget, toggle, reset]);
 }

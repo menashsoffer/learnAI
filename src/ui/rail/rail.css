@@ -1,0 +1,120 @@
+/**
+ * TAB RAIL. One capsule per stage, as long as its minutes, in its part's soft colour. The
+ * stage you are on widens and fills with the accent. Parts are separated by a larger gap, so
+ * the rail reads as seven groups, not thirteen stripes.
+ */
+.rail {
+  display: flex;
+  gap: 3px;
+}
+.rail__tab {
+  all: unset;
+  box-sizing: border-box;
+  position: relative;
+  flex: var(--grow, 1) 1 0;
+  min-block-size: 0;
+  min-inline-size: 0;
+  background: var(--sec);
+  color: var(--on-sec);
+  border-radius: var(--r-pill);
+  cursor: pointer;
+  transition:
+    inline-size var(--dur-mid) var(--ease-out),
+    background var(--dur-fast) var(--ease-out),
+    opacity var(--dur-fast) var(--ease-out);
+}
+.rail__tab.is-past {
+  opacity: 0.55;
+}
+.rail__tab.is-skipped {
+  opacity: 0.3;
+}
+.rail__tab:hover {
+  opacity: 1;
+  background: color-mix(in srgb, var(--sec), var(--sec-accent) 35%);
+}
+.rail__tab:focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 2px;
+  z-index: 2;
+}
+
+/* ---- Vertical: down the left edge. ---- */
+.rail--vertical {
+  flex-direction: column;
+  align-items: center;
+  inline-size: var(--rail-w);
+}
+.rail--vertical .rail__tab {
+  inline-size: 10px;
+}
+.rail--vertical .rail__tab.is-part-start {
+  margin-block-start: 8px;
+}
+.rail--vertical .rail__tab:hover {
+  inline-size: 14px;
+}
+/* The stage you are on: wider, accent-filled, and it carries its minutes and part. */
+.rail--vertical .rail__tab.is-current {
+  inline-size: 30px;
+  flex-shrink: 0;
+  background: var(--sec-accent);
+  color: var(--c-ink);
+  /* Never shorter than its own lettering. Sized from the label's length: `max-content` does
+     not resolve reliably across the vertical writing mode. */
+  min-block-size: calc(2.6rem + var(--label-len, 6) * 0.68rem);
+  z-index: 1;
+}
+.rail__label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--s-2);
+  padding: var(--s-3) 0;
+  line-height: 1;
+}
+.rail__min {
+  font-size: 0.68rem;
+  font-weight: 500;
+}
+.rail__part {
+  writing-mode: vertical-rl;
+  font-size: 0.9rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+/* Running long: a soft coral ring until the presenter catches up. Calm, never alarming. */
+.rail__tab.is-current.is-behind {
+  box-shadow:
+    0 0 0 3px var(--surface-page),
+    0 0 0 6px var(--hue-orange-accent);
+}
+
+/* ---- Horizontal: along the head of a phone screen. ---- */
+.rail--horizontal {
+  flex-direction: row;
+  align-items: center;
+  block-size: 8px;
+}
+.rail--horizontal .rail__tab {
+  block-size: 4px;
+}
+.rail--horizontal .rail__tab.is-part-start {
+  margin-inline-start: 5px;
+}
+.rail--horizontal .rail__tab.is-current {
+  block-size: 8px;
+  background: var(--sec-accent);
+}
+/* A 4px capsule is a picture, not a target: give each tab a thumb-sized hit area. */
+.rail--horizontal .rail__tab::after {
+  content: '';
+  position: absolute;
+  inset: -10px 0 -14px;
+}
+
+@media print {
+  .rail {
+    display: none !important;
+  }
+}

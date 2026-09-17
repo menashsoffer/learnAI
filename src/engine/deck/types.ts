@@ -31,12 +31,13 @@ export interface SceneMeta {
    * on the participant's stage bar, which is how someone who looked away re-anchors.
    */
   stage: string;
+  /**
+   * The session part this stage belongs to ("פרומפטינג", "בנייה"). Consecutive stages that
+   * share a part share one divider hue. Falls back to the stage label's first word.
+   */
+  part?: string;
   title: string;
   subtitle?: string;
-  /** Presenter cue — shown in `present` mode only, never to participants. */
-  notes?: string;
-  /** Longer presenter script ("what to say"). Present mode only. */
-  presenterScript?: string;
   /** id of a built-in illustration (see src/assets/illustrations). */
   image?: string;
   /** Participant-facing companion content (study mode). */

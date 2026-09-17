@@ -1,7 +1,8 @@
 import { describe, it, expect } from 'vitest';
 import { blocksSchema } from './schema';
-import { assemblePrompt } from './interactive';
+import { assemblePrompt, assembleSegments } from './interactive';
 import type { PromptBuilderBlock } from './types';
+import deckRaw from '@content/decks/ai-cadets-2026/deck.json';
 
 const ok = (blocks: unknown[]) => blocksSchema.safeParse(blocks).success;
 const why = (blocks: unknown[]) => {
@@ -92,10 +93,46 @@ describe('assemblePrompt', () => {
     );
   });
 
-  it('leaves an EMPTY field visible as its label, so the gap is obvious', () => {
+  it('leaves an EMPTY field with no example visible as its label', () => {
     expect(assemblePrompt(block, { role: 'מנהל קהילה', task: '   ' })).toBe(
       'אתה מנהל קהילה.\nמשימה: [משימה].',
     );
+  });
+
+  const withExamples: PromptBuilderBlock = {
+    ...block,
+    fields: [
+      { id: 'role', label: 'תפקיד', placeholder: 'מנהל קשרי קהילה' },
+      { id: 'task', label: 'משימה', placeholder: 'נסח מכתב הסברה' },
+    ],
+  };
+
+  it('an untouched builder copies the FULL example prompt, never bare [label] tags', () => {
+    expect(assemblePrompt(withExamples, {})).toBe('אתה מנהל קשרי קהילה.\nמשימה: נסח מכתב הסברה.');
+  });
+
+  it('fills only the empty fields from the example, keeping what was typed', () => {
+    expect(assemblePrompt(withExamples, { role: 'גזבר הרשות', task: '' })).toBe(
+      'אתה גזבר הרשות.\nמשימה: נסח מכתב הסברה.',
+    );
+  });
+
+  it('marks example segments so the preview can show they are not typed yet', () => {
+    const segs = assembleSegments(withExamples, { role: 'גזבר הרשות' });
+    expect(segs.filter((s) => s.source === 'typed').map((s) => s.text)).toEqual(['גזבר הרשות']);
+    expect(segs.filter((s) => s.source === 'example').map((s) => s.text)).toEqual([
+      'נסח מכתב הסברה',
+    ]);
+  });
+});
+
+describe('the practice-basic builder in the real deck', () => {
+  it('produces a runnable prompt with zero typing — the "תקועים?" path', () => {
+    const scene = deckRaw.scenes.find((s) => s.id === 'practice-basic')!;
+    const p = (scene.data as { prompt: Omit<PromptBuilderBlock, 'kind' | 'id'> }).prompt;
+    const out = assemblePrompt({ kind: 'prompt-builder', id: 'x', ...p }, {});
+    expect(out).not.toMatch(/\[/);
+    expect(out).toContain('גינת כלבים');
   });
 });
 

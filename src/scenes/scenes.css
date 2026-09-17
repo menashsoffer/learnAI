@@ -1,77 +1,161 @@
-/* ---- hero ---- */
+/* ---- hero: a part title page ---- */
 .hero {
-  gap: var(--s-6);
-  justify-content: center;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    'text art'
+    'foot foot';
+  align-items: center;
+  column-gap: var(--s-7);
+  row-gap: var(--s-6);
 }
-.hero__badge {
-  background: var(--brand-soft);
-  color: var(--brand);
-  border-radius: var(--r-pill);
-  padding: 0.4rem 1.1rem;
-  font-weight: 600;
-  font-size: var(--fs-200);
+.hero__text {
+  grid-area: text;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+  min-width: 0;
+}
+.hero__art {
+  grid-area: art;
 }
 .hero__title {
   font-family: var(--font-head);
   font-size: var(--fs-800);
-  font-weight: 800;
-  line-height: var(--lh-tight);
-  color: var(--brand);
-  max-width: 20ch;
+  font-weight: 700;
+  line-height: 1.02;
+  color: var(--text);
+  max-width: 16ch;
 }
 .hero__subtitle {
+  font-family: var(--font-read);
   font-size: var(--fs-500);
+  font-weight: 300;
+  line-height: 1.25;
   color: var(--text-muted);
 }
 .hero__motto {
+  align-self: flex-start;
   font-size: var(--fs-400);
-  font-weight: 600;
-  color: var(--brand);
-  background: var(--brand-soft);
-  border: 1px solid var(--border);
-  border-radius: var(--r-md);
-  padding: 0.75rem 1.5rem;
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--text);
 }
+.hero__foot {
+  grid-area: foot;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--s-4);
+  flex-wrap: wrap;
+}
+
+/* The day's deliverables, each a soft capsule in its own climate. */
 .hero__highlights {
+  list-style: none;
   display: flex;
   gap: var(--s-2);
   flex-wrap: wrap;
-  justify-content: center;
 }
 .hero__chip {
-  font-size: var(--fs-200);
+  --chip: var(--hue-yellow);
+  --chip-on: var(--hue-yellow-on);
+  --chip-dot: var(--hue-yellow-accent);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  padding: var(--s-2) var(--s-4);
+  background: var(--chip);
+  color: var(--chip-on);
+  font-size: var(--fs-300);
   font-weight: 600;
-  color: var(--brand);
-  background: var(--surface);
-  border: 1px solid var(--border-strong);
+  line-height: 1.1;
   border-radius: var(--r-pill);
-  padding: 0.3rem 0.9rem;
+}
+.hero__chip:nth-child(4n + 2) {
+  --chip: var(--hue-orange);
+  --chip-on: var(--hue-orange-on);
+  --chip-dot: var(--hue-orange-accent);
+}
+.hero__chip:nth-child(4n + 3) {
+  --chip: var(--hue-teal);
+  --chip-on: var(--hue-teal-on);
+  --chip-dot: var(--hue-teal-accent);
+}
+.hero__chip:nth-child(4n + 4) {
+  --chip: var(--hue-ultramarine);
+  --chip-on: var(--hue-ultramarine-on);
+  --chip-dot: var(--hue-ultramarine-accent);
+}
+.hero__chip-n {
+  display: grid;
+  place-items: center;
+  inline-size: 1.5em;
+  block-size: 1.5em;
+  border-radius: 50%;
+  background: var(--chip-dot);
+  color: var(--c-ink);
+  font-size: 0.62em;
+  font-weight: 500;
+}
+.hero__badge {
+  font-size: var(--fs-200);
+  font-weight: 500;
+  color: var(--text-muted);
+  padding: var(--s-1) var(--s-4);
+  background: var(--surface-inset);
+  border-radius: var(--r-pill);
 }
 
-/* ---- inline work timer (build steps) ---- */
+/* A hero with no deliverables and no figure is a single statement: set it alone. */
+.hero:not(:has(.hero__art)) {
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas:
+    'text'
+    'foot';
+}
+
+/* ---- inline work timer (the projected half of an activity) ---- */
 .inline-timer {
   display: flex;
   align-items: center;
-  gap: var(--s-3);
+  gap: var(--s-5);
   align-self: flex-start;
-  background: var(--surface);
-  border: 2px solid var(--brand);
-  border-radius: var(--r-md);
-  padding: var(--s-3) var(--s-4);
-  box-shadow: var(--shadow-1);
+  background: var(--surface-inset);
+  border-radius: var(--r-lg);
+  padding: var(--s-3) var(--s-3) var(--s-3) var(--s-5);
+  transition: background var(--dur-mid) var(--ease-out);
 }
-.inline-timer.status-done {
-  border-color: var(--success);
+:root[dir='rtl'] .inline-timer {
+  padding: var(--s-3) var(--s-5) var(--s-3) var(--s-3);
 }
 .inline-timer__clock {
-  font-size: clamp(1.8rem, 5vw, 2.6rem);
-  font-weight: 800;
-  font-variant-numeric: tabular-nums;
-  color: var(--brand);
-  letter-spacing: 0.03em;
+  font-size: clamp(2.2rem, 5vw, 3.6rem);
+  font-weight: 400;
+  line-height: 1;
+  color: var(--text);
+  min-inline-size: 5ch;
+}
+.inline-timer.status-running {
+  background: var(--sec);
+}
+.inline-timer.status-running .inline-timer__clock {
+  color: var(--on-sec);
+}
+.inline-timer.status-done {
+  background: var(--danger-soft);
 }
 .inline-timer.status-done .inline-timer__clock {
-  color: var(--success);
+  color: var(--danger);
+}
+.inline-timer__actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+}
+/* The timer is already a grey well; its secondary button needs the card colour to show. */
+.inline-timer .btn-action--ghost {
+  background: var(--surface);
 }
 
 /**
@@ -81,62 +165,73 @@
 .concept__why {
   display: flex;
   flex-direction: column;
-  gap: var(--s-1);
-  align-self: flex-start;
-  border-inline-start: 4px solid var(--brand-line);
-  padding-inline-start: var(--s-4);
-  font-size: var(--fs-400);
-  font-weight: 600;
-  line-height: var(--lh-tight);
-  color: var(--text);
-  text-wrap: balance;
+  gap: var(--s-2);
+  padding: var(--s-4) var(--s-5);
+  background: var(--sec-tint);
+  border-radius: var(--r-lg);
 }
 .concept__why-label {
+  align-self: flex-start;
+  padding: 0.15rem 0.7rem;
+  background: var(--sec);
+  color: var(--on-sec);
   font-size: var(--fs-100);
-  font-weight: 800;
-  letter-spacing: 0.03em;
-  color: var(--text-muted);
+  font-weight: 600;
+  border-radius: var(--r-pill);
+}
+.concept__why-text {
+  font-family: var(--font-read);
+  font-size: var(--fs-400);
+  font-weight: 500;
+  line-height: 1.35;
+  color: var(--text);
+  text-wrap: balance;
 }
 
 /**
  * PROMPT-BOARD — one prompt, held steady while the presenter demonstrates in the real tool.
- * Nothing else on the slide. The room should be reading the prompt, not the deck.
+ * The components being pointed at are marked in the part's soft colour.
  */
 .prompt-board {
-  gap: var(--s-5);
-  max-inline-size: min(60ch, 92%);
-  /* This slide exists to be READ from the back of the room while the presenter drives the
-     real tool. Nothing competes with it, so it gets the room's full attention and a size
-     to match — at --fs-500 it measured 43px on a 1440 projector, which is marginal at 8m. */
   justify-content: center;
+  align-items: stretch;
+  max-inline-size: min(64ch, 100%);
+  gap: var(--s-4);
+}
+.prompt-board__sheet {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+  background: var(--surface-inset);
+  border-radius: var(--r-xl);
+  padding: var(--s-5) var(--s-6) var(--s-6);
 }
 .prompt-board__label {
+  align-self: flex-start;
+  padding: 0.2rem 0.85rem;
+  background: var(--sec);
+  color: var(--on-sec);
   font-size: var(--fs-200);
-  font-weight: 800;
-  letter-spacing: 0.04em;
-  color: var(--text-muted);
+  font-weight: 600;
+  border-radius: var(--r-pill);
 }
 .prompt-board__text {
   white-space: pre-wrap;
+  font-family: var(--font-read);
   font-size: var(--fs-600);
   line-height: 1.5;
-  font-weight: 500;
+  font-weight: 400;
   color: var(--text);
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-inline-start: 6px solid var(--brand-line);
-  border-radius: var(--r-md);
-  padding: var(--s-5) var(--s-6);
-  box-shadow: var(--shadow-1);
   text-align: start;
 }
 .prompt-board__mark {
-  background: var(--action-soft);
-  color: var(--text);
-  border-block-end: 3px solid var(--action);
-  border-radius: 3px;
-  padding-inline: 0.15em;
-  font-weight: 700;
+  background: var(--sec);
+  color: var(--on-sec);
+  border-radius: 0.3em;
+  padding-inline: 0.2em;
+  font-weight: 600;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
 }
 .prompt-board__caption {
   font-size: var(--fs-300);
@@ -147,38 +242,26 @@
 /* ACTIVITY (projected half) — the imperative, big enough to read from the back. */
 .activity__donow {
   font-size: var(--fs-500);
-  font-weight: 700;
-  line-height: var(--lh-tight);
+  font-weight: 600;
+  line-height: 1.2;
   color: var(--text);
-  border-inline-start: 6px solid var(--action);
-  padding-inline-start: var(--s-4);
   text-wrap: balance;
 }
 
 /**
  * PROJECTOR FIT. A projected slide has no scrollbar — content that overflows is simply not
- * seen, and the presenter has no way to know. Tables and dense blocks therefore tighten at
- * `project` distance rather than being allowed to run past the bottom edge.
+ * seen, and the presenter has no way to know. Dense blocks tighten at `project` distance.
  */
 :root[data-distance='project'] .blk-table :is(th, td) {
   padding: var(--s-2) var(--s-3);
 }
-:root[data-distance='project'] .concept__why {
+:root[data-distance='project'] .concept__why-text {
   font-size: var(--fs-300);
 }
 
-/**
- * Hero at projector height. The opening carries a mark, a badge, a title, a subtitle, a
- * motto and four chips — on a 16:9 projector at 810px that is more than fits. The title
- * stays commanding; the stacking gaps and the supporting furniture give up the room.
- */
 :root[data-distance='project'] {
   & .hero {
-    gap: var(--s-4);
-  }
-  & .hero__badge {
-    font-size: var(--fs-100);
-    padding: 0.25rem 0.9rem;
+    row-gap: var(--s-5);
   }
   & .hero__subtitle {
     font-size: var(--fs-400);
@@ -187,14 +270,39 @@
     font-size: var(--fs-300);
   }
   & .hero__chip {
-    font-size: var(--fs-100);
+    font-size: var(--fs-200);
   }
-  & .scene-illustration {
-    max-block-size: 22vh;
+  & .hero .illus {
+    max-block-size: 30vh;
+    width: clamp(130px, 18vw, 260px);
   }
-
-  /* The projected half of an activity: the do-now is the anchor, the board supports it. */
   & .activity__donow {
     font-size: var(--fs-400);
+  }
+}
+
+@media (max-width: 760px) {
+  :root .hero__title {
+    font-size: clamp(2.4rem, 11vw, 3.4rem);
+  }
+  .hero {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      'art'
+      'text'
+      'foot';
+    row-gap: var(--s-4);
+  }
+  .hero__art {
+    justify-self: start;
+  }
+  .hero__chip {
+    min-inline-size: 0;
+  }
+  .inline-timer {
+    flex-wrap: wrap;
+  }
+  .inline-timer__actions {
+    flex-direction: row;
   }
 }

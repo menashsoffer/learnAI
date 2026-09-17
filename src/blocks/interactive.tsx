@@ -24,14 +24,49 @@ function usePersisted<T>(key: string, initial: T): [T, (v: T) => void] {
   return [value, set];
 }
 
-/** Assemble `{field}` placeholders. An unfilled field leaves its label as a visible gap. */
-export function assemblePrompt(block: PromptBuilderBlock, values: Record<string, string>): string {
-  return block.template.replace(/\{([a-z0-9-]+)\}/g, (_, id: string) => {
-    const v = values[id]?.trim();
-    if (v) return v;
+export interface PromptSegment {
+  text: string;
+  /** `typed` — the participant's own words · `example` — the field's placeholder standing in
+   *  for an empty field · `gap` — empty, with no example to fall back on · `literal` — template. */
+  source: 'literal' | 'typed' | 'example' | 'gap';
+}
+
+/**
+ * Assemble `{field}` placeholders into segments.
+ *
+ * An empty field falls back to its placeholder — the worked example the participant already
+ * sees greyed out in the box. The activity floor must run unedited, and the "תקועים?" advice
+ * is literally "copy it as it is": an untouched builder therefore has to produce the full
+ * example prompt, not a row of `[label]` tags. Only a field with no example is left as a gap.
+ */
+export function assembleSegments(
+  block: PromptBuilderBlock,
+  values: Record<string, string>,
+): PromptSegment[] {
+  const segments: PromptSegment[] = [];
+  let last = 0;
+  for (const m of block.template.matchAll(/\{([a-z0-9-]+)\}/g)) {
+    if (m.index > last)
+      segments.push({ text: block.template.slice(last, m.index), source: 'literal' });
+    const id = m[1]!;
     const field = block.fields.find((f) => f.id === id);
-    return `[${field?.label ?? id}]`;
-  });
+    const typed = values[id]?.trim();
+    const example = field?.placeholder?.trim();
+    if (typed) segments.push({ text: typed, source: 'typed' });
+    else if (example) segments.push({ text: example, source: 'example' });
+    else segments.push({ text: `[${field?.label ?? id}]`, source: 'gap' });
+    last = m.index + m[0].length;
+  }
+  if (last < block.template.length)
+    segments.push({ text: block.template.slice(last), source: 'literal' });
+  return segments;
+}
+
+/** The copyable prompt — exactly the text of the preview. */
+export function assemblePrompt(block: PromptBuilderBlock, values: Record<string, string>): string {
+  return assembleSegments(block, values)
+    .map((s) => s.text)
+    .join('');
 }
 
 export function PromptBuilder({ block }: { block: PromptBuilderBlock }) {
@@ -43,7 +78,9 @@ export function PromptBuilder({ block }: { block: PromptBuilderBlock }) {
     `promptDraft:${block.id}`,
     initial,
   );
-  const assembled = assemblePrompt(block, values);
+  const segments = assembleSegments(block, values);
+  const assembled = segments.map((s) => s.text).join('');
+  const usesExample = segments.some((s) => s.source === 'example');
   const { state: copyState, copy } = useCopy();
   const out = useRef<HTMLParagraphElement>(null);
   const filled = block.fields.filter((f) => values[f.id]?.trim()).length;
@@ -83,8 +120,21 @@ export function PromptBuilder({ block }: { block: PromptBuilderBlock }) {
           </button>
         </div>
         <p className="blk-builder__assembled" ref={out} dir="rtl">
-          {assembled}
+          {segments.map((s, i) =>
+            s.source === 'example' || s.source === 'gap' ? (
+              <span key={i} className={`blk-builder__seg is-${s.source}`}>
+                {s.text}
+              </span>
+            ) : (
+              s.text
+            ),
+          )}
         </p>
+        {usesExample && (
+          <p className="blk-builder__fallback">
+            שדה ריק? הדוגמה האפורה נכנסת במקומו — אפשר להעתיק כבר עכשיו.
+          </p>
+        )}
       </div>
       {block.hint && <p className="blk-builder__hint">{block.hint}</p>}
     </div>
@@ -141,7 +191,6 @@ export function DoNow({ block }: { block: DoNowBlock }) {
 
   return (
     <div className="blk-donow">
-      <span className="blk-donow__tag">עכשיו</span>
       <p className="blk-donow__text">{block.text}</p>
       {total > 0 && (
         <div className={`blk-donow__box${left === 0 ? ' is-done' : ''}`}>
