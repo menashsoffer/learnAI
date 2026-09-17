@@ -29,6 +29,11 @@ export function partOf(scene: Pick<SceneMeta, 'part' | 'stage'>): string {
   return scene.stage.split(/[·#]/)[0]?.trim() || scene.stage;
 }
 
+/** The stage label, unless it only repeats its part's name (פתיחה · פתיחה). */
+export function stageDetail(scene: Pick<SceneMeta, 'stage'>, partName: string): string | undefined {
+  return scene.stage && scene.stage !== partName ? scene.stage : undefined;
+}
+
 export interface Part {
   name: string;
   hue: Hue;

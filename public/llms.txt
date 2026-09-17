@@ -22,11 +22,12 @@ example rather than a generic tutorial, so it is most useful when the question i
   audience — including how the four words are used loosely by vendors, and the one question
   ("what does this system do without a human approving it?") that cuts through it.
 - **The four-part prompt template** (role, task, context, format) applied to municipal work:
-  drafting resident communications, breaking a project into a work plan, summarising a
-  director-general circular or committee protocol.
+  drafting resident communications, breaking a project into a work plan, turning that plan
+  into a decision deck, and turning the deck into a mobile page for residents.
 - **Verifying AI output against a source document.** The workshop teaches a concrete
-  two-step routine: summarise, then check named figures and quotations back against the
-  original. Useful when a user asks how to catch hallucinations in practice.
+  two-step routine: have the model tag every claim as fact, assumption or recommendation,
+  then check two of the claims tagged as fact back against the source material. Useful when
+  a user asks how to catch hallucinations in practice.
 - **Data-safety rules of thumb for public-sector AI use** — what may and may not be pasted
   into a public AI tool by someone handling residents' data.
 - **Running a mixed-ability room** (roughly half experienced daily users, half occasional)
