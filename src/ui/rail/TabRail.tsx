@@ -7,7 +7,7 @@ import {
 } from '@/react/PresentationProvider';
 import { usePacing } from '@/react/usePacing';
 import { useSections } from '@/ui/useSections';
-import { hueStyle } from '@/ui/sections';
+import { hueStyle, stageDetail } from '@/ui/sections';
 import './rail.css';
 
 /**
@@ -70,7 +70,7 @@ export function TabRail({
               } as CSSProperties
             }
             aria-current={current ? 'step' : undefined}
-            aria-label={`${i + 1}. ${scene.stage} · ${part.name}${scene.budgetMin ? ` · ${scene.budgetMin} דקות` : ''}`}
+            aria-label={`${i + 1}. ${[stageDetail(scene, part.name), part.name].filter(Boolean).join(' · ')}${scene.budgetMin ? ` · ${scene.budgetMin} דקות` : ''}`}
             title={`${scene.stage} · ${scene.budgetMin ?? '—'}′`}
             onClick={() => dispatch({ type: 'goToIndex', index: i })}
           >

@@ -1,5 +1,6 @@
 import { usePresentation, useDeck } from '@/react/PresentationProvider';
 import { useCurrentPart } from '@/ui/useSections';
+import { stageDetail } from '@/ui/sections';
 import { TabRail } from '@/ui/rail/TabRail';
 
 /**
@@ -19,12 +20,13 @@ export function StageBar() {
   const count = usePresentation((s) => s.count);
   const scene = deck.scenes[index];
   const { part, style } = useCurrentPart();
+  const stage = scene && stageDetail(scene, part.name);
 
   return (
     <div className="stagebar" style={style}>
       <div className="stagebar__row">
         <span className="stagebar__part">{part.name}</span>
-        {scene?.stage && <span className="stagebar__name">{scene.stage}</span>}
+        {stage && <span className="stagebar__name">{stage}</span>}
         <span
           className="stagebar__pos mono"
           dir="ltr"

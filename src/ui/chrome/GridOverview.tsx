@@ -3,7 +3,7 @@ import { usePresentation, useDeck, useEngineDispatch } from '@/react/Presentatio
 import { t } from '@/i18n';
 import { Icon } from '@/assets/icons/Icon';
 import { useSections } from '@/ui/useSections';
-import { hueStyle } from '@/ui/sections';
+import { hueStyle, stageDetail } from '@/ui/sections';
 
 /**
  * Esc overlay: the manual's table of contents. One row per part, set on its divider colour,
@@ -74,7 +74,7 @@ export function GridOverview() {
                         {String(i + 1).padStart(2, '0')}
                       </span>
                       <span className="grid-thumb__title">{scene.title}</span>
-                      <span className="grid-thumb__meta">{scene.stage}</span>
+                      <span className="grid-thumb__meta">{stageDetail(scene, part.name)}</span>
                       <span className="grid-thumb__budget mono" dir="ltr">
                         {scene.budgetMin ? `${scene.budgetMin}′` : ''}
                       </span>
