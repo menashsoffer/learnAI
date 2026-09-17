@@ -44,6 +44,7 @@ const promptFloor = z.discriminatedUnion('mode', [
             .min(1)
             .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
           label: z.string().min(1),
+          /** The worked example — shown greyed out, and copied in place of an empty field. */
           placeholder: z.string().optional(),
           value: z.string().optional(),
           rows: z.number().int().positive().max(12).optional(),

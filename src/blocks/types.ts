@@ -78,6 +78,7 @@ export interface PromptField {
   /** Stable key — also the persistence key for the participant's draft. */
   id: string;
   label: string;
+  /** The worked example — shown greyed out, and copied in place of an empty field. */
   placeholder?: string;
   /** Prefilled starting value; the participant edits over it. */
   value?: string;

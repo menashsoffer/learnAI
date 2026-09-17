@@ -453,6 +453,18 @@ ol.blk-list > li::before {
   line-height: 1.65;
   color: var(--text);
 }
+/* Example text standing in for an empty field: copied as-is, but visibly not yours yet. */
+.blk-builder__seg.is-example {
+  color: var(--text-muted);
+}
+.blk-builder__seg.is-gap {
+  color: var(--text-muted);
+  font-style: italic;
+}
+.blk-builder__fallback {
+  font-size: var(--fs-200);
+  color: var(--text-muted);
+}
 .blk-builder__hint {
   font-size: var(--fs-200);
   color: var(--text-muted);

@@ -6,12 +6,12 @@ import { ActivityPanel } from './ActivityPanel';
 import './participant.css';
 
 /**
- * The participant's view of one scene. The participant deck is already filtered to scenes
- * flagged for study, so everything reaching here is intentional:
+ * The participant's view of one scene. Participants walk the same stages as the projector
+ * (so the counters agree), and every stage in the deck authors something for them:
  *
  *   activity              -> the four-tier practice panel (ActivityPanel)
  *   student.blocks        -> reference material for a teaching scene
- *   otherwise             -> the scene's own component (openers, recall stops)
+ *   otherwise             -> the scene's own component — a fallback, not the plan
  */
 export function ParticipantScene({ scene, active }: { scene: SceneRecord; active?: boolean }) {
   const student = scene.student;

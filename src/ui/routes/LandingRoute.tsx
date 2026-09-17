@@ -25,7 +25,6 @@ export function LandingRoute() {
 
   if (!deck) return <Navigate to="/" replace />;
   const first = deck.order[0];
-  const firstStudy = deck.scenes.find((s) => s.student != null)?.slug ?? first;
 
   const enterPresenter = () => {
     const required = deck.meta.presenterCode;
@@ -66,10 +65,10 @@ export function LandingRoute() {
                 type="button"
                 className="door door--study"
                 style={hueStyle('grass')}
-                onClick={() => navigate(`/d/${deck.meta.id}/study/${firstStudy}`)}
+                onClick={() => navigate(`/d/${deck.meta.id}/study/${first}`)}
               >
-                <span className="door__tab">במחשב</span>
-                <Icon name="laptop" size={28} />
+                <span className="door__tab">בנייד</span>
+                <Icon name="phone" size={28} />
                 <span className="door__label">כניסת משתתפים</span>
                 <span className="door__sub">הוראות פעילות, פרומפטים להעתקה וקישורים</span>
                 <span className="door__go" aria-hidden="true">
