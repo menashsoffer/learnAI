@@ -2,6 +2,7 @@ import { createContext, useContext, useRef, type CSSProperties } from 'react';
 import type { Block, CalloutTone } from './types';
 import { PromptBuilder, Checklist, DoNow } from './interactive';
 import { useCopy, COPY_LABEL } from './useCopy';
+import { QrCode } from '@/ui/presenter/QrCode';
 import './blocks.css';
 
 const CopyableCtx = createContext(false);
@@ -278,6 +279,14 @@ function BlockView({ block }: { block: Block }) {
           </a>
           {block.note && <div className="blk-cta__note">{block.note}</div>}
         </div>
+      );
+
+    case 'qr':
+      return (
+        <figure className="blk-qr">
+          <QrCode value={block.href} size={180} label={block.caption ?? block.href} />
+          {block.caption && <figcaption className="blk-qr__caption">{block.caption}</figcaption>}
+        </figure>
       );
 
     default: {

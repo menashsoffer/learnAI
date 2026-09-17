@@ -1,3 +1,7 @@
+/**
+ * THE GUIDANCE DRAWER — the presenter's instrument panel. A frosted bar that opens into
+ * rounded readouts, numbers in a calm monospaced voice.
+ */
 .guide {
   position: fixed;
   inset-inline: 0;
@@ -5,23 +9,74 @@
   z-index: 60;
   display: flex;
   flex-direction: column;
-  background: var(--surface);
-  border-top: 2px solid var(--brand);
-  box-shadow: 0 -6px 24px rgba(28, 43, 51, 0.12);
+  background: var(--surface-glass);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  border-top: 1px solid var(--border);
+}
+
+.guide__bar-wrapper {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  inline-size: 100%;
+  position: relative;
+  min-block-size: calc(var(--guide-h) - 2px);
+  padding-inline: var(--s-3);
+}
+
+.guide__nav-btn {
+  border: none;
+  background: var(--surface-sunken);
+  color: var(--text);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  inline-size: 44px;
+  block-size: 44px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  transition: background var(--dur-fast) var(--ease-out);
+}
+.guide__nav-btn:last-child:not(:disabled) {
+  background: var(--action);
+  color: var(--text-on-action);
+}
+.guide__nav-btn:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--surface-sunken), var(--text) 8%);
+}
+.guide__nav-btn:last-child:hover:not(:disabled) {
+  background: var(--action-hover);
+}
+.guide__nav-btn:disabled {
+  color: var(--text-faint);
+  cursor: default;
 }
 
 .guide__handle {
   all: unset;
+  box-sizing: border-box;
   display: flex;
   align-items: center;
   gap: var(--s-3);
-  padding: var(--s-2) var(--s-5);
+  padding: var(--s-2) var(--s-3);
   cursor: pointer;
-  min-height: 40px;
+  flex: 1;
+  min-width: 0;
+  min-block-size: 44px;
+  position: relative;
+  border-radius: var(--r-md);
+}
+.guide__handle:hover {
+  background: color-mix(in srgb, transparent, var(--text) 4%);
+}
+.guide__handle:focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: -3px;
 }
 .guide__chev {
-  color: var(--brand);
-  font-size: 1rem;
+  color: var(--text-muted);
+  display: grid;
 }
 .guide__strip {
   display: flex;
@@ -31,47 +86,58 @@
   color: var(--text-muted);
   overflow: hidden;
   white-space: nowrap;
-  text-overflow: ellipsis;
+  min-width: 0;
 }
 .guide__pos {
-  font-weight: 800;
-  color: var(--brand);
-  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+  color: var(--text);
+}
+.guide__pos-of {
+  color: var(--text-faint);
+  font-weight: 400;
+}
+.guide__part {
+  flex: none;
+  padding: 0.1rem 0.7rem;
+  background: var(--sec);
+  color: var(--on-sec);
+  font-size: var(--fs-100);
+  font-weight: 600;
+  border-radius: var(--r-pill);
 }
 .guide__timer {
-  font-weight: 700;
-  color: var(--brand);
-  font-variant-numeric: tabular-nums;
+  font-weight: 400;
+  color: var(--text);
+  padding: 0.1rem 0.7rem;
+  background: var(--surface-sunken);
+  border-radius: var(--r-pill);
+}
+.guide__timer.status-running {
+  background: var(--sec);
+  color: var(--on-sec);
 }
 .guide__timer.status-done {
   color: var(--danger);
+  background: var(--danger-soft);
 }
 .guide__next {
   overflow: hidden;
   text-overflow: ellipsis;
+  color: var(--text);
+}
+.guide__next-label {
+  font-weight: 500;
+  color: var(--text-muted);
+  margin-inline-end: var(--s-1);
 }
 
 .guide__body {
-  padding: var(--s-4) var(--s-5) var(--s-5);
-  border-top: 1px solid var(--border);
+  padding: var(--s-4) var(--s-6) var(--s-5);
   display: flex;
   flex-direction: column;
   gap: var(--s-4);
-  max-height: 42vh;
+  max-height: 46vh;
   overflow-y: auto;
-}
-.guide__section h3 {
-  font-size: var(--fs-200);
-  font-weight: 800;
-  color: var(--brand-line);
-  margin-bottom: var(--s-2);
-}
-.guide__section p {
-  font-size: var(--fs-400);
-  line-height: var(--lh-normal);
-  color: var(--text);
-  /* presenterScript is authored with real line breaks (e.g. the joke on its own line). */
-  white-space: pre-line;
 }
 .guide__row {
   display: flex;
@@ -86,13 +152,14 @@
   gap: 2px;
 }
 .guide__peek-label {
-  font-size: var(--fs-100);
-  color: var(--text-dim);
-  font-weight: 700;
+  color: var(--text-muted);
+  font-weight: 400;
 }
 .guide__peek strong {
-  color: var(--brand);
-  font-size: var(--fs-300);
+  color: var(--text);
+  font-size: var(--fs-400);
+  font-weight: 600;
+  line-height: 1.2;
 }
 .guide__peek-sub {
   font-size: var(--fs-200);
@@ -106,142 +173,147 @@
 }
 
 /* ==========================================================================
-   Pacing readouts. Priority #2: presenting should not require holding ninety
-   minutes of budget in your head.
+   Pacing readouts.
    ========================================================================== */
 
 /**
- * The session clock in the collapsed strip. Deliberately a DIFFERENT shape from the
- * activity countdown beside it — one is "how long have I been talking", the other is
- * "how long do they have left", and confusing them mid-lecture is costly.
+ * The session clock in the collapsed strip. A DIFFERENT shape from the countdown beside it:
+ * one is "how long have I been talking", the other "how long do they have left".
  */
 .guide__session {
   display: inline-flex;
-  align-items: baseline;
+  align-items: center;
   gap: var(--s-2);
-  padding: 0.1rem var(--s-3);
+  padding: 2px 3px 2px 10px;
+  background: var(--surface-sunken);
   border-radius: var(--r-pill);
-  border: 1px solid var(--border-strong);
-  font-variant-numeric: tabular-nums;
+}
+:root[dir='rtl'] .guide__session {
+  padding: 2px 10px 2px 3px;
 }
 .guide__session-clock {
-  font-weight: 800;
+  font-weight: 400;
+  color: var(--text);
 }
 .guide__drift {
   font-size: var(--fs-100);
-  font-weight: 700;
-}
-/* Calm, not alarming. There are people watching this screen. */
-.guide__session.state-on-plan {
-  border-color: var(--border-strong);
-  color: var(--text);
-}
-.guide__session.state-on-plan .guide__drift {
+  font-weight: 500;
+  padding: 0.1rem 0.6rem;
+  border-radius: var(--r-pill);
+  background: var(--surface);
   color: var(--text-muted);
 }
-.guide__session.state-ahead {
-  border-color: var(--success);
-  color: var(--success);
+/* Calm, not alarming. There are people watching this screen. */
+.guide__session.state-ahead .guide__drift {
+  background: var(--hue-grass);
+  color: var(--hue-grass-on);
 }
-.guide__session.state-behind {
-  border-color: var(--warning);
-  background: var(--warning-soft);
-  color: var(--warning);
+.guide__session.state-behind .guide__drift {
+  background: var(--hue-orange);
+  color: var(--hue-orange-on);
 }
 
-/* Per-stage budget, as a hairline across the handle. */
+/* Per-stage budget, as a thin capsule across the top of the bar, in the part's accent. */
 .guide__bar {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline: var(--s-4);
   display: block;
   block-size: 3px;
-  inline-size: 100%;
-  background: var(--surface-sunken);
+  background: var(--border);
+  border-radius: var(--r-pill);
+  overflow: hidden;
 }
 .guide__bar-fill {
   display: block;
   block-size: 100%;
-  background: var(--brand-line);
+  background: var(--sec-accent);
+  border-radius: var(--r-pill);
   transition: inline-size 1s linear;
 }
 .guide__bar-fill.is-over {
-  background: var(--warning);
+  background: var(--hue-orange-accent);
 }
 
+/* Three readouts as rounded tiles. */
 .guide__meters {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   gap: var(--s-3);
 }
 .guide__meter {
   display: flex;
   flex-direction: column;
-  gap: 0.1rem;
-  padding: var(--s-3);
-  border: 1px solid var(--border);
-  border-radius: var(--r-sm);
+  gap: 2px;
+  padding: var(--s-3) var(--s-4);
   background: var(--surface);
-}
-.guide__meter.state-behind {
-  border-color: var(--warning);
-  background: var(--warning-soft);
+  border-radius: var(--r-lg);
 }
 .guide__meter-label {
   font-size: var(--fs-100);
-  font-weight: 700;
+  font-weight: 500;
   color: var(--text-muted);
 }
 .guide__meter-value {
-  font-size: var(--fs-500);
-  font-weight: 800;
-  font-variant-numeric: tabular-nums;
+  font-size: var(--fs-600);
+  font-weight: 400;
   line-height: 1.1;
+  color: var(--text);
 }
 .guide__meter-note {
   font-size: var(--fs-100);
   color: var(--text-muted);
 }
+.guide__meter.state-behind .guide__meter-value,
+.guide__meter.state-behind .guide__meter-note {
+  color: var(--warning);
+}
+.guide__meter.state-ahead .guide__meter-note {
+  color: var(--success);
+}
 
-/* The run sheet's own instruction, on the stage where it still applies. */
+/* The run sheet's own instruction, and the recovery suggestion, as soft notes. */
 .guide__control,
 .guide__recover {
   display: flex;
   flex-direction: column;
-  gap: var(--s-1);
+  align-items: flex-start;
+  gap: var(--s-2);
   padding: var(--s-3) var(--s-4);
-  border-radius: var(--r-sm);
-  font-size: var(--fs-200);
+  border-radius: var(--r-lg);
+  font-size: var(--fs-300);
   line-height: var(--lh-normal);
-}
-.guide__control {
-  background: var(--info-soft);
-  border-inline-start: 4px solid var(--info);
+  background: var(--hue-ultramarine-tint);
 }
 .guide__recover {
-  background: var(--warning-soft);
-  border-inline-start: 4px solid var(--warning);
+  background: var(--hue-orange-tint);
 }
 .guide__control-tag,
 .guide__recover-tag {
+  padding: 0.1rem 0.7rem;
+  background: var(--hue-ultramarine);
+  color: var(--hue-ultramarine-on);
   font-size: var(--fs-100);
-  font-weight: 800;
-  letter-spacing: 0.03em;
-}
-.guide__control-tag {
-  color: var(--info);
+  font-weight: 600;
+  border-radius: var(--r-pill);
 }
 .guide__recover-tag {
-  color: var(--warning);
-}
-
-/* "What to say", read while standing: short measure, no mid-sentence scroll. */
-.guide__script {
-  font-size: var(--fs-300);
-  line-height: 1.6;
-  max-inline-size: 62ch;
-  white-space: pre-wrap;
+  background: var(--hue-orange);
+  color: var(--hue-orange-on);
 }
 
 .guide__row-actions {
   display: flex;
   gap: var(--s-2);
   flex-wrap: wrap;
+}
+
+@media (max-width: 760px) {
+  .guide__next,
+  .guide__part {
+    display: none;
+  }
+  .guide__body {
+    padding-inline: var(--s-4);
+  }
 }

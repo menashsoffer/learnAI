@@ -33,7 +33,7 @@ function Concept({ data, scene }: SceneProps<Data>) {
       {data.badge && <span className="pill">{data.badge}</span>}
       <p className="concept__why">
         <span className="concept__why-label">למה זה חשוב בעבודה ציבורית</span>
-        {data.whyPublic}
+        <span className="concept__why-text">{data.whyPublic}</span>
       </p>
       <BlocksRenderer blocks={data.blocks as Block[]} />
     </SceneShell>

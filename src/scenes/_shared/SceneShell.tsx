@@ -2,10 +2,6 @@ import { Component, type ErrorInfo, type ReactNode } from 'react';
 import type { SceneMeta } from '@/engine';
 import './shell.css';
 
-export function LineMotif() {
-  return <span className="line-motif" aria-hidden="true" />;
-}
-
 interface SceneShellProps {
   scene: SceneMeta;
   children?: ReactNode;
@@ -14,10 +10,8 @@ interface SceneShellProps {
   align?: 'start' | 'center';
   className?: string;
   /**
-   * An illustration for this scene. Passing it switches the shell to a two-column
-   * composition — art on one side, heading AND body together on the other — instead of
-   * a full-width heading with a narrow strip underneath. A scene that says one thing
-   * needs the canvas split, not stacked.
+   * An illustration for this scene. It is set in the margin column under the head, as a
+   * figure, so the body keeps the full wide column.
    */
   media?: ReactNode;
 }
@@ -32,22 +26,24 @@ export function SceneShell({
 }: SceneShellProps) {
   const head = bare ? null : (
     <header className="scene-shell__head">
-      <LineMotif />
       <h2 className="scene-shell__title">{scene.title}</h2>
       {scene.subtitle && <p className="scene-shell__subtitle">{scene.subtitle}</p>}
     </header>
   );
 
-  if (media) {
+  /**
+   * The manual's page grid: heads HANG in a margin column on the start side, the body runs
+   * in the wide column beside them. An illustration sits in the margin under its head, as a
+   * figure would, rather than competing with the body for the page.
+   */
+  if (!bare && align === 'start') {
     return (
-      <div className={`scene-shell scene-shell--split${className ? ` ${className}` : ''}`}>
-        {/* Text first in DOM AND in grid order: the reader must meet the headline before
-            the artwork. In RTL that puts text right, art left; LTR mirrors it for free. */}
-        <div className="scene-shell__main">
+      <div className={`scene-shell scene-shell--page${className ? ` ${className}` : ''}`}>
+        <div className="scene-shell__margin">
           {head}
-          <div className="scene-shell__body">{children}</div>
+          {media && <div className="scene-shell__art">{media}</div>}
         </div>
-        <div className="scene-shell__art">{media}</div>
+        <div className="scene-shell__body">{children}</div>
       </div>
     );
   }
@@ -55,6 +51,7 @@ export function SceneShell({
   return (
     <div className={`scene-shell align-${align}${className ? ` ${className}` : ''}`}>
       {head}
+      {media && <div className="scene-shell__art">{media}</div>}
       <div className="scene-shell__body">{children}</div>
     </div>
   );

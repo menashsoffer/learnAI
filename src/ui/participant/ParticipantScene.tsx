@@ -12,10 +12,8 @@ import './participant.css';
  *   activity              -> the four-tier practice panel (ActivityPanel)
  *   student.blocks        -> reference material for a teaching scene
  *   otherwise             -> the scene's own component (openers, recall stops)
- *
- * Presenter notes and script are never shown here, in any branch.
  */
-export function ParticipantScene({ scene }: { scene: SceneRecord }) {
+export function ParticipantScene({ scene, active }: { scene: SceneRecord; active?: boolean }) {
   const student = scene.student;
   const title = student?.title ?? scene.title;
 
@@ -45,13 +43,12 @@ export function ParticipantScene({ scene }: { scene: SceneRecord }) {
     );
   }
 
-  return <SceneView scene={scene} />;
+  return <SceneView scene={scene} active={active} />;
 }
 
 function StudentHead({ title, subtitle }: { title: string; subtitle?: string }) {
   return (
     <header className="scene-shell__head">
-      <span className="line-motif" aria-hidden="true" />
       <h2 className="scene-shell__title">{title}</h2>
       {subtitle && <p className="scene-shell__subtitle">{subtitle}</p>}
     </header>

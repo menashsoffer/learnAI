@@ -4,9 +4,11 @@
 
 .viewport {
   position: fixed;
-  inset-block-start: var(--header-h);
+  /* Measured from the bars actually on screen (src/ui/chrome/useChromeInsets.ts), so the
+     stage ends where the chrome begins and nothing scrolls underneath a bar. */
+  inset-block-start: var(--inset-top, var(--header-h));
   inset-inline: 0;
-  inset-block-end: 0;
+  inset-block-end: var(--inset-bottom, 0);
   overflow: hidden;
 }
 

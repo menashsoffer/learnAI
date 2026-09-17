@@ -141,7 +141,6 @@ export function DoNow({ block }: { block: DoNowBlock }) {
 
   return (
     <div className="blk-donow">
-      <span className="blk-donow__tag">עכשיו</span>
       <p className="blk-donow__text">{block.text}</p>
       {total > 0 && (
         <div className={`blk-donow__box${left === 0 ? ' is-done' : ''}`}>

@@ -11,6 +11,26 @@
   padding: 0;
 }
 
+* {
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+  scrollbar-width: thin;
+}
+
+*::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+*::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+}
+*::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: 999px;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover);
+}
+
 html,
 body {
   height: 100%;
@@ -31,10 +51,21 @@ h2,
 h3,
 h4 {
   font-family: var(--font-head);
+  font-stretch: var(--stretch-head);
   line-height: var(--lh-tight);
-  /* Hebrew headlines set tight need the letterforms to stay open; Heebo tightens badly. */
+  /* Hebrew has no capitals to track; the condensed width does the work tracking would. */
   letter-spacing: 0;
   text-wrap: balance;
+}
+
+::selection {
+  background: var(--selection);
+  color: var(--text);
+}
+
+input,
+textarea {
+  caret-color: var(--sec-deep);
 }
 
 p {
@@ -48,16 +79,18 @@ img {
 
 a {
   color: inherit;
+  text-underline-offset: 0.22em;
+  text-decoration-thickness: 1px;
 }
 
 :focus-visible {
   outline: 3px solid var(--focus-ring);
   outline-offset: 2px;
-  border-radius: 4px;
+  border-radius: var(--r-sm);
 }
 
 kbd {
-  font-family: var(--font-body);
+  font-family: var(--font-mono);
   font-size: 0.85em;
   background: var(--surface-sunken);
   border: 1px solid var(--border);
@@ -69,7 +102,7 @@ kbd {
 
 /* Latin-only technical strings (MCP, ChatGPT, slugs). Hebrew never renders in mono. */
 code {
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-family: var(--font-mono);
   font-size: 0.9em;
   background: var(--surface-sunken);
   border-radius: 4px;

@@ -6,6 +6,8 @@ import { ThemeProvider } from '@/theme/ThemeProvider';
 import { storage } from '@/persistence/storage';
 import { BrandLockup } from '@/assets/brand/BrandLogo';
 import { deckKey } from '@/persistence/namespace';
+import { Icon } from '@/assets/icons/Icon';
+import { buildSections, hueStyle } from '@/ui/sections';
 import './landing.css';
 
 /** Two doors: presenter (soft code-gated) and participants. */
@@ -14,6 +16,7 @@ export function LandingRoute() {
   const navigate = useNavigate();
   const raw = getDeckRaw(deckId);
   const deck = useMemo(() => (raw ? loadDeck(raw) : null), [raw]);
+  const sections = useMemo(() => (deck ? buildSections(deck.scenes) : null), [deck]);
 
   const okKey = deck ? deckKey(deck.meta.id, 'presenterOk') : '';
   const [askCode, setAskCode] = useState(false);
@@ -47,41 +50,58 @@ export function LandingRoute() {
   return (
     <ThemeProvider locale={deck.meta.locale} dir={deck.meta.dir} distance="read">
       <div className="landing">
-        <div className="landing__inner">
-          <BrandLockup size="lg" />
-          <span className="line-motif" aria-hidden="true" />
-          <h1 className="landing__title">{deck.meta.title}</h1>
-          {deck.meta.description && <p className="landing__desc">{deck.meta.description}</p>}
+        <header className="landing__head">
+          <BrandLockup size="md" />
+        </header>
+
+        <main className="landing__main">
+          <div className="landing__title-block">
+            <h1 className="landing__title">{deck.meta.description ?? deck.meta.title}</h1>
+            {deck.meta.description && <p className="landing__desc">{deck.meta.title}</p>}
+          </div>
 
           {!askCode ? (
             <div className="landing__doors">
-              <button type="button" className="door door--present" onClick={enterPresenter}>
-                <span className="door__icon" aria-hidden="true">
-                  🎤
-                </span>
-                <span className="door__label">כניסת מנחה</span>
-                <span className="door__sub">מצגת מלאה, הנחיה ומה להגיד, טיימר</span>
-              </button>
               <button
                 type="button"
                 className="door door--study"
+                style={hueStyle('grass')}
                 onClick={() => navigate(`/d/${deck.meta.id}/study/${firstStudy}`)}
               >
-                <span className="door__icon" aria-hidden="true">
-                  📝
-                </span>
+                <span className="door__tab">במחשב</span>
+                <Icon name="laptop" size={28} />
                 <span className="door__label">כניסת משתתפים</span>
                 <span className="door__sub">הוראות פעילות, פרומפטים להעתקה וקישורים</span>
+                <span className="door__go" aria-hidden="true">
+                  <Icon name="next" size={24} />
+                </span>
+              </button>
+              <button
+                type="button"
+                className="door door--present"
+                style={hueStyle('ultramarine')}
+                onClick={enterPresenter}
+              >
+                <span className="door__tab">על המקרן</span>
+                <Icon name="presenter" size={28} />
+                <span className="door__label">כניסת מנחה</span>
+                <span className="door__sub">מצגת מלאה, ניהול זמן, טיימר</span>
+                <span className="door__go" aria-hidden="true">
+                  <Icon name="next" size={24} />
+                </span>
               </button>
             </div>
           ) : (
-            <form className="landing__code" onSubmit={submitCode}>
+            <form className="landing__code" onSubmit={submitCode} style={hueStyle('ultramarine')}>
               <label htmlFor="pcode">קוד מנחה</label>
               <input
                 id="pcode"
                 type="text"
                 inputMode="numeric"
                 autoComplete="off"
+                className={`mono${err ? ' is-error' : ''}`}
+                aria-invalid={err || undefined}
+                aria-describedby={err ? 'pcode-err' : undefined}
                 value={code}
                 onChange={(e) => {
                   setCode(e.target.value);
@@ -89,7 +109,11 @@ export function LandingRoute() {
                 }}
                 autoFocus
               />
-              {err && <span className="landing__code-err">קוד שגוי</span>}
+              {err && (
+                <span id="pcode-err" className="landing__code-err" role="alert">
+                  קוד שגוי. נסו שוב.
+                </span>
+              )}
               <div className="landing__code-actions">
                 <button type="submit" className="btn-action">
                   כניסה
@@ -105,12 +129,33 @@ export function LandingRoute() {
             </form>
           )}
 
-          <a className="landing__plain" href={`#/d/${deck.meta.id}/${first}`}>
-            צפייה רגילה במצגת ←
-          </a>
+          {sections && sections.parts.some((p) => p.minutes > 0) && (
+            <section className="landing__contents" aria-label="מבנה ההרצאה">
+              <ol className="landing__parts">
+                {sections.parts.map((p) => (
+                  <li
+                    key={p.name}
+                    className="landing__part"
+                    style={{ ...hueStyle(p.hue), flexGrow: p.minutes || 1 }}
+                  >
+                    <span className="landing__part-name">{p.name}</span>
+                    <span className="landing__part-min mono" dir="ltr">
+                      {p.minutes}′
+                    </span>
+                  </li>
+                ))}
+              </ol>
+            </section>
+          )}
+        </main>
 
+        <footer className="landing__foot">
+          <a className="landing__plain" href={`#/d/${deck.meta.id}/${first}`}>
+            <Icon name="book" size={18} />
+            צפייה רגילה במצגת
+          </a>
           {deck.meta.credits && <p className="landing__credits">{deck.meta.credits}</p>}
-        </div>
+        </footer>
       </div>
     </ThemeProvider>
   );

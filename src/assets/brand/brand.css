@@ -27,7 +27,7 @@
   width: 1px;
   align-self: stretch;
   min-height: 32px;
-  background: var(--border);
+  background: var(--border-strong);
 }
 .brand-lockup .brand-logo--lg {
   height: 58px;
@@ -37,8 +37,12 @@
   .brand-logo--sm {
     height: 19px;
   }
+  .brand-logo--md {
+    height: 34px;
+  }
   .brand-lockup {
     gap: var(--s-3);
+    flex-wrap: nowrap;
   }
   .brand-lockup .brand-logo--lg {
     height: 40px;

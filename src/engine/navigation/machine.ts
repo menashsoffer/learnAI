@@ -21,7 +21,7 @@ import {
   markStage,
 } from '../timing/sessionClock';
 
-export type Overlay = 'none' | 'grid' | 'notes';
+export type Overlay = 'none' | 'grid';
 
 export interface NavState {
   /** Total scenes in the deck. */
@@ -89,19 +89,19 @@ export function navReducer(state: NavState, action: NavAction): NavState {
       return { ...state, overlay: state.overlay === action.overlay ? 'none' : action.overlay };
 
     case 'timer/setTarget':
-      return { ...state, timer: setTimerTarget(state.timer, action.target) };
+      return withTimer(state, setTimerTarget(state.timer, action.target));
     case 'timer/toggle':
-      return { ...state, timer: toggleTimer(state.timer) };
+      return withTimer(state, toggleTimer(state.timer));
     case 'timer/start':
-      return { ...state, timer: startTimer(state.timer) };
+      return withTimer(state, startTimer(state.timer));
     case 'timer/pause':
-      return { ...state, timer: pauseTimer(state.timer) };
+      return withTimer(state, pauseTimer(state.timer));
     case 'timer/reset':
-      return { ...state, timer: resetTimer(state.timer) };
+      return withTimer(state, resetTimer(state.timer));
     case 'timer/adjust':
-      return { ...state, timer: adjustTimer(state.timer, action.delta) };
+      return withTimer(state, adjustTimer(state.timer, action.delta));
     case 'timer/tick':
-      return { ...state, timer: tickTimer(state.timer) };
+      return withTimer(state, tickTimer(state.timer));
 
     case 'session/start':
       return { ...state, session: startSession(state.session) };
@@ -135,6 +135,11 @@ export function navReducer(state: NavState, action: NavAction): NavState {
  */
 function enterStage(state: NavState, index: number): NavState {
   return { ...state, index, session: markStage(state.session) };
+}
+
+/** Keep the state reference when the timer didn't change, so a no-op dispatch doesn't re-render. */
+function withTimer(state: NavState, timer: NavState['timer']): NavState {
+  return timer === state.timer ? state : { ...state, timer };
 }
 
 function clamp(n: number, lo: number, hi: number): number {

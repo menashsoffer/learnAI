@@ -1,7 +1,10 @@
 import { useState } from 'react';
 import { usePresentation, useDeck, useEngineDispatch } from '@/react/PresentationProvider';
 import { usePacing } from '@/react/usePacing';
-import { formatClock, formatElapsed } from '@/engine';
+import { formatClock, formatElapsed, select } from '@/engine';
+import { t } from '@/i18n';
+import { Icon } from '@/assets/icons/Icon';
+import { useCurrentPart } from '@/ui/useSections';
 import './presenter.css';
 
 /**
@@ -31,11 +34,13 @@ export function GuidanceDrawer() {
   const timer = usePresentation((s) => s.timer);
   const session = usePresentation((s) => s.session);
   const skipped = usePresentation((s) => s.skipped);
+  const canPrev = usePresentation(select.canPrev);
+  const canNext = usePresentation(select.canNext);
   const pacing = usePacing();
+  const { part, style } = useCurrentPart();
 
   const scene = deck.scenes[index];
   const next = deck.scenes[index + 1];
-  const script = scene?.presenterScript || scene?.notes || 'אין הנחיה לסצנה זו.';
 
   /**
    * Whole minutes only. The model keeps a decimal because the arithmetic needs it, but
@@ -51,48 +56,82 @@ export function GuidanceDrawer() {
       : 0;
 
   return (
-    <aside className={`guide${open ? ' guide--open' : ''}`} data-distance-scope="glance">
-      <button
-        type="button"
-        className="guide__handle"
-        onClick={() => setOpen((o) => !o)}
-        aria-expanded={open}
-      >
-        <span className="guide__chev" aria-hidden="true">
-          {open ? '▾' : '▴'}
-        </span>
-        <span className="guide__strip">
-          <span className="guide__pos">
-            {index + 1}/{count}
+    <aside
+      className={`guide${open ? ' guide--open' : ''}`}
+      data-distance-scope="glance"
+      style={style}
+    >
+      <div className="guide__bar-wrapper">
+        <button
+          type="button"
+          className="guide__nav-btn"
+          onClick={() => dispatch({ type: 'prev' })}
+          disabled={!canPrev}
+          title={t('chrome.prev')}
+          aria-label={t('chrome.prev')}
+        >
+          <Icon name="prev" size={22} />
+        </button>
+
+        <button
+          type="button"
+          className="guide__handle"
+          onClick={() => setOpen((o) => !o)}
+          aria-expanded={open}
+        >
+          <span className="guide__chev" aria-hidden="true">
+            <Icon name={open ? 'chevron-down' : 'chevron-up'} size={18} />
+          </span>
+          <span className="guide__strip">
+            <span className="guide__pos mono" dir="ltr">
+              {String(index + 1).padStart(2, '0')}
+              <span className="guide__pos-of">/{String(count).padStart(2, '0')}</span>
+            </span>
+            <span className="guide__part">{part.name}</span>
+
+            {/* Session clock. Distinct shape from the countdown below — they must never be
+                confused at a glance: one is how long I have been talking, the other is how
+                long THEY have left. */}
+            <span className={`guide__session state-${pacing.state}`}>
+              <span className="guide__session-clock mono" dir="ltr">
+                {formatElapsed(session.elapsed)}
+              </span>
+              <span className="guide__drift">{driftLabel}</span>
+            </span>
+
+            {timer.status !== 'idle' && (
+              <span className={`guide__timer mono status-${timer.status}`} dir="ltr">
+                {formatClock(timer.seconds)}
+              </span>
+            )}
+
+            {next && (
+              <span className="guide__next">
+                <span className="guide__next-label">הבא</span> {next.title}
+              </span>
+            )}
           </span>
 
-          {/* Session clock. Distinct shape from the countdown below — they must never be
-              confused at a glance: one is how long I have been talking, the other is how
-              long THEY have left. */}
-          <span className={`guide__session state-${pacing.state}`}>
-            <span className="guide__session-clock" dir="ltr">
-              {formatElapsed(session.elapsed)}
-            </span>
-            <span className="guide__drift">{driftLabel}</span>
+          {/* Stage budget. Calm amber when over — never red: there are people watching. */}
+          <span className="guide__bar" aria-hidden="true">
+            <span
+              className={`guide__bar-fill${pacing.stageOver ? ' is-over' : ''}`}
+              style={{ inlineSize: `${stagePct}%` }}
+            />
           </span>
+        </button>
 
-          {timer.status !== 'idle' && (
-            <span className={`guide__timer status-${timer.status}`}>
-              ⏱ {formatClock(timer.seconds)}
-            </span>
-          )}
-
-          {next && <span className="guide__next">הבא: {next.title}</span>}
-        </span>
-
-        {/* Stage budget. Calm amber when over — never red: there are people watching. */}
-        <span className="guide__bar" aria-hidden="true">
-          <span
-            className={`guide__bar-fill${pacing.stageOver ? ' is-over' : ''}`}
-            style={{ inlineSize: `${stagePct}%` }}
-          />
-        </span>
-      </button>
+        <button
+          type="button"
+          className="guide__nav-btn"
+          onClick={() => dispatch({ type: 'next' })}
+          disabled={!canNext}
+          title={t('chrome.next')}
+          aria-label={t('chrome.next')}
+        >
+          <Icon name="next" size={22} />
+        </button>
+      </div>
 
       {open && (
         <div className="guide__body">
@@ -142,16 +181,12 @@ export function GuidanceDrawer() {
             </div>
           )}
 
-          <div className="guide__section">
-            <h3>מה להגיד</h3>
-            <p className="guide__script">{script}</p>
-          </div>
-
           <div className="guide__row">
             {next ? (
               <div className="guide__peek">
-                <span className="guide__peek-label">סצנה הבאה</span>
-                <strong>{next.title}</strong>
+                <strong>
+                  <span className="guide__peek-label">הבא:</span> {next.title}
+                </strong>
                 {next.subtitle && <span className="guide__peek-sub">{next.subtitle}</span>}
               </div>
             ) : (
@@ -172,6 +207,7 @@ export function GuidanceDrawer() {
                     dispatch({ type: 'next' });
                   }}
                 >
+                  <Icon name="skip" size={18} />
                   דלג על השלב
                 </button>
               )}
@@ -180,14 +216,16 @@ export function GuidanceDrawer() {
                 className="btn-action btn-action--ghost"
                 onClick={() => dispatch({ type: 'session/toggle' })}
               >
-                {session.status === 'running' ? '⏸ עצור שעון' : '▶ הפעל שעון'}
+                <Icon name={session.status === 'running' ? 'pause' : 'play'} size={18} />
+                {session.status === 'running' ? 'עצור שעון' : 'הפעל שעון'}
               </button>
               <button
                 type="button"
                 className="btn-action btn-action--ghost"
                 onClick={() => dispatch({ type: 'toggleOverlay', overlay: 'grid' })}
               >
-                קפיצה לסצנה…
+                <Icon name="grid" size={18} />
+                תוכן העניינים
               </button>
             </div>
           </div>
@@ -211,7 +249,7 @@ function Meter({
   return (
     <div className={`guide__meter state-${state}`}>
       <span className="guide__meter-label">{label}</span>
-      <span className="guide__meter-value" dir="ltr">
+      <span className="guide__meter-value mono" dir="ltr">
         {value}
       </span>
       <span className="guide__meter-note">{note}</span>

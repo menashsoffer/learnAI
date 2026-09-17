@@ -2,62 +2,88 @@
  * PRIMITIVE TOKENS — raw scales only. No roles, no meaning, no component ever reads these
  * directly. `semantic.css` maps them onto roles; components read the roles.
  *
- * The split exists because the old single palette file hard-wired colour to meaning, which
- * is why `brandKitRef` could never actually switch a theme.
+ * QUIET CHROMA. Seven soft climates, one per part of the session, all at the same perceptual
+ * lightness and restrained chroma (OKLCH), so no part shouts over another. Neutrals and the
+ * one action colour follow Apple's system palette. Ramps are mirrored in
+ * documentation/design/quiet-chroma-color-plan.png.
+ *
+ * Each climate has four steps (the key names are historical; the hues are):
+ *   -tint    L .968  the part's ground — the slide behind the card
+ *   (base)   L .915  soft fills: chips, rail tabs, the do-now panel
+ *   -accent  L .740  the one saturated mark: the current tab, list dots, progress
+ *   -on/-deep L .470 text on tint or soft (all ≥6:1)
+ *
+ *   yellow = amber · orange = coral · grass = sage · teal = lagoon
+ *   ultramarine = periwinkle · violet = lavender · sienna = rose
  */
 :root {
-  /* ---- Ink: the approved brand navy, as a real ramp ---- */
-  --c-ink-50: #f2f5f7;
-  --c-ink-100: #e4ebef;
-  --c-ink-200: #cbd8de;
-  --c-ink-300: #a3b8c2;
-  --c-ink-400: #6e8b99;
-  --c-ink-500: #3a6b84;
-  --c-ink-600: #26495c; /* the signed-off brand navy */
-  --c-ink-700: #1d3a49;
-  --c-ink-800: #152b36;
-  --c-ink-900: #0e1c24;
-  --c-ink-950: #08131a;
+  --hue-yellow-tint: #fbf4e6;
+  --hue-yellow: #f2e1c2;
+  --hue-yellow-accent: #c9a562;
+  --hue-yellow-on: #725518;
+  --hue-yellow-deep: #725518;
+  --hue-orange-tint: #fff1ec;
+  --hue-orange: #fedacc;
+  --hue-orange-accent: #de977b;
+  --hue-orange-on: #824933;
+  --hue-orange-deep: #824933;
+  --hue-grass-tint: #ecf9ed;
+  --hue-grass: #cfecd3;
+  --hue-grass-accent: #7ebc8b;
+  --hue-grass-on: #346841;
+  --hue-grass-deep: #346841;
+  --hue-teal-tint: #e6f9fa;
+  --hue-teal: #c1edef;
+  --hue-teal-accent: #56bdc2;
+  --hue-teal-on: #04686c;
+  --hue-teal-deep: #04686c;
+  --hue-ultramarine-tint: #f0f4fe;
+  --hue-ultramarine: #d8e3fe;
+  --hue-ultramarine-accent: #91a9e8;
+  --hue-ultramarine-on: #46588b;
+  --hue-ultramarine-deep: #46588b;
+  --hue-violet-tint: #f7f2ff;
+  --hue-violet: #eadcfc;
+  --hue-violet-accent: #b99cdb;
+  --hue-violet-on: #664e81;
+  --hue-violet-deep: #664e81;
+  --hue-sienna-tint: #fff0f2;
+  --hue-sienna: #ffd7dd;
+  --hue-sienna-accent: #df919f;
+  --hue-sienna-on: #834552;
+  --hue-sienna-deep: #834552;
 
-  /* ---- Neutrals, warmed a half-step so long Hebrew reading is not clinical ---- */
-  --c-n-0: #ffffff;
-  --c-n-25: #fbfbfa;
-  --c-n-50: #f6f7f8;
-  --c-n-100: #eef1f3;
-  --c-n-200: #dde3e7;
-  --c-n-300: #c2cbd1;
-  --c-n-400: #9aa5ad;
-  --c-n-500: #6b7280;
-  --c-n-600: #4d5763;
-  --c-n-700: #39424c;
-  --c-n-800: #262d35;
-  --c-n-900: #171c22;
+  /* ---- Errors only. ---- */
+  --c-red: #d70015;
+  --c-red-soft: #ffe5e7;
 
-  /* ---- Action: the ONE warm accent. Spent only on "your turn". See semantic.css. ---- */
-  --c-act-100: #fdeee2;
-  --c-act-200: #f9d5bb;
-  --c-act-400: #e0842f;
-  --c-act-500: #c76a17;
-  --c-act-600: #a3520c;
-  --c-act-700: #7d3e09;
+  /* ---- Apple system neutrals ---- */
+  --c-white: #ffffff;
+  --c-page: #f5f5f7;
+  --c-fill: #e8e8ed;
+  --c-fill-strong: #dcdce1;
+  --c-hairline: #d2d2d7;
+  --c-ink: #1d1d1f;
+  --c-ink-2: #6e6e73;
+  --c-ink-3: #86868b;
+  --c-ink-4: #aeaeb2;
 
-  /* ---- Status ---- */
-  --c-info-100: #e5eef8;
-  --c-info-600: #2563a8;
-  --c-info-300: #9dc0e3;
-  --c-ok-100: #e3f3ea;
-  --c-ok-600: #1f7a4d;
-  --c-ok-300: #8fcaab;
-  --c-warn-100: #fbf0da;
-  --c-warn-600: #9a6b12;
-  --c-warn-300: #e2c078;
-  --c-bad-100: #fbe6e5;
-  --c-bad-600: #b3261e;
-  --c-bad-300: #e79b96;
+  /* ---- The one action colour ---- */
+  --c-blue: #0071e3;
+  --c-blue-hover: #0077ed;
+  --c-blue-press: #006edb;
+  --c-blue-dark: #2997ff;
 
   /* ---- Type ---- */
-  --font-body: 'Heebo', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-body:
+    'Noto Sans Hebrew', -apple-system, BlinkMacSystemFont, system-ui, 'Segoe UI', sans-serif;
   --font-head: var(--font-body);
+  /* One family for reading too: calm and modern rather than bookish. */
+  --font-read: var(--font-body);
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  /* Heads are set at full width — wide and unhurried. */
+  --stretch-head: 100%;
+  --stretch-label: 100%;
 
   /* ---- Space ---- */
   --s-1: 0.25rem;
@@ -69,20 +95,26 @@
   --s-7: 3rem;
   --s-8: 4rem;
 
-  /* ---- Radius ---- */
-  --r-sm: 8px;
+  /* ---- Radius. Continuous and nested: an outer curve always exceeds what it holds. ---- */
+  --r-sm: 10px;
   --r-md: 14px;
   --r-lg: 22px;
+  --r-xl: 30px;
+  --r-board: 40px;
+  --r-tab: 999px;
   --r-pill: 999px;
 
-  /* ---- Motion. Rule 7: nothing exceeds 150ms. ---- */
-  --dur-fast: 0.1s;
-  --dur-mid: 0.15s;
-  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  /* ---- Motion. Short and smooth, never bouncy. ---- */
+  --dur-fast: 160ms;
+  --dur-mid: 240ms;
+  --ease-out: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --step: var(--ease-out);
 
   /* ---- Layout ---- */
   --header-h: 56px;
+  --stage-strip-h: 28px;
+  --guide-h: 62px;
+  --rail-w: 40px;
   --content-max: 1180px;
-  /* Measure for long-form Hebrew on the participant device. */
   --measure: 34rem;
 }

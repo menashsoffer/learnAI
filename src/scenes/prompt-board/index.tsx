@@ -19,11 +19,13 @@ type Data = z.infer<typeof schema>;
 
 function PromptBoard({ data }: SceneProps<Data>) {
   return (
-    <div className="scene-shell align-center prompt-board">
-      {data.label && <span className="prompt-board__label">{data.label}</span>}
-      <p className="prompt-board__text" dir="rtl">
-        {mark(data.prompt, data.highlight ?? [])}
-      </p>
+    <div className="scene-shell prompt-board">
+      <figure className="prompt-board__sheet">
+        {data.label && <figcaption className="prompt-board__label">{data.label}</figcaption>}
+        <p className="prompt-board__text" dir="rtl">
+          {mark(data.prompt, data.highlight ?? [])}
+        </p>
+      </figure>
       {data.caption && <p className="prompt-board__caption">{data.caption}</p>}
     </div>
   );

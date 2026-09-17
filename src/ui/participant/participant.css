@@ -1,22 +1,21 @@
+/* ==========================================================================
+   The participant's own device. During practice, nobody should have to wonder
+   where the room is or what they are meant to do.
+   ========================================================================== */
+
 .student__panel {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-inline-start: 4px solid var(--brand-line);
-  border-radius: var(--r-md);
-  padding: var(--s-5);
   display: flex;
   flex-direction: column;
   gap: var(--s-4);
-  box-shadow: var(--shadow-1);
 }
 .student__tag {
   align-self: flex-start;
   font-size: var(--fs-100);
-  font-weight: 700;
-  color: var(--brand-line);
-  background: var(--brand-soft);
+  font-weight: 500;
+  color: var(--text-muted);
+  background: var(--surface-sunken);
   border-radius: var(--r-pill);
-  padding: 0.2rem 0.8rem;
+  padding: 0.15rem 0.7rem;
 }
 .student--wait {
   gap: var(--s-4);
@@ -31,19 +30,13 @@
   font-size: var(--fs-300);
   color: var(--text);
   background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--r-md);
+  border-radius: var(--r-lg);
   padding: var(--s-4);
 }
 
-/* ==========================================================================
-   The participant's own device. Priority #1 of this overhaul: during practice,
-   nobody should have to wonder where the room is or what they are meant to do.
-   ========================================================================== */
-
 /**
- * STAGE BAR — the answer to "where are we", with no sync required. Sits under the topbar
- * and stays put while the panel scrolls beneath it.
+ * STAGE BAR — the running head of the phone. The part in its colour, the stage, the
+ * count, and the tab rail to scale underneath.
  */
 .stagebar {
   position: fixed;
@@ -51,53 +44,61 @@
   inset-inline: 0;
   z-index: 40;
   display: flex;
+  flex-direction: column;
+  background: var(--surface-glass);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  border-block-end: 1px solid var(--border);
+}
+.stagebar__row {
+  display: flex;
   align-items: center;
   gap: var(--s-3);
-  padding: var(--s-2) var(--s-4);
-  background: var(--surface);
-  border-block-end: 1px solid var(--border);
+  padding: var(--s-2) var(--s-4) var(--s-1);
+  min-block-size: 38px;
   font-size: var(--fs-200);
-  min-block-size: 40px;
 }
-.stagebar__pos {
-  color: var(--text-muted);
-  white-space: nowrap;
-}
-.stagebar__pos b {
-  color: var(--brand);
-  font-variant-numeric: tabular-nums;
+.stagebar__part {
+  flex: none;
+  padding: 0.12rem 0.7rem;
+  background: var(--sec);
+  color: var(--on-sec);
+  font-size: var(--fs-100);
+  font-weight: 600;
+  border-radius: var(--r-pill);
 }
 .stagebar__name {
-  font-weight: 700;
-  color: var(--brand);
+  font-weight: 600;
+  color: var(--text);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  min-width: 0;
 }
-.stagebar__track {
+.stagebar__pos {
   margin-inline-start: auto;
-  inline-size: clamp(60px, 22vw, 160px);
-  block-size: 4px;
-  border-radius: var(--r-pill);
-  background: var(--surface-sunken);
+  font-weight: 500;
+  color: var(--text);
   flex: none;
-  overflow: hidden;
 }
-.stagebar__fill {
-  display: block;
-  block-size: 100%;
-  background: var(--brand-line);
-  transition: inline-size var(--dur-mid) var(--ease-out);
+.stagebar__of {
+  color: var(--text-dim);
+  font-weight: 400;
 }
-
-/* The stage bar and the bottom nav are fixed, so the scroller needs room for both.
-   Scoped to the OUTER shell — an inner .student would double the padding. */
-.scene-shell.student {
-  padding-block-start: calc(40px + var(--s-4));
-  padding-block-end: calc(64px + var(--s-5));
+.stagebar__rail {
+  padding: 2px var(--s-4) 8px;
+  block-size: auto;
 }
 
-/* Tier 3 — the safety net, right under the floor where a stuck person actually is. */
+/* The stage bar and the nav own their own strips (see .viewport), so the shell only needs
+   breathing room, not a guess at how tall the bars are. */
+.slide--study .scene-shell {
+  padding-block: var(--s-3) var(--s-7);
+  margin-block: 0;
+  max-inline-size: 40rem;
+  margin-inline: auto;
+}
+
 .student__tiers {
   display: flex;
   flex-direction: column;
@@ -105,21 +106,22 @@
   inline-size: 100%;
 }
 
+/* Tier 3 — the safety net, right under the floor where a stuck person actually is. */
 .student__net {
-  margin-block-start: var(--s-4);
+  margin-block-start: var(--s-3);
 }
 
 /**
- * The divider from PEDAGOGY.md. Everything above it is for everyone; everything below is
- * for whoever got there. Someone struggling never scrolls past this line.
+ * The divider from PEDAGOGY.md. Everything above it is for everyone; everything below is for
+ * whoever got there. A small quiet capsule marks the line.
  */
 .student__divider {
-  margin-block: var(--s-6);
+  margin: var(--s-6) auto var(--s-3);
   border: 0;
-  border-block-start: 1px dashed var(--border-strong);
-}
-.student__ceiling {
-  opacity: 0.92;
+  inline-size: 48px;
+  block-size: 5px;
+  border-radius: var(--r-pill);
+  background: var(--border-strong);
 }
 
 /* STUDENT NAV — thumb-reachable. Moving is the easiest thing on the screen. */
@@ -129,77 +131,74 @@
   inset-inline: 0;
   z-index: 45;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 1px;
-  background: var(--border);
+  grid-template-columns: 1fr 1fr 1.25fr;
+  gap: var(--s-2);
+  padding: var(--s-2) var(--s-3) calc(var(--s-2) + env(safe-area-inset-bottom, 0px));
+  background: var(--surface-glass);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
   border-block-start: 1px solid var(--border);
-  padding-block-end: env(safe-area-inset-bottom, 0);
 }
 .studentnav__btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s-2);
   font: inherit;
   font-size: var(--fs-200);
-  font-weight: 700;
-  /* 56px: tapped repeatedly, one-handed, while holding a laptop or a coffee. */
-  min-block-size: 56px;
+  font-weight: 500;
+  /* 48px capsules: tapped repeatedly, one-handed, while holding a laptop or a coffee. */
+  min-block-size: 48px;
+  border-radius: var(--r-pill);
   border: 0;
   cursor: pointer;
-  background: var(--surface);
-  color: var(--brand);
+  background: var(--surface-sunken);
+  color: var(--text);
   transition: background var(--dur-fast) var(--ease-out);
 }
 .studentnav__btn:hover:not(:disabled) {
-  background: var(--surface-sunken);
+  background: color-mix(in srgb, var(--surface-sunken), var(--text) 7%);
 }
 .studentnav__btn:disabled {
-  color: var(--text-dim);
+  color: var(--text-faint);
   cursor: not-allowed;
 }
-.studentnav__btn--jump {
-  color: var(--action);
-}
 .studentnav__btn--next {
-  background: var(--brand);
-  color: var(--text-on-brand);
+  background: var(--action);
+  color: var(--text-on-action);
 }
 .studentnav__btn--next:hover:not(:disabled) {
-  background: var(--brand-hover);
+  background: var(--action-hover);
 }
 .studentnav__btn--next:disabled {
   background: var(--surface-sunken);
 }
 
+@media (min-width: 768px) {
+  .slide--study .scene-shell {
+    max-inline-size: min(52rem, 90vw);
+  }
+  .studentnav {
+    display: flex;
+    justify-content: center;
+    gap: var(--s-3);
+  }
+  .studentnav__btn {
+    flex: 0 1 200px;
+  }
+}
+
 /**
  * On the participant device the stage bar already names the stage, so the scene title does
- * not need to be a headline as well — it was pushing the do-now line below the fold on a
- * phone, which defeats the entire point of having a do-now line.
+ * not need to be a headline as well — the do-now line must stay above the fold.
  */
 .student .scene-shell__head {
   gap: var(--s-1);
 }
 .student .scene-shell__title {
-  font-size: var(--fs-400);
-  line-height: var(--lh-tight);
+  font-size: var(--fs-600);
+  line-height: 1.1;
 }
 .student .scene-shell__subtitle {
   font-size: var(--fs-300);
-}
-
-/* A long stage name wraps to a second line rather than being cut off mid-word. */
-@media (max-width: 520px) {
-  .stagebar {
-    flex-wrap: wrap;
-    row-gap: var(--s-1);
-    padding-block: var(--s-2);
-  }
-  .stagebar__name {
-    white-space: normal;
-    overflow: visible;
-    font-size: var(--fs-200);
-    line-height: 1.3;
-  }
-  .stagebar__track {
-    inline-size: 100%;
-    margin-inline-start: 0;
-    order: 3;
-  }
 }

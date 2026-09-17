@@ -29,8 +29,6 @@ describe('navReducer', () => {
     expect(a.overlay).toBe('grid');
     const b = navReducer(a, { type: 'toggleOverlay', overlay: 'grid' });
     expect(b.overlay).toBe('none');
-    const c = navReducer(a, { type: 'toggleOverlay', overlay: 'notes' });
-    expect(c.overlay).toBe('notes');
   });
 
   it('timer lifecycle: setTarget -> toggle -> tick -> done', () => {

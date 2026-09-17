@@ -14,6 +14,8 @@ import { SceneStage } from '@/ui/player/SceneStage';
 import { GuidanceDrawer } from '@/ui/presenter/GuidanceDrawer';
 import { PreFlight } from '@/ui/presenter/PreFlight';
 import { validateDeckScenes } from '@/scenes/validateDeck';
+import { storage } from '@/persistence/storage';
+import { deckKey } from '@/persistence/namespace';
 
 /**
  * The deck shell, shared by all three entries:
@@ -56,7 +58,15 @@ export function PlayerRoute({ mode = 'plain' }: { mode?: PlayerMode }) {
     }
   }, [deck]);
 
-  if (!deck) return <Navigate to={`/d/${DEFAULT_DECK_ID}`} replace />;
+  // Protect present mode if a presenter code is required
+  const isPresenterAuthorized = useMemo(() => {
+    if (!deck || mode !== 'present' || !deck.meta.presenterCode) return true;
+    return storage.getString(deckKey(deck.meta.id, 'presenterOk')) === '1';
+  }, [deck, mode]);
+
+  if (!deck || !isPresenterAuthorized) {
+    return <Navigate to={`/d/${deck?.meta.id ?? DEFAULT_DECK_ID}`} replace />;
+  }
 
   return (
     <PresentationProvider

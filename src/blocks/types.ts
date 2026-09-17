@@ -52,6 +52,14 @@ export interface CallToActionBlock {
   note?: string;
 }
 
+/** A link as a projectable QR — for the room to scan off the screen instead of typing a URL. */
+export interface QrBlock {
+  kind: 'qr';
+  href: string;
+  /** Short line under the code: what scanning it opens. */
+  caption?: string;
+}
+
 /**
  * The single imperative sentence that opens a participant's activity screen. Largest thing
  * on the page, and always first: mid-practice on a phone, "what am I supposed to be doing
@@ -159,6 +167,7 @@ export type Block =
   | ExamplePromptBlock
   | ColumnsBlock
   | CallToActionBlock
+  | QrBlock
   | DoNowBlock
   | PromptBuilderBlock
   | ConceptCardBlock

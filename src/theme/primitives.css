@@ -7,55 +7,91 @@
  * Rule of thumb: used by one folder -> keep it there. Used by two -> it belongs here.
  */
 
-/* Action button: scenes, block CTAs, the landing doors, the presenter drawer. */
+.icon {
+  flex: none;
+  display: block;
+}
+
+/**
+ * BUTTONS. The primary is a blue capsule on every part — the one colour that never moves, so
+ * "the thing to press" is always findable. Secondary is a quiet grey capsule.
+ */
 .btn-action {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: var(--s-2);
-  background: var(--brand);
-  color: var(--text-on-brand);
-  border: 1px solid var(--brand);
-  border-radius: var(--r-sm);
-  padding: 0.7rem 1.4rem;
+  min-block-size: 44px;
+  background: var(--action);
+  color: var(--text-on-action);
+  border: 0;
+  border-radius: var(--r-pill);
+  padding: 0.55rem 1.4rem;
   font: inherit;
-  font-weight: 700;
+  font-weight: 500;
+  line-height: 1.2;
   cursor: pointer;
   text-decoration: none;
-  transition: background var(--dur-fast) var(--ease-out);
+  white-space: nowrap;
+  transition:
+    background var(--dur-fast) var(--ease-out),
+    transform var(--dur-fast) var(--ease-out);
 }
 .btn-action:hover {
-  background: var(--brand-hover);
+  background: var(--action-hover);
+}
+.btn-action:active {
+  background: var(--action-press);
+  transform: scale(0.98);
 }
 .btn-action:disabled {
-  opacity: 0.55;
+  background: var(--surface-sunken);
+  color: var(--text-faint);
+  transform: none;
   cursor: not-allowed;
 }
 .btn-action--ghost {
-  background: var(--surface);
-  color: var(--brand);
-  border-color: var(--border-strong);
+  background: var(--surface-sunken);
+  color: var(--text);
 }
 .btn-action--ghost:hover {
-  background: var(--surface-sunken);
+  background: color-mix(in srgb, var(--surface-sunken), var(--text) 7%);
+}
+.btn-action--ghost:active {
+  background: color-mix(in srgb, var(--surface-sunken), var(--text) 12%);
+}
+.btn-action--sm {
+  min-block-size: 34px;
+  padding: 0.3rem 0.9rem;
+  font-size: var(--fs-200);
 }
 
-/* Small caps label above a heading. */
+/* A zone label: a soft capsule in the part's climate. */
 .pill {
   align-self: flex-start;
-  background: var(--brand-soft);
-  color: var(--brand);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  background: var(--sec);
+  color: var(--on-sec);
   border-radius: var(--r-pill);
-  padding: 0.25rem 0.85rem;
+  padding: 0.2rem 0.75rem;
   font-size: var(--fs-100);
-  font-weight: 700;
+  font-weight: 500;
 }
 
-/* The short accent rule that opens a scene, the landing page and the participant panel. */
+/* A short capsule in the part's accent. Opens the landing page and the participant panel. */
 .line-motif {
   display: block;
-  width: 68px;
-  height: 4px;
-  border-radius: 2px;
-  background: var(--brand-line);
-  margin-bottom: var(--s-1);
+  inline-size: 36px;
+  block-size: 6px;
+  background: var(--sec-accent);
+  border-radius: var(--r-pill);
+}
+
+/* Clocks, counts, minutes. */
+.mono {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0;
 }

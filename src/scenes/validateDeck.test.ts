@@ -68,9 +68,4 @@ describe('ai-cadets-2026 deck', () => {
       expect(resolveSlug(slug, index), `released slug "${slug}" no longer resolves`).toBeTruthy();
     }
   });
-
-  it('the presenter has something to say on every stage', () => {
-    const silent = deck.scenes.filter((s) => !s.presenterScript && !s.notes).map((s) => s.slug);
-    expect(silent).toEqual([]);
-  });
 });

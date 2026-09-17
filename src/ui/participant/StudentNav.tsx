@@ -1,5 +1,6 @@
 import { usePresentation, useEngineDispatch } from '@/react/PresentationProvider';
 import { select } from '@/engine';
+import { Icon } from '@/assets/icons/Icon';
 
 /**
  * Thumb-reachable navigation, pinned to the bottom on a phone. Participants move themselves
@@ -27,9 +28,11 @@ export function StudentNav() {
         onClick={() => dispatch({ type: 'prev' })}
         disabled={!canPrev}
       >
+        <Icon name="prev" size={20} />
         הקודם
       </button>
       <button type="button" className="studentnav__btn studentnav__btn--jump" onClick={toPrompt}>
+        <Icon name="jump" size={20} />
         לפרומפט
       </button>
       <button
@@ -39,6 +42,7 @@ export function StudentNav() {
         disabled={!canNext}
       >
         הבא
+        <Icon name="next" size={20} />
       </button>
     </nav>
   );

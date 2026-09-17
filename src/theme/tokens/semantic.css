@@ -1,107 +1,169 @@
 /**
  * SEMANTIC TOKENS — roles. Components read ONLY these, never a primitive.
  *
- * Three themes, one contract. `light` is the default and what the projector gets;
- * `hall` is for a darkened auditorium and is opt-in from the presenter chrome. Because
- * every role is redefined rather than every component re-styled, a new theme is one block
- * in this file — which is what `brandKitRef` always promised and never delivered.
+ * Two themes, one contract. `light` is the default and what a lit room's projector gets;
+ * `hall` is for a darkened auditorium, opt-in.
+ *
+ * The current part's climate is set per subtree by src/ui/sections.ts:
+ *   --sec        soft fill (chips, rail tabs, panels)
+ *   --on-sec     text on --sec
+ *   --sec-tint   the part's ground
+ *   --sec-accent the one saturated mark
+ *   --sec-deep   the part's colour as text on white or tint
+ * Defaults here are the periwinkle climate, so nothing is ever unset.
  */
 :root,
 :root[data-theme='light'] {
   color-scheme: light;
 
+  --sec: var(--hue-ultramarine);
+  --on-sec: var(--hue-ultramarine-on);
+  --sec-tint: var(--hue-ultramarine-tint);
+  --sec-accent: var(--hue-ultramarine-accent);
+  --sec-deep: var(--hue-ultramarine-deep);
+
   /* Surfaces */
-  --surface-page: var(--c-n-50);
-  --surface: var(--c-n-0);
-  --surface-raised: var(--c-n-0);
-  --surface-sunken: var(--c-n-100);
-  --surface-inset: var(--c-n-100);
+  --surface-page: var(--c-page);
+  --surface: var(--c-white);
+  --surface-raised: var(--c-white);
+  --surface-sunken: var(--c-fill);
+  --surface-inset: var(--c-page);
+  --leaf-base: var(--c-white);
+  /* Frosted bars: running head, stage bar, drawer, nav. */
+  --surface-glass: rgb(251 251 253 / 82%);
 
   /* Text */
-  --text: var(--c-ink-900);
-  --text-muted: var(--c-n-500);
-  --text-dim: var(--c-n-400);
-  --text-on-brand: var(--c-n-0);
-  --text-on-action: var(--c-n-0);
+  --text: var(--c-ink);
+  --text-muted: var(--c-ink-2);
+  --text-dim: var(--c-ink-2);
+  --text-faint: var(--c-ink-4);
+  --text-on-brand: var(--c-white);
+  --text-on-action: var(--c-white);
 
-  /* Brand ink */
-  --brand: var(--c-ink-600);
-  --brand-hover: var(--c-ink-700);
-  --brand-soft: var(--c-ink-100);
-  --brand-line: var(--c-ink-500);
+  --brand: var(--c-ink);
+  --brand-hover: #000;
+  --brand-soft: var(--c-fill);
+  --brand-line: var(--c-ink);
 
-  /* ACTION — reserved. If it is this colour, the PARTICIPANT does something with it:
-     copy buttons, the prompt builder, timeboxes, activity headers. Nothing decorative
-     may use it, or it stops meaning "your turn". */
-  --action: var(--c-act-500);
-  --action-hover: var(--c-act-600);
-  --action-soft: var(--c-act-100);
-  --action-line: var(--c-act-400);
+  /* ACTION — Apple blue, on every part. */
+  --action: var(--c-blue);
+  --action-hover: var(--c-blue-hover);
+  --action-press: var(--c-blue-press);
+  --action-soft: #e8f2fd;
+  --action-line: var(--c-blue);
 
-  /* Lines */
-  --border: var(--c-n-200);
-  --border-strong: var(--c-n-300);
-  --focus-ring: var(--c-ink-600);
+  /* Lines. There are no ink rules: separation is a hairline or, better, space. */
+  --border: #e5e5ea;
+  --border-strong: var(--c-hairline);
+  --rule-ink: var(--c-hairline);
+  --focus-ring: color-mix(in srgb, var(--c-blue) 55%, transparent);
 
   /* Status */
-  --info: var(--c-info-600);
-  --info-soft: var(--c-info-100);
-  --success: var(--c-ok-600);
-  --success-soft: var(--c-ok-100);
-  --warning: var(--c-warn-600);
-  --warning-soft: var(--c-warn-100);
-  --danger: var(--c-bad-600);
-  --danger-soft: var(--c-bad-100);
+  --info: var(--hue-ultramarine-deep);
+  --info-soft: var(--hue-ultramarine-tint);
+  --success: var(--hue-grass-deep);
+  --success-soft: var(--hue-grass-tint);
+  --warning: var(--hue-orange-deep);
+  --warning-soft: var(--hue-orange-tint);
+  --danger: var(--c-red);
+  --danger-soft: var(--c-red-soft);
 
-  --shadow-1: 0 1px 2px rgb(14 28 36 / 6%), 0 4px 14px rgb(14 28 36 / 6%);
-  --shadow-2: 0 8px 30px rgb(14 28 36 / 12%);
+  /* Depth is ambient: a card lifted a fraction of a millimetre off its ground. */
+  --shadow-leaf: 0 1px 2px rgb(0 0 0 / 4%), 0 12px 40px -12px rgb(0 0 0 / 12%);
+  --shadow-1: 0 1px 2px rgb(0 0 0 / 4%), 0 4px 16px -4px rgb(0 0 0 / 8%);
+  --shadow-2: 0 2px 6px rgb(0 0 0 / 5%), 0 20px 48px -16px rgb(0 0 0 / 18%);
+
+  --selection: color-mix(in srgb, var(--c-blue) 22%, transparent);
+  --scrollbar-thumb: rgb(0 0 0 / 18%);
+  --scrollbar-thumb-hover: rgb(0 0 0 / 35%);
+  --scrollbar-track: transparent;
 }
 
 /**
- * HALL — a darkened lecture room. Not a generic "dark mode" for comfort: the projector is
- * the brightest object in the room and a full-white slide is what makes an audience squint.
+ * HALL — a darkened lecture room. Apple's dark system greys; each climate drops to a deep,
+ * low-chroma ground and its text lifts to a pale tone.
  */
 :root[data-theme='hall'] {
   color-scheme: dark;
 
-  --surface-page: var(--c-ink-950);
-  --surface: var(--c-ink-900);
-  --surface-raised: var(--c-ink-800);
-  --surface-sunken: var(--c-ink-950);
-  --surface-inset: var(--c-ink-800);
+  --hue-yellow-tint: #282114;
+  --hue-yellow: #44361b;
+  --hue-yellow-on: #e5ca9a;
+  --hue-yellow-deep: #e5ca9a;
+  --hue-orange-tint: #2c1e18;
+  --hue-orange: #4c3025;
+  --hue-orange-on: #f6bfaa;
+  --hue-orange-deep: #f6bfaa;
+  --hue-grass-tint: #19251b;
+  --hue-grass: #263f2b;
+  --hue-grass-on: #aedbb6;
+  --hue-grass-deep: #aedbb6;
+  --hue-teal-tint: #122526;
+  --hue-teal: #163f41;
+  --hue-teal-on: #96dce0;
+  --hue-teal-deep: #96dce0;
+  --hue-ultramarine-tint: #1c212e;
+  --hue-ultramarine: #2e3750;
+  --hue-ultramarine-on: #bacdfd;
+  --hue-ultramarine-deep: #bacdfd;
+  --hue-violet-tint: #241f2b;
+  --hue-violet: #3d324b;
+  --hue-violet-on: #d8c3f3;
+  --hue-violet-deep: #d8c3f3;
+  --hue-sienna-tint: #2c1d1f;
+  --hue-sienna: #4c2e33;
+  --hue-sienna-on: #f7bbc5;
+  --hue-sienna-deep: #f7bbc5;
 
-  --text: var(--c-n-50);
-  --text-muted: var(--c-ink-300);
-  --text-dim: var(--c-ink-400);
-  --text-on-brand: var(--c-ink-950);
-  --text-on-action: var(--c-ink-950);
+  --surface-page: #000000;
+  --surface: #1c1c1e;
+  --surface-raised: #2c2c2e;
+  --surface-sunken: #2c2c2e;
+  --surface-inset: #2c2c2e;
+  --leaf-base: #1c1c1e;
+  --surface-glass: rgb(22 22 23 / 82%);
 
-  --brand: var(--c-ink-200);
-  --brand-hover: var(--c-n-0);
-  --brand-soft: var(--c-ink-800);
-  --brand-line: var(--c-ink-300);
+  --text: #f5f5f7;
+  --text-muted: #a1a1a6;
+  --text-dim: #a1a1a6;
+  --text-faint: #6e6e73;
+  --text-on-brand: #1d1d1f;
+  --text-on-action: #ffffff;
 
-  --action: var(--c-act-400);
-  --action-hover: var(--c-act-200);
-  --action-soft: var(--c-act-700);
-  --action-line: var(--c-act-400);
+  --brand: #f5f5f7;
+  --brand-hover: #fff;
+  --brand-soft: #2c2c2e;
+  --brand-line: #f5f5f7;
 
-  --border: var(--c-ink-800);
-  --border-strong: var(--c-ink-700);
-  --focus-ring: var(--c-act-400);
+  --action: var(--c-blue-dark);
+  --action-hover: #47a6ff;
+  --action-press: #1f8ceb;
+  --action-soft: #0a2a4a;
+  --action-line: var(--c-blue-dark);
+  --text-on-action: #000;
 
-  /* Status ramps invert: the 600s are unreadable on ink, so the 300s carry the meaning. */
-  --info: var(--c-info-300);
-  --info-soft: #14304d;
-  --success: var(--c-ok-300);
-  --success-soft: #0f3a26;
-  --warning: var(--c-warn-300);
-  --warning-soft: #40300c;
-  --danger: var(--c-bad-300);
-  --danger-soft: #45150f;
+  --border: #2c2c2e;
+  --border-strong: #3a3a3c;
+  --rule-ink: #3a3a3c;
+  --focus-ring: color-mix(in srgb, var(--c-blue-dark) 60%, transparent);
 
-  --shadow-1: 0 1px 2px rgb(0 0 0 / 40%), 0 4px 14px rgb(0 0 0 / 30%);
-  --shadow-2: 0 8px 30px rgb(0 0 0 / 45%);
+  --info: var(--hue-ultramarine-deep);
+  --info-soft: var(--hue-ultramarine-tint);
+  --success: var(--hue-grass-deep);
+  --success-soft: var(--hue-grass-tint);
+  --warning: var(--hue-orange-deep);
+  --warning-soft: var(--hue-orange-tint);
+  --danger: #ff453a;
+  --danger-soft: #3a1512;
+
+  --shadow-leaf: 0 1px 2px rgb(0 0 0 / 40%), 0 12px 40px -12px rgb(0 0 0 / 60%);
+  --shadow-1: 0 1px 2px rgb(0 0 0 / 40%), 0 4px 16px -4px rgb(0 0 0 / 50%);
+  --shadow-2: 0 2px 6px rgb(0 0 0 / 40%), 0 20px 48px -16px rgb(0 0 0 / 70%);
+
+  --selection: color-mix(in srgb, var(--c-blue-dark) 35%, transparent);
+  --scrollbar-thumb: rgb(255 255 255 / 20%);
+  --scrollbar-thumb-hover: rgb(255 255 255 / 40%);
+  --scrollbar-track: transparent;
 }
 
 /**

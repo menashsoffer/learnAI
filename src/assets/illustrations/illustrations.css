@@ -1,8 +1,8 @@
+/* Figures are printed in ink; their accent strokes pick up the divider they sit on. */
 .illus {
-  color: var(--brand);
-  width: clamp(150px, 24vw, 300px);
+  color: var(--text);
+  width: clamp(130px, 17vw, 230px);
   flex: none;
-  align-self: center;
 }
 .illus svg {
   width: 100%;
@@ -10,22 +10,16 @@
   display: block;
 }
 .ill-accent {
-  color: var(--brand-line);
-  stroke: var(--brand-line);
+  color: var(--sec-deep);
+  stroke: var(--sec-deep);
 }
 .ill-accent-fill {
-  fill: var(--brand-soft);
-  stroke: var(--brand-line);
+  fill: var(--sec);
+  stroke: var(--text);
 }
 
-@media (max-width: 860px) {
+@media (max-width: 900px) {
   .illus {
-    width: clamp(96px, 30vw, 150px);
+    width: clamp(64px, 18vw, 110px);
   }
-}
-
-/* hero variant */
-.hero .illus {
-  width: clamp(120px, 20vw, 190px);
-  margin-bottom: var(--s-2);
 }
