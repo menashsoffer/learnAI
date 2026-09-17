@@ -11,6 +11,7 @@ describe('Activity component rendering & timer behavior', () => {
     id: 'test-activity',
     slug: 'test-activity',
     type: 'activity',
+    stage: 'תרגול #1',
     title: 'בדיקת פעילות',
     subtitle: 'תת-כותרת',
   };
