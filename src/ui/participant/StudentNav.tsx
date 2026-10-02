@@ -1,5 +1,7 @@
-import { usePresentation, useEngineDispatch } from '@/react/PresentationProvider';
+import { usePresentation, useEngineDispatch, useDeck } from '@/react/PresentationProvider';
 import { select } from '@/engine';
+import type { SceneRecord } from '@/engine';
+import type { Block } from '@/blocks/types';
 import { Icon } from '@/assets/icons/Icon';
 
 /**
@@ -12,8 +14,11 @@ import { Icon } from '@/assets/icons/Icon';
  */
 export function StudentNav() {
   const dispatch = useEngineDispatch();
+  const deck = useDeck();
+  const index = usePresentation((s) => s.index);
   const canPrev = usePresentation(select.canPrev);
   const canNext = usePresentation(select.canNext);
+  const hasPrompt = sceneHasPrompt(deck.scenes[index]);
 
   const toPrompt = () => {
     const el = document.querySelector('.slide--active :is(.blk-prompt, .blk-builder)');
@@ -31,7 +36,12 @@ export function StudentNav() {
         <Icon name="prev" size={20} />
         הקודם
       </button>
-      <button type="button" className="studentnav__btn studentnav__btn--jump" onClick={toPrompt}>
+      <button
+        type="button"
+        className="studentnav__btn studentnav__btn--jump"
+        onClick={toPrompt}
+        disabled={!hasPrompt}
+      >
         <Icon name="jump" size={20} />
         לפרומפט
       </button>
@@ -46,4 +56,25 @@ export function StudentNav() {
       </button>
     </nav>
   );
+}
+
+/**
+ * Whether this scene has anything for "לפרומפט" to jump to. An activity scene always has a
+ * prompt (the schema requires it); a teaching scene only sometimes does, via an
+ * `example-prompt` or `prompt-builder` block — possibly nested inside `columns`. Without this
+ * check the button sat there on prompt-less scenes (opening, foundations, recall, concepts,
+ * closing) doing nothing when tapped, with no sign why.
+ */
+function sceneHasPrompt(scene: SceneRecord | undefined): boolean {
+  if (!scene) return false;
+  if (scene.type === 'activity') return true;
+  return blocksHavePrompt((scene.student?.blocks as Block[] | undefined) ?? []);
+}
+
+function blocksHavePrompt(blocks: Block[]): boolean {
+  return blocks.some((b) => {
+    if (b.kind === 'example-prompt' || b.kind === 'prompt-builder') return true;
+    if (b.kind === 'columns') return b.columns.some((col) => blocksHavePrompt(col.blocks));
+    return false;
+  });
 }
