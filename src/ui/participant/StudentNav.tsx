@@ -26,7 +26,7 @@ export function StudentNav() {
   };
 
   return (
-    <nav className="studentnav" aria-label="ניווט">
+    <nav className={`studentnav${hasPrompt ? '' : ' studentnav--two'}`} aria-label="ניווט">
       <button
         type="button"
         className="studentnav__btn"
@@ -36,15 +36,12 @@ export function StudentNav() {
         <Icon name="prev" size={20} />
         הקודם
       </button>
-      <button
-        type="button"
-        className="studentnav__btn studentnav__btn--jump"
-        onClick={toPrompt}
-        disabled={!hasPrompt}
-      >
-        <Icon name="jump" size={20} />
-        לפרומפט
-      </button>
+      {hasPrompt && (
+        <button type="button" className="studentnav__btn studentnav__btn--jump" onClick={toPrompt}>
+          <Icon name="jump" size={20} />
+          לפרומפט
+        </button>
+      )}
       <button
         type="button"
         className="studentnav__btn studentnav__btn--next"

@@ -139,6 +139,10 @@
   -webkit-backdrop-filter: saturate(180%) blur(20px);
   border-block-start: 1px solid var(--border);
 }
+/* No "לפרומפט" on this scene (no prompt to jump to) — just prev/next, evenly split. */
+.studentnav--two {
+  grid-template-columns: 1fr 1fr;
+}
 .studentnav__btn {
   display: flex;
   align-items: center;
